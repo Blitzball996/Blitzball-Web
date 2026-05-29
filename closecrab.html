@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-ns="closecrab">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloseCrab — Local-First AI Coding Assistant | Blitzball Labs</title>
+<meta name="description" content="CloseCrab — a single 3.2 MB C++17 binary. 59 native tools, 84 commands, multi-agent collaboration, RAG, Team Mode, voice I/O. Runs LLMs on your GPU or any API.">
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@600;700;800;900&family=Share+Tech+Mono&family=Major+Mono+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/closecrab.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+<!-- Background layers -->
+<div id="scene-container"></div>
+<div class="matrix-rain"><canvas id="matrix"></canvas></div>
+<div class="bg-grid"></div>
+<div class="bg-noise"></div>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <img src="logo.png" alt="Blitzball Labs">
+    <span class="brand-text">Blitzball<em>Labs</em></span>
+    <span class="brand-divider"></span>
+    <span class="brand-product">AI · CLI</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#terminal">Terminal</a></li>
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#agents">Agents</a></li>
+    <li><a href="#providers">Models</a></li>
+    <li><a href="#specs">Specs</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="#download" class="nav-cta"><span class="cta-icon">▼</span><span>Get CloseCrab</span></a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="overview">
+  <div class="hero-eyebrow"><span class="ev-dot"></span> v1.0 · Local-First · C++17 · 3.2 MB</div>
+  <h1>
+    <span class="l1">AI in your terminal,</span>
+    <span class="l2">code that thinks.</span>
+  </h1>
+  <p class="hero-sub">A single <strong>3.2 MB binary</strong> that runs large language models on <strong>your GPU</strong>, or speaks to any cloud API. <strong>59 native tools</strong>, <strong>84 commands</strong>, multi-agent collaboration, RAG, Team Mode and voice I/O — all inside one C++17 process.</p>
+  <div class="hero-actions">
+    <a href="#download" class="btn btn-pri big"><span>⬇</span> Download v1.0</a>
+    <a href="#terminal" class="btn btn-sec big"><span>▶</span> Watch it run</a>
+  </div>
+  <div class="hero-trust">
+    <span>● Windows</span><span class="dot"></span>
+    <span>● Linux</span><span class="dot"></span>
+    <span>● macOS</span><span class="dot"></span>
+    <span>● MIT licensed</span><span class="dot"></span>
+    <span>● No telemetry</span>
+  </div>
+
+  <!-- Hero terminal -->
+  <div class="hero-term">
+    <div class="term-bar">
+      <span class="td td-r"></span><span class="td td-y"></span><span class="td td-g"></span>
+      <span class="term-title">closecrab — session</span>
+      <span class="term-meta">claude-opus-4-7 · 1M ctx · 84 cmd · 59 tools</span>
+    </div>
+    <div class="term-body" id="hero-term-body">
+      <div class="line"><span class="prompt">›</span><span class="typed">refactor the websocket layer to use coroutines</span><span class="caret">▍</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>llama.cpp + CUDA</span><span>59 native tools</span><span>84 commands</span><span>multi-agent</span><span>RAG · FAISS</span><span>Team Mode</span><span>Voice I/O</span><span>MCP protocol</span><span>1M context</span><span>11 skills</span>
+    <span>llama.cpp + CUDA</span><span>59 native tools</span><span>84 commands</span><span>multi-agent</span><span>RAG · FAISS</span><span>Team Mode</span><span>Voice I/O</span><span>MCP protocol</span><span>1M context</span><span>11 skills</span>
+  </div>
+</div>
+
+<!-- Stats -->
+<section class="stats">
+  <div class="stats-grid">
+    <div class="stat-card reveal"><div class="stat-num" data-target="59">59</div><div class="stat-unit">Tools</div><div class="stat-lbl">native C++17</div></div>
+    <div class="stat-card reveal"><div class="stat-num" data-target="84">84</div><div class="stat-unit">Commands</div><div class="stat-lbl">slash + chat</div></div>
+    <div class="stat-card reveal"><div class="stat-num">3.2<span style="font-size:0.5em">MB</span></div><div class="stat-unit">Binary</div><div class="stat-lbl">single executable</div></div>
+    <div class="stat-card reveal"><div class="stat-num">1M</div><div class="stat-unit">Tokens</div><div class="stat-lbl">Opus 4.7 context</div></div>
+  </div>
+</section>
+
+<!-- Section 1: Real-time terminal -->
+<section class="section" id="terminal">
+  <div class="section-head reveal">
+    <div class="kicker">▌ Real-time terminal</div>
+    <h2>Watch agents <em>think</em>, plan, ship code.</h2>
+    <p>Every keystroke, CloseCrab is calling tools in parallel, reasoning, writing files. Below is a real session fragment.</p>
+  </div>
+  <div class="term-show">
+    <div class="term-bar">
+      <span class="td td-r"></span><span class="td td-y"></span><span class="td td-g"></span>
+      <span class="term-title">closecrab — refactor session</span>
+      <span class="term-meta">3 sub-agents · parallel</span>
+    </div>
+    <div class="term-body big">
+<div class="line"><span class="prompt">›</span><span class="typed">audit auth module and add rate limiting</span></div>
+<div class="line dim">— planning · 3 sub-agents spawned</div>
+<div class="line agent">[a1] Grep "rate.?limit" src/auth/</div>
+<div class="line tool">  → 0 matches · adding middleware</div>
+<div class="line agent">[a2] Read src/auth/middleware.cpp · 412 lines</div>
+<div class="line agent">[a3] Read CMakeLists.txt · 88 lines</div>
+<div class="line ai">all three agents converged. proposing TokenBucket(10rps, burst=20) at handler entry.</div>
+<div class="line tool">  → Edit src/auth/middleware.cpp +47 -3</div>
+<div class="line tool">  → Edit src/auth/CMakeLists.txt +1 -0</div>
+<div class="line tool">  → Write tests/auth/rate_limit_test.cpp · 124 lines</div>
+<div class="line ok">✓ build · 0 warnings · 12.4s</div>
+<div class="line ok">✓ tests · 47 passed · 0 failed</div>
+<div class="line dim">$ git diff --stat</div>
+<div class="line"><span class="prompt">›</span><span class="caret">▍</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 2: Features -->
+<section class="section dark">
+  <div class="section-head reveal">
+    <div class="kicker">▌ Core features</div>
+    <h2>One binary. <em>Every capability you want</em> — and more.</h2>
+    <p>Each tool is compiled C++ in the binary — no Python bridge, no npm, no runtime.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat reveal" data-color="purple"><div class="feat-ico">◈</div><h3>Local-first LLM</h3><p>llama.cpp + CUDA 12 runs GGUF models directly on your GPU. Qwen, Llama, DeepSeek, Mistral — switch with one config line.</p><div class="feat-tags"><span>CUDA</span><span>GGUF</span><span>llama.cpp</span></div></div>
+    <div class="feat reveal" data-color="pink"><div class="feat-ico">⬡</div><h3>Multi-agent coordinator</h3><p>Main agent dispatches sub-agents in parallel. Each carries its own context window, results converge for continued reasoning.</p><div class="feat-tags"><span>parallel</span><span>cache-share</span></div></div>
+    <div class="feat reveal"><div class="feat-ico">⌬</div><h3>59 native tools</h3><p>File, Shell, Grep, Edit, Web, Git, REPL, Notebook, MCP, Memory, RAG, Hooks… all C++ native.</p><div class="feat-tags"><span>file</span><span>shell</span><span>git</span><span>web</span></div></div>
+    <div class="feat reveal" data-color="gold"><div class="feat-ico">∞</div><h3>1M token context</h3><p>Full Opus 4.7 window. Auto-compact, memory system, and RAG retrieval stacked — never lose context.</p><div class="feat-tags"><span>1M ctx</span><span>auto-compact</span></div></div>
+    <div class="feat reveal" data-color="blue"><div class="feat-ico">◎</div><h3>RAG · FAISS</h3><p>Local vector store. Tree-sitter parses code → embeds → FAISS index. Relevant code retrieved per query.</p><div class="feat-tags"><span>FAISS</span><span>tree-sitter</span></div></div>
+    <div class="feat reveal" data-color="magenta"><div class="feat-ico">◬</div><h3>Team Mode</h3><p>Multi-client parallel inference, shared knowledge base, leaderboard, achievements. One GPU serves the whole team.</p><div class="feat-tags"><span>multi-client</span><span>shared</span></div></div>
+    <div class="feat reveal" data-color="green"><div class="feat-ico">◯</div><h3>Voice I/O</h3><p>Whisper.cpp ASR + built-in TTS. Talk to the AI, the AI talks back. Zero-latency loop.</p><div class="feat-tags"><span>Whisper</span><span>TTS</span></div></div>
+    <div class="feat reveal" data-color="orange"><div class="feat-ico">▣</div><h3>Permission sandbox</h3><p>Every tool call goes through allow/ask/deny rules. Path-scoped, command-scoped, network-scoped — your choice.</p><div class="feat-tags"><span>sandbox</span><span>policy</span></div></div>
+    <div class="feat reveal"><div class="feat-ico">⌥</div><h3>MCP protocol</h3><p>Model Context Protocol clients and servers built in. Plug any MCP tool into the agent loop.</p><div class="feat-tags"><span>MCP</span><span>extensible</span></div></div>
+  </div>
+</section>
+
+<!-- Section 3: Tools -->
+<section class="section" id="tools">
+  <div class="section-head reveal">
+    <div class="kicker">▌ 59 native tools</div>
+    <h2>A whole galaxy of tools, <em>orbiting one process.</em></h2>
+  </div>
+  <div class="tools-grid">
+    <div class="tool-cat reveal"><h4>Filesystem · Shell</h4><ul><li>read_file</li><li>write_file</li><li>edit_file</li><li>multi_edit</li><li>glob</li><li>grep</li><li>list_dir</li><li>shell_exec</li><li>background_exec</li><li>kill_proc</li></ul></div>
+    <div class="tool-cat reveal"><h4>Code · Git</h4><ul><li>git_status</li><li>git_diff</li><li>git_commit</li><li>git_log</li><li>git_branch</li><li>tree_sitter</li><li>repl_python</li><li>repl_node</li><li>notebook_edit</li><li>format</li></ul></div>
+    <div class="tool-cat reveal"><h4>Web · Network</h4><ul><li>web_fetch</li><li>web_search</li><li>web_render</li><li>http_get</li><li>http_post</li><li>mcp_call</li><li>mcp_list</li><li>browse</li><li>download</li><li>upload</li></ul></div>
+    <div class="tool-cat reveal"><h4>AI · Memory</h4><ul><li>rag_index</li><li>rag_query</li><li>memory_store</li><li>memory_search</li><li>summarize</li><li>todo_write</li><li>think</li><li>agent_spawn</li><li>skill_invoke</li><li>schedule</li></ul></div>
+    <div class="tool-cat reveal"><h4>Voice · I/O</h4><ul><li>tts_speak</li><li>asr_listen</li><li>screenshot</li><li>clipboard</li><li>notify</li><li>open_url</li><li>file_dialog</li><li>read_stdin</li><li>tail</li><li>watch</li></ul></div>
+    <div class="tool-cat reveal"><h4>System · Misc</h4><ul><li>env_get</li><li>env_set</li><li>cwd</li><li>sysinfo</li><li>process_list</li><li>file_stat</li><li>checksum</li><li>compress</li><li>decompress</li><li>hooks_emit</li></ul></div>
+  </div>
+</section>
+
+<!-- Section 4: Multi-agent flow -->
+<section class="section dark" id="agents">
+  <div class="section-head reveal">
+    <div class="kicker">▌ Multi-agent</div>
+    <h2>One brain. <em>Many hands.</em></h2>
+    <p>Coordinator splits complex tasks into parallel sub-agents, each with its own context window and tool subset.</p>
+  </div>
+  <div class="agent-flow">
+    <div class="agent-node main reveal">
+      <div class="ag-ico">◉</div>
+      <div class="ag-name">Coordinator</div>
+      <div class="ag-meta">claude-opus-4-7 · 1M ctx</div>
+      <div class="ag-tools">dispatches · merges · plans</div>
+    </div>
+    <div class="agent-arrows"><span></span><span></span><span></span><span></span></div>
+    <div class="agent-row">
+      <div class="agent-node reveal"><div class="ag-ico">◐</div><div class="ag-name">Researcher</div><div class="ag-meta">grep · read · web</div></div>
+      <div class="agent-node reveal"><div class="ag-ico">◑</div><div class="ag-name">Coder</div><div class="ag-meta">edit · write · build</div></div>
+      <div class="agent-node reveal"><div class="ag-ico">◒</div><div class="ag-name">Tester</div><div class="ag-meta">shell · run · diff</div></div>
+      <div class="agent-node reveal"><div class="ag-ico">◓</div><div class="ag-name">Reviewer</div><div class="ag-meta">analyze · suggest</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 5: Providers -->
+<section class="section" id="providers">
+  <div class="section-head reveal">
+    <div class="kicker">▌ Any model · anywhere</div>
+    <h2>Local GPU, Claude, OpenAI, Ollama, LM Studio … <em>one config switch.</em></h2>
+  </div>
+  <div class="prov-grid">
+    <div class="prov local reveal">
+      <div class="prov-h"><span class="prov-ico">◆</span> Local · llama.cpp</div>
+      <code>provider: local<br>model_path: models/qwen-7b.Q4_K_M.gguf<br>gpu_layers: 35</code>
+    </div>
+    <div class="prov reveal">
+      <div class="prov-h"><span class="prov-ico">◆</span> Anthropic</div>
+      <code>provider: anthropic<br>model: claude-opus-4-7<br>api_key: $ANTHROPIC_KEY</code>
+    </div>
+    <div class="prov reveal">
+      <div class="prov-h"><span class="prov-ico">◆</span> OpenAI</div>
+      <code>provider: openai<br>model: gpt-4o<br>api_key: $OPENAI_KEY</code>
+    </div>
+    <div class="prov reveal">
+      <div class="prov-h"><span class="prov-ico">◆</span> Ollama</div>
+      <code>provider: ollama<br>base_url: http://localhost:11434<br>model: llama3.1</code>
+    </div>
+    <div class="prov reveal">
+      <div class="prov-h"><span class="prov-ico">◆</span> LM Studio</div>
+      <code>provider: lmstudio<br>base_url: http://localhost:1234/v1<br>model: deepseek-coder</code>
+    </div>
+    <div class="prov reveal">
+      <div class="prov-h"><span class="prov-ico">◆</span> OpenAI-compatible</div>
+      <code>provider: openai<br>base_url: https://your-proxy/v1<br>model: any-model</code>
+    </div>
+  </div>
+</section>
+
+<!-- Section 6: Specs -->
+<section class="section dark" id="specs">
+  <div class="section-head reveal">
+    <div class="kicker">▌ Tech specs</div>
+    <h2>Engineering, <em>byte-precise.</em></h2>
+  </div>
+  <div class="specs-table reveal">
+    <div class="spec-row"><div class="spec-k">Language</div><div class="spec-v">C++17 · CUDA 12 · CMake<span class="spec-tag">~170 source files</span></div></div>
+    <div class="spec-row"><div class="spec-k">Binary size</div><div class="spec-v">~3.2 MB<span class="spec-tag">single executable</span><span class="spec-tag">stripped</span></div></div>
+    <div class="spec-row"><div class="spec-k">Inference</div><div class="spec-v">llama.cpp · GGUF · CUDA / Metal / CPU<span class="spec-tag">Q4_K_M</span><span class="spec-tag">Q8_0</span></div></div>
+    <div class="spec-row"><div class="spec-k">Context window</div><div class="spec-v">1,000,000 tokens · auto-compact at 800K<span class="spec-tag">Claude Opus 4.7</span></div></div>
+    <div class="spec-row"><div class="spec-k">RAG</div><div class="spec-v">FAISS · Tree-sitter · 384-dim embeddings<span class="spec-tag">local</span></div></div>
+    <div class="spec-row"><div class="spec-k">Tools</div><div class="spec-v">59 native + MCP clients<span class="spec-tag">extensible</span></div></div>
+    <div class="spec-row"><div class="spec-k">Commands</div><div class="spec-v">84 slash + chat commands</div></div>
+    <div class="spec-row"><div class="spec-k">Skills</div><div class="spec-v">11 built-in · directory-loaded plugins</div></div>
+    <div class="spec-row"><div class="spec-k">Voice</div><div class="spec-v">Whisper.cpp ASR · Windows SAPI / system TTS</div></div>
+    <div class="spec-row"><div class="spec-k">Protocols</div><div class="spec-v">MCP · OpenAI-compat · Anthropic Messages<span class="spec-tag">JSON-RPC</span></div></div>
+    <div class="spec-row"><div class="spec-k">Storage</div><div class="spec-v">SQLite · YAML config · zero database server</div></div>
+    <div class="spec-row"><div class="spec-k">Platforms</div><div class="spec-v">Windows 10/11 · Linux · macOS</div></div>
+    <div class="spec-row"><div class="spec-k">License</div><div class="spec-v">MIT · open source · no telemetry</div></div>
+  </div>
+</section>
+
+<!-- Download -->
+<section class="section dl" id="download">
+  <div class="dl-card reveal">
+    <div class="dl-eyebrow">Get CloseCrab v1.0</div>
+    <h2>Download once. <em>Own it forever.</em></h2>
+    <p>A 3.2 MB binary. No installer needed. Drop into PATH, edit one config line, run.</p>
+    <div class="dl-actions">
+      <a href="#" class="btn btn-pri big">⬇ Windows · .exe</a>
+      <a href="#" class="btn btn-pri big">⬇ Linux · .tar.gz</a>
+      <a href="#" class="btn btn-pri big">⬇ macOS · .dmg</a>
+    </div>
+    <div class="dl-cmd"><span style="color:var(--text-muted)"># or build from source</span><br>git clone https://github.com/Blitzball996/CloseCrab-Unified.git<br>cd CloseCrab-Unified &amp;&amp; cmake -B build &amp;&amp; cmake --build build --config Release</div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <img src="logo.png" alt="Blitzball Labs">
+      <div>
+        <div class="fb-name">Blitzball Labs</div>
+        <div class="fb-tag">Native AI · local-first · open source</div>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Products</h5>
+      <a href="closecrab.html">CloseCrab</a>
+      <a href="blitz.html">Blitz DAW</a>
+      <a href="index.html">Overview</a>
+    </div>
+    <div class="foot-col">
+      <h5>Resources</h5>
+      <a href="#">Documentation</a>
+      <a href="#">GitHub</a>
+      <a href="#">Releases</a>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="index.html#manifesto">Manifesto</a>
+      <a href="#">Contact</a>
+      <a href="#">License</a>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <span>© 2026 Blitzball Labs · Built with C++ &amp; care</span>
+    <span>MIT licensed · no telemetry · no accounts</span>
+  </div>
+</footer>
+
+<div class="foot-tag" style="display:none">Built native · runs local</div>
+
+<script src="assets/js/closecrab.js"></script>
+<script src="assets/js/i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-ns="blitz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blitz DAW — AI-Native Digital Audio Workstation | Blitzball Labs</title>
+<meta name="description" content="Blitz is an AI-native DAW with 261 instruments, 4OSC synth, Faust DSP effects, and intelligent composition. Professional music production powered by AI.">
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/blitz.css">
+<style>
+/* === Mockup animations === */
+@keyframes meterBounce{0%,100%{height:30%}25%{height:60%}50%{height:85%}75%{height:45%}}
+@keyframes meterBounce2{0%,100%{height:50%}33%{height:75%}66%{height:35%}}
+@keyframes meterBounce3{0%,100%{height:70%}50%{height:90%}}
+@keyframes meterBounce4{0%,100%{height:25%}40%{height:55%}80%{height:40%}}
+@keyframes meterBounce5{0%,100%{height:60%}50%{height:80%}}
+.mxr-strip{position:relative}
+.mxr-strip .mxr-cap{position:absolute;left:-2px;right:-2px;height:4px;border-radius:2px;animation:meterBounce 1.4s ease-in-out infinite}
+.mxr-strip.s2 .mxr-cap{animation:meterBounce2 1.7s ease-in-out infinite}
+.mxr-strip.s3 .mxr-cap{animation:meterBounce3 2.1s ease-in-out infinite}
+.mxr-strip.s4 .mxr-cap{animation:meterBounce4 1.9s ease-in-out infinite}
+.mxr-strip.s5 .mxr-cap{animation:meterBounce5 2.4s ease-in-out infinite}
+@keyframes keyPress{0%,90%,100%{transform:translateY(0);box-shadow:none;filter:brightness(1)}45%{transform:translateY(2px);box-shadow:0 0 18px var(--cyan),inset 0 0 12px rgba(6,214,160,0.5);filter:brightness(1.25)}}
+.kbd-key{animation:keyPress 3.2s ease-in-out infinite}
+.kbd-key.d1{animation-delay:0s}
+.kbd-key.d2{animation-delay:.4s}
+.kbd-key.d3{animation-delay:.8s}
+.kbd-key.d4{animation-delay:1.2s}
+.kbd-key.d5{animation-delay:1.6s}
+@keyframes knobSpin{0%{transform:rotate(-45deg)}50%{transform:rotate(135deg)}100%{transform:rotate(-45deg)}}
+.knob-pointer{animation:knobSpin 5s ease-in-out infinite}
+.knob-pointer.d1{animation-delay:.5s}
+.knob-pointer.d2{animation-delay:1s}
+.knob-pointer.d3{animation-delay:1.5s}
+@keyframes faderSlide{0%,100%{width:30%}50%{width:75%}}
+@keyframes faderSlide2{0%,100%{width:55%}50%{width:90%}}
+@keyframes faderSlide3{0%,100%{width:25%}50%{width:70%}}
+.fx-bar{animation:faderSlide 3.6s ease-in-out infinite}
+.fx-bar.d1{animation-delay:.4s;animation-name:faderSlide2}
+.fx-bar.d2{animation-delay:.8s;animation-name:faderSlide3}
+.fx-bar.d3{animation-delay:1.2s}
+.fx-bar.d4{animation-delay:1.6s;animation-name:faderSlide2}
+@keyframes wavePulse{0%,100%{transform:scaleY(0.8)}50%{transform:scaleY(1.4)}}
+.wave-svg path{animation:wavePulse 1.6s ease-in-out infinite;transform-origin:center}
+@keyframes notePulse{0%,100%{opacity:0.85;filter:brightness(1)}50%{opacity:1;filter:brightness(1.3) drop-shadow(0 0 8px currentColor)}}
+.midi-note{animation:notePulse 2s ease-in-out infinite}
+.midi-note.n2{animation-delay:.2s}
+.midi-note.n3{animation-delay:.4s}
+.midi-note.n4{animation-delay:.6s}
+@keyframes playheadMove{0%{left:0}100%{left:100%}}
+@keyframes pianoKeyHit{0%,80%,100%{background:linear-gradient(180deg,#f0e8ff,#d0c8e0);box-shadow:none}40%{background:linear-gradient(180deg,var(--cyan-bright),var(--cyan));box-shadow:0 0 14px var(--cyan),inset 0 -3px 6px rgba(6,214,160,0.5)}}
+@keyframes blackKeyHit{0%,80%,100%{background:linear-gradient(180deg,#2a1a40,#1a0a2a)}40%{background:linear-gradient(180deg,var(--purple-light),var(--purple));box-shadow:0 0 14px var(--purple-light)}}
+.pk-white{animation:pianoKeyHit 4s ease-in-out infinite}
+.pk-black{animation:blackKeyHit 4s ease-in-out infinite}
+.pk-white.d1{animation-delay:0s}
+.pk-white.d2{animation-delay:.5s}
+.pk-white.d3{animation-delay:1s}
+.pk-white.d4{animation-delay:1.5s}
+.pk-white.d5{animation-delay:2s}
+.pk-white.d6{animation-delay:2.5s}
+.pk-white.d7{animation-delay:3s}
+.pk-black.d1{animation-delay:.25s}
+.pk-black.d2{animation-delay:.75s}
+.pk-black.d3{animation-delay:1.25s}
+.pk-black.d4{animation-delay:1.75s}
+.pk-black.d5{animation-delay:2.25s}
+@keyframes vrtBar{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
+.vrt-bar{transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite}
+@keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-4px) rotate(3deg)}}
+.inst-icon{animation:iconFloat 3s ease-in-out infinite}
+.inst-icon.d1{animation-delay:.2s}
+.inst-icon.d2{animation-delay:.4s}
+.inst-icon.d3{animation-delay:.6s}
+.inst-icon.d4{animation-delay:.8s}
+.inst-icon.d5{animation-delay:1s}
+.inst-icon.d6{animation-delay:1.2s}
+.inst-icon.d7{animation-delay:1.4s}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+<!-- Background -->
+<div id="scene-container"></div>
+<div class="aurora"></div>
+<div class="bg-grid"></div>
+<div class="bg-noise"></div>
+<div class="scanlines"></div>
+<div class="vignette"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="orb orb-4"></div>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <img src="logo.png" alt="Blitzball Labs">
+    <span class="brand-text">Blitzball<em>Labs</em></span>
+    <span class="brand-divider"></span>
+    <span class="brand-product">DAW · STUDIO</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#studio">Studio</a></li>
+    <li><a href="#instruments">Instruments</a></li>
+    <li><a href="#ai">AI</a></li>
+    <li><a href="#piano">Piano roll</a></li>
+    <li><a href="#specs">Specs</a></li>
+    <li><a href="#download">Download</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="#download" class="nav-cta"><span class="cta-icon">⬇</span><span>Get Blitz</span></a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <div class="hero-vinyl"></div>
+    <div class="hero-orbit"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="dot"></span><span>v1.0 · Studio Edition · Native C++</span></div>
+    <h1 class="hero-title">
+      <span class="line line-1">Compose <em>with</em></span>
+      <span class="line line-2">an AI that <em>understands</em></span>
+      <span class="line line-3">music <em>theory</em>.</span>
+    </h1>
+    <p class="hero-sub">A <strong>native DAW</strong> with 261 instruments, a 4-oscillator synth, Faust DSP effects, and an AI chat assistant that speaks <em>music</em> — chords, automation, mixing. Built on JUCE + Tracktion. Runs offline on your machine.</p>
+    <div class="hero-actions">
+      <a href="#download" class="btn-primary">
+        <span class="btn-glow"></span>
+        <span class="btn-text"><span class="btn-icon">⬇</span><span>Download Blitz v1.0</span></span>
+        <span class="btn-meta">Windows · macOS · Linux · 38 MB</span>
+      </a>
+      <a href="#studio" class="btn-secondary">
+        <span>Explore the studio</span>
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+    <div class="hero-meters">
+      <div><div class="stat-label">Latency</div><div class="stat-desc">&lt; 5 ms · ASIO · 64 buf</div></div>
+      <div><div class="stat-label">Instruments</div><div class="stat-desc">261 · General MIDI</div></div>
+      <div><div class="stat-label">AI</div><div class="stat-desc">Chord · automation · mix</div></div>
+      <div><div class="stat-label">Plugins</div><div class="stat-desc">VST3 · CLAP · auto-scan</div></div>
+    </div>
+  </div>
+  <div class="hero-visual" style="position:relative;z-index:2">
+    <!-- CSS-drawn DAW mixer mockup -->
+    <div style="background:linear-gradient(180deg,#0c0524,#14082e);border:1px solid rgba(139,92,246,0.3);border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 40px rgba(139,92,246,0.1);max-width:480px">
+      <div style="display:flex;gap:4px;margin-bottom:12px"><span style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></span><span style="width:10px;height:10px;border-radius:50%;background:#febc2e"></span><span style="width:10px;height:10px;border-radius:50%;background:#28c840"></span><span style="margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--text-muted)">Blitz DAW v1.0</span></div>
+      <!-- Channel strips -->
+      <div style="display:flex;gap:6px;margin-bottom:16px">
+        <div style="flex:1;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:8px;padding:10px 6px;text-align:center">
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--purple-light);margin-bottom:8px">KICK</div>
+          <div class="mxr-strip" style="width:6px;height:60px;margin:0 auto;background:linear-gradient(180deg,var(--pink),var(--purple) 60%,#1a0a2a);border-radius:3px;display:flex;flex-direction:column-reverse;overflow:hidden"><div class="mxr-cap" style="background:var(--pink);box-shadow:0 0 8px var(--pink);width:100%;border-radius:2px"></div></div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);margin-top:6px">-3.2 dB</div>
+        </div>
+        <div style="flex:1;background:rgba(6,214,160,0.06);border:1px solid rgba(6,214,160,0.2);border-radius:8px;padding:10px 6px;text-align:center">
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--cyan);margin-bottom:8px">BASS</div>
+          <div class="mxr-strip s2" style="width:6px;height:60px;margin:0 auto;background:linear-gradient(180deg,var(--cyan),var(--cyan-deep) 60%,#041a14);border-radius:3px;display:flex;flex-direction:column-reverse;overflow:hidden"><div class="mxr-cap" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan);width:100%;border-radius:2px"></div></div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);margin-top:6px">-6.0 dB</div>
+        </div>
+        <div style="flex:1;background:rgba(255,214,10,0.06);border:1px solid rgba(255,214,10,0.15);border-radius:8px;padding:10px 6px;text-align:center">
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--gold);margin-bottom:8px">KEYS</div>
+          <div class="mxr-strip s3" style="width:6px;height:60px;margin:0 auto;background:linear-gradient(180deg,var(--gold),var(--orange) 60%,#1a0a00);border-radius:3px;display:flex;flex-direction:column-reverse;overflow:hidden"><div class="mxr-cap" style="background:var(--gold);box-shadow:0 0 8px var(--gold);width:100%;border-radius:2px"></div></div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);margin-top:6px">-4.8 dB</div>
+        </div>
+        <div style="flex:1;background:rgba(247,37,133,0.06);border:1px solid rgba(247,37,133,0.15);border-radius:8px;padding:10px 6px;text-align:center">
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--pink);margin-bottom:8px">PAD</div>
+          <div class="mxr-strip s4" style="width:6px;height:60px;margin:0 auto;background:linear-gradient(180deg,var(--pink),var(--magenta) 60%,#1a0020);border-radius:3px;display:flex;flex-direction:column-reverse;overflow:hidden"><div class="mxr-cap" style="background:var(--pink);box-shadow:0 0 8px var(--pink);width:100%;border-radius:2px"></div></div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);margin-top:6px">-8.1 dB</div>
+        </div>
+        <div style="flex:1;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-radius:8px;padding:10px 6px;text-align:center">
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--indigo);margin-bottom:8px">MSTR</div>
+          <div class="mxr-strip s5" style="width:6px;height:60px;margin:0 auto;background:linear-gradient(180deg,var(--indigo),var(--purple-deep) 60%,#0a0020);border-radius:3px;display:flex;flex-direction:column-reverse;overflow:hidden"><div class="mxr-cap" style="background:var(--indigo);box-shadow:0 0 8px var(--indigo);width:100%;border-radius:2px"></div></div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);margin-top:6px">0.0 dB</div>
+        </div>
+      </div>
+      <!-- Mini piano keyboard -->
+      <div style="display:flex;gap:1px;padding:8px 4px;background:rgba(0,0,0,0.3);border-radius:6px">
+        <div style="flex:1;height:28px;background:linear-gradient(180deg,#f0e8ff,#d8d0e8);border-radius:0 0 3px 3px;animation:pianoKeyHit 3.5s ease-in-out infinite;animation-delay:0s"></div>
+        <div style="flex:0.6;height:18px;background:linear-gradient(180deg,#2a1a40,#1a0a2a);border-radius:0 0 2px 2px;margin-top:-2px;z-index:1;animation:blackKeyHit 3.5s ease-in-out infinite;animation-delay:.15s"></div>
+        <div style="flex:1;height:28px;background:linear-gradient(180deg,#f0e8ff,#d8d0e8);border-radius:0 0 3px 3px;animation:pianoKeyHit 3.5s ease-in-out infinite;animation-delay:.3s"></div>
+        <div style="flex:0.6;height:18px;background:linear-gradient(180deg,#2a1a40,#1a0a2a);border-radius:0 0 2px 2px;margin-top:-2px;z-index:1;animation:blackKeyHit 3.5s ease-in-out infinite;animation-delay:.45s"></div>
+        <div style="flex:1;height:28px;background:linear-gradient(180deg,#f0e8ff,#d8d0e8);border-radius:0 0 3px 3px;animation:pianoKeyHit 3.5s ease-in-out infinite;animation-delay:.6s"></div>
+        <div style="flex:1;height:28px;background:linear-gradient(180deg,#f0e8ff,#d8d0e8);border-radius:0 0 3px 3px;animation:pianoKeyHit 3.5s ease-in-out infinite;animation-delay:.9s"></div>
+        <div style="flex:0.6;height:18px;background:linear-gradient(180deg,#2a1a40,#1a0a2a);border-radius:0 0 2px 2px;margin-top:-2px;z-index:1;animation:blackKeyHit 3.5s ease-in-out infinite;animation-delay:.75s"></div>
+        <div style="flex:1;height:28px;background:linear-gradient(180deg,#f0e8ff,#d8d0e8);border-radius:0 0 3px 3px;animation:pianoKeyHit 3.5s ease-in-out infinite;animation-delay:1.2s"></div>
+        <div style="flex:0.6;height:18px;background:linear-gradient(180deg,#2a1a40,#1a0a2a);border-radius:0 0 2px 2px;margin-top:-2px;z-index:1;animation:blackKeyHit 3.5s ease-in-out infinite;animation-delay:1.05s"></div>
+        <div style="flex:1;height:28px;background:linear-gradient(180deg,#f0e8ff,#d8d0e8);border-radius:0 0 3px 3px;animation:pianoKeyHit 3.5s ease-in-out infinite;animation-delay:1.5s"></div>
+        <div style="flex:0.6;height:18px;background:linear-gradient(180deg,#2a1a40,#1a0a2a);border-radius:0 0 2px 2px;margin-top:-2px;z-index:1;animation:blackKeyHit 3.5s ease-in-out infinite;animation-delay:1.35s"></div>
+        <div style="flex:1;height:28px;background:linear-gradient(180deg,#f0e8ff,#d8d0e8);border-radius:0 0 3px 3px;animation:pianoKeyHit 3.5s ease-in-out infinite;animation-delay:1.8s"></div>
+        <div style="flex:1;height:28px;background:linear-gradient(180deg,#e8e0ff,#d0c8e0);border-radius:0 0 3px 3px;box-shadow:inset 0 -2px 4px rgba(139,92,246,0.4)"></div>
+      </div>
+      <div style="text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-top:8px;letter-spacing:0.1em">Musical Typing · Ctrl+K · C4–C5</div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-cell stat-purple"><div class="stat-icon">◈</div><div class="stat-val">261</div><div class="stat-label">GM instruments</div><div class="stat-desc">SoundFont library</div></div>
+    <div class="stat-cell stat-cyan"><div class="stat-icon">◉</div><div class="stat-val">26</div><div class="stat-label">4OSC presets</div><div class="stat-desc">factory bank</div></div>
+    <div class="stat-cell stat-pink"><div class="stat-icon">⌬</div><div class="stat-val">5<em>fx</em></div><div class="stat-label">Faust DSP effects</div><div class="stat-desc">shimmer · tape · warm</div></div>
+    <div class="stat-cell stat-gold"><div class="stat-icon">∞</div><div class="stat-val">∞</div><div class="stat-label">Tracks</div><div class="stat-desc">no track limit</div></div>
+    <div class="stat-cell stat-blue"><div class="stat-icon">⌖</div><div class="stat-val">&lt;5<em>ms</em></div><div class="stat-label">Audio round-trip</div><div class="stat-desc">ASIO · 64 samples</div></div>
+    <div class="stat-cell stat-orange"><div class="stat-icon">⎔</div><div class="stat-val">VST3</div><div class="stat-label">+ CLAP plugins</div><div class="stat-desc">auto-scan on launch</div></div>
+    <div class="stat-cell stat-magenta"><div class="stat-icon">◐</div><div class="stat-val">AI</div><div class="stat-label">Chat assistant</div><div class="stat-desc">music-aware</div></div>
+    <div class="stat-cell stat-green"><div class="stat-icon">◍</div><div class="stat-val">MIT</div><div class="stat-label">Open source</div><div class="stat-desc">no telemetry</div></div>
+  </div>
+</section>
+
+<!-- Studio cards -->
+<section class="studio-section" id="studio">
+  <div class="section-head">
+    <div class="section-tag"><i></i> Studio</div>
+    <h2 class="section-title">Everything a <em>studio</em> needs, in one app.</h2>
+    <p class="section-sub">From multi-track tracking to Faust-powered effects to a Logic-style musical typing keyboard — Blitz ships the studio, not a starting kit.</p>
+  </div>
+  <div class="studio-grid">
+    <div class="studio-card studio-large">
+      <div style="padding:24px 24px 0;background:linear-gradient(180deg,#0a0418,#14082e);min-height:200px;display:grid;grid-template-columns:repeat(8,1fr);gap:6px;align-content:start">
+        <!-- Instrument library grid -->
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--purple-deep),var(--purple));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;box-shadow:0 4px 12px rgba(139,92,246,0.4)">♪</div>
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--cyan-deep),var(--cyan));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#001a16;font-size:18px;box-shadow:0 4px 12px rgba(6,214,160,0.3)">⌬</div>
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--pink),var(--magenta));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;box-shadow:0 4px 12px rgba(247,37,133,0.3)">♫</div>
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#1a0a00;font-size:16px;box-shadow:0 4px 12px rgba(255,107,53,0.3)">♬</div>
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--blue-deep),var(--blue));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;box-shadow:0 4px 12px rgba(76,201,240,0.3)">◉</div>
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--indigo),var(--purple));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px">⌭</div>
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--purple),var(--pink));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px">♭</div>
+        <div style="aspect-ratio:1;background:linear-gradient(135deg,var(--cyan),var(--blue));border-radius:6px;display:flex;align-items:center;justify-content:center;color:#001a16;font-size:18px">♯</div>
+        <div style="aspect-ratio:1;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px;font-family:var(--font-mono)">Pno</div>
+        <div style="aspect-ratio:1;background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px;font-family:var(--font-mono)">Str</div>
+        <div style="aspect-ratio:1;background:rgba(247,37,133,0.08);border:1px solid rgba(247,37,133,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px;font-family:var(--font-mono)">Brs</div>
+        <div style="aspect-ratio:1;background:rgba(255,214,10,0.08);border:1px solid rgba(255,214,10,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px;font-family:var(--font-mono)">Wd</div>
+        <div style="aspect-ratio:1;background:rgba(76,201,240,0.08);border:1px solid rgba(76,201,240,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px;font-family:var(--font-mono)">Gtr</div>
+        <div style="aspect-ratio:1;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px;font-family:var(--font-mono)">Syn</div>
+        <div style="aspect-ratio:1;background:rgba(247,37,133,0.08);border:1px solid rgba(247,37,133,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px;font-family:var(--font-mono)">Drm</div>
+        <div style="aspect-ratio:1;background:rgba(6,214,160,0.08);border:1px solid rgba(6,214,160,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--cyan);font-size:11px;font-family:var(--font-mono)">+253</div>
+      </div>
+      <div class="card-body">
+        <h3>261 GM instruments</h3>
+        <p>Piano, strings, brass, woodwinds, guitars, synths, drums — a complete General MIDI SoundFont library, indexed and ready to play. Every patch loads in under 50 ms. Browse by category, preview with keyboard, drag into any track.</p>
+      </div>
+    </div>
+    <div class="studio-card">
+      <!-- 4OSC synth panel -->
+      <div style="padding:20px;background:linear-gradient(180deg,#0a0418,#14082e);min-height:200px">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;color:var(--cyan);margin-bottom:14px;text-align:center">▌ 4OSC SYNTH · OSC 1</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+          <div style="text-align:center"><div style="width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4a3a6a,#1a0a2a);border:2px solid var(--purple-light);margin:0 auto;position:relative;box-shadow:0 4px 12px rgba(139,92,246,0.4),inset 0 2px 4px rgba(255,255,255,0.1)"><div style="position:absolute;top:50%;left:50%;width:3px;height:18px;background:var(--cyan-bright);border-radius:2px;box-shadow:0 0 8px var(--cyan-bright);transform-origin:50% 90%;animation:knobSpin 5s ease-in-out infinite"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-top:6px">CUTOFF</div></div>
+          <div style="text-align:center"><div style="width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4a3a6a,#1a0a2a);border:2px solid var(--purple-light);margin:0 auto;position:relative;box-shadow:0 4px 12px rgba(139,92,246,0.4),inset 0 2px 4px rgba(255,255,255,0.1)"><div style="position:absolute;top:50%;left:50%;width:3px;height:18px;background:var(--cyan-bright);border-radius:2px;box-shadow:0 0 8px var(--cyan-bright);transform-origin:50% 90%;animation:knobSpin 5s ease-in-out infinite;animation-delay:.7s"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-top:6px">RESO</div></div>
+          <div style="text-align:center"><div style="width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4a3a6a,#1a0a2a);border:2px solid var(--purple-light);margin:0 auto;position:relative;box-shadow:0 4px 12px rgba(139,92,246,0.4),inset 0 2px 4px rgba(255,255,255,0.1)"><div style="position:absolute;top:50%;left:50%;width:3px;height:18px;background:var(--cyan-bright);border-radius:2px;box-shadow:0 0 8px var(--cyan-bright);transform-origin:50% 90%;animation:knobSpin 5s ease-in-out infinite;animation-delay:1.4s"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-top:6px">DRIVE</div></div>
+          <div style="text-align:center"><div style="width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4a3a6a,#1a0a2a);border:2px solid var(--purple-light);margin:0 auto;position:relative;box-shadow:0 4px 12px rgba(139,92,246,0.4),inset 0 2px 4px rgba(255,255,255,0.1)"><div style="position:absolute;top:50%;left:50%;width:3px;height:18px;background:var(--cyan-bright);border-radius:2px;box-shadow:0 0 8px var(--cyan-bright);transform-origin:50% 90%;animation:knobSpin 5s ease-in-out infinite;animation-delay:2.1s"></div></div><div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-top:6px">MIX</div></div>
+        </div>
+        <!-- Waveform display -->
+        <div style="margin-top:14px;height:30px;background:rgba(0,0,0,0.5);border-radius:4px;padding:4px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(6,214,160,0.18)">
+          <svg width="100%" height="22" viewBox="0 0 200 22"><path d="M0 11 Q 12 1 25 11 T 50 11 T 75 11 T 100 11 T 125 11 T 150 11 T 175 11 T 200 11" stroke="var(--cyan)" stroke-width="1.5" fill="none" filter="drop-shadow(0 0 3px var(--cyan))"/></svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>4OSC subtractive synth</h3>
+        <p>Four oscillators, two filters, two LFOs, dual envelopes. 26 factory presets. Programmable down to the modulation matrix.</p>
+      </div>
+    </div>
+    <div class="studio-card">
+      <!-- Faust effects rack -->
+      <div style="padding:20px;background:linear-gradient(180deg,#0a0418,#14082e);min-height:200px">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;color:var(--pink);margin-bottom:14px;text-align:center">▌ FX RACK · INSERT 1–5</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(139,92,246,0.1);border-left:3px solid var(--purple);border-radius:4px"><span style="font-family:var(--font-mono);font-size:10px;color:var(--purple-light);width:60px">SHMVRB</span><div style="flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;position:relative"><div style="height:100%;background:linear-gradient(90deg,var(--purple),var(--purple-light));border-radius:2px;box-shadow:0 0 6px var(--purple);animation:faderSlide 3.6s ease-in-out infinite"></div></div><span style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted)">65%</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(247,37,133,0.1);border-left:3px solid var(--pink);border-radius:4px"><span style="font-family:var(--font-mono);font-size:10px;color:var(--pink);width:60px">TPWRBL</span><div style="flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;position:relative"><div style="height:100%;background:linear-gradient(90deg,var(--pink),var(--magenta));border-radius:2px;box-shadow:0 0 6px var(--pink);animation:faderSlide2 3.6s ease-in-out infinite;animation-delay:.4s"></div></div><span style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted)">40%</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(6,214,160,0.1);border-left:3px solid var(--cyan);border-radius:4px"><span style="font-family:var(--font-mono);font-size:10px;color:var(--cyan);width:60px">ST WID</span><div style="flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;position:relative"><div style="height:100%;background:linear-gradient(90deg,var(--cyan),var(--cyan-bright));border-radius:2px;box-shadow:0 0 6px var(--cyan);animation:faderSlide3 3.6s ease-in-out infinite;animation-delay:.8s"></div></div><span style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted)">80%</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(255,214,10,0.1);border-left:3px solid var(--gold);border-radius:4px"><span style="font-family:var(--font-mono);font-size:10px;color:var(--gold);width:60px">ANLG WRM</span><div style="flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;position:relative"><div style="height:100%;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:2px;box-shadow:0 0 6px var(--gold);animation:faderSlide 3.6s ease-in-out infinite;animation-delay:1.2s"></div></div><span style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted)">55%</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(76,201,240,0.1);border-left:3px solid var(--blue);border-radius:4px"><span style="font-family:var(--font-mono);font-size:10px;color:var(--blue);width:60px">SPC ECHO</span><div style="flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;position:relative"><div style="height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-deep));border-radius:2px;box-shadow:0 0 6px var(--blue);animation:faderSlide2 3.6s ease-in-out infinite;animation-delay:1.6s"></div></div><span style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted)">30%</span></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Faust DSP effects</h3>
+        <p>Shimmer Verb, Tape Warble, Stereo Widener, Analog Warmth, Space Echo — written in Faust, compiled native, sample-accurate.</p>
+      </div>
+    </div>
+    <div class="studio-card studio-large">
+      <!-- Multi-track timeline -->
+      <div style="padding:20px;background:linear-gradient(180deg,#0a0418,#14082e);min-height:200px">
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;color:var(--cyan);margin-bottom:14px;display:flex;justify-content:space-between"><span>▌ ARRANGEMENT · 92 BPM</span><span>4/4 · D MINOR</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <!-- Track 1 -->
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center"><div style="font-family:var(--font-mono);font-size:10px;color:var(--purple-light);padding:6px 10px;background:rgba(139,92,246,0.15);border-radius:4px;border-left:3px solid var(--purple)">● KICK</div><div style="height:28px;background:rgba(0,0,0,0.3);border-radius:4px;display:flex;gap:2px;padding:3px"><div style="flex:1;background:linear-gradient(90deg,var(--purple),var(--purple-deep));border-radius:2px;opacity:0.8"></div><div style="flex:1;background:linear-gradient(90deg,var(--purple),var(--purple-deep));border-radius:2px;opacity:0.8"></div><div style="flex:1;background:linear-gradient(90deg,var(--purple),var(--purple-deep));border-radius:2px;opacity:0.8"></div><div style="flex:1;background:linear-gradient(90deg,var(--purple),var(--purple-deep));border-radius:2px;opacity:0.8"></div></div></div>
+          <!-- Track 2 -->
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center"><div style="font-family:var(--font-mono);font-size:10px;color:var(--cyan);padding:6px 10px;background:rgba(6,214,160,0.15);border-radius:4px;border-left:3px solid var(--cyan)">● BASS</div><div style="height:28px;background:rgba(0,0,0,0.3);border-radius:4px;padding:3px"><svg width="100%" height="22" viewBox="0 0 200 22" preserveAspectRatio="none"><path d="M0 11 Q 8 3 16 11 T 32 11 T 48 11 T 64 11 T 80 11 T 96 11 T 112 11 T 128 11 T 144 11 T 160 11 T 176 11 T 192 11 T 200 11" stroke="var(--cyan)" stroke-width="1.2" fill="none" opacity="0.9"/></svg></div></div>
+          <!-- Track 3 -->
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center"><div style="font-family:var(--font-mono);font-size:10px;color:var(--gold);padding:6px 10px;background:rgba(255,214,10,0.15);border-radius:4px;border-left:3px solid var(--gold)">● KEYS</div><div style="height:28px;background:rgba(0,0,0,0.3);border-radius:4px;display:grid;grid-template-columns:repeat(16,1fr);gap:1px;padding:3px"><div style="background:var(--gold);border-radius:1px;opacity:0.9"></div><div></div><div style="background:var(--gold);border-radius:1px;opacity:0.9"></div><div></div><div style="background:var(--orange);border-radius:1px;opacity:0.9"></div><div></div><div style="background:var(--gold);border-radius:1px;opacity:0.9"></div><div></div><div style="background:var(--gold);border-radius:1px;opacity:0.9"></div><div></div><div style="background:var(--orange);border-radius:1px;opacity:0.9"></div><div></div><div style="background:var(--gold);border-radius:1px;opacity:0.9"></div><div></div><div style="background:var(--gold);border-radius:1px;opacity:0.9"></div><div></div></div></div>
+          <!-- Track 4 -->
+          <div style="display:grid;grid-template-columns:80px 1fr;gap:8px;align-items:center"><div style="font-family:var(--font-mono);font-size:10px;color:var(--pink);padding:6px 10px;background:rgba(247,37,133,0.15);border-radius:4px;border-left:3px solid var(--pink)">● PAD</div><div style="height:28px;background:rgba(0,0,0,0.3);border-radius:4px;padding:3px"><div style="height:100%;background:linear-gradient(90deg,transparent,var(--pink) 10%,var(--magenta) 50%,var(--pink) 90%,transparent);border-radius:2px;opacity:0.6"></div></div></div>
+          <!-- Playhead -->
+          <div style="position:relative;height:2px;background:var(--cyan);margin-left:88px;border-radius:1px;box-shadow:0 0 8px var(--cyan)"></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Multi-track audio &amp; MIDI</h3>
+        <p>Unlimited tracks. Audio and MIDI recording. Comping, takes, lanes. Sample-accurate automation. Side-chain routing. The fundamentals, done right.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preset bank -->
+  <div class="preset-bank" id="instruments">
+    <div class="preset-bank-title">▌ 4OSC factory presets</div>
+    <div class="preset-grid">
+      <span class="preset-chip">Init Lead</span>
+      <span class="preset-chip">Warm Pad</span>
+      <span class="preset-chip">Bass Sub</span>
+      <span class="preset-chip">Pluck Soft</span>
+      <span class="preset-chip">Glass Bell</span>
+      <span class="preset-chip">Cosmic Pad</span>
+      <span class="preset-chip">Reese Bass</span>
+      <span class="preset-chip">Mono Lead</span>
+      <span class="preset-chip">Sub Wobble</span>
+      <span class="preset-chip">FM Bell</span>
+      <span class="preset-chip">Pulse Square</span>
+      <span class="preset-chip">Saw Stack</span>
+      <span class="preset-chip">Bright Brass</span>
+      <span class="preset-chip">Vintage Keys</span>
+      <span class="preset-chip">Acid Bass</span>
+      <span class="preset-chip">Strings Lush</span>
+      <span class="preset-chip">Dirty Lead</span>
+      <span class="preset-chip">Air Pad</span>
+      <span class="preset-chip">Noise Sweep</span>
+      <span class="preset-chip">Hard Reset</span>
+      <span class="preset-chip">Square Bass</span>
+      <span class="preset-chip">Glide Lead</span>
+      <span class="preset-chip">Detuned Saw</span>
+      <span class="preset-chip">Bell Pluck</span>
+      <span class="preset-chip">Deep Sub</span>
+      <span class="preset-chip">Talk Box</span>
+    </div>
+  </div>
+</section>
+
+<!-- AI section -->
+<section class="studio-section" id="ai">
+  <div class="section-head">
+    <div class="section-tag"><i></i> AI assistant</div>
+    <h2 class="section-title">Talk to it. <em>It composes back.</em></h2>
+    <p class="section-sub">Natural language control of tracks, chords, automation. The AI knows music theory, your project state, and what a side-chain bus is.</p>
+  </div>
+
+  <div style="max-width:920px;margin:0 auto 60px;background:var(--card);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(14px);overflow:hidden">
+    <div class="chat-header">
+      <div class="chat-avatar">B</div>
+      <div class="chat-meta">
+        <div class="chat-name">Blitz Assistant</div>
+        <div class="chat-status"><span class="chat-dot"></span>Music-aware · 1M context · local or cloud</div>
+      </div>
+    </div>
+    <div class="chat-msgs">
+      <div class="chat-msg user"><div class="msg-bubble">Make a 92 BPM lo-fi beat in D minor. Four bars. Side-chain bass to kick.</div></div>
+      <div class="chat-msg ai"><div class="msg-bubble">Done. Created 4 tracks: Kick (909), Bass (4OSC · Sub Wobble), Keys (GM Rhodes, Em9→Am9→Dm7→A7sus4), Pad (Cosmic). Side-chain bus on bass, ducking 6 dB on kick hits. Tempo locked to 92.</div></div>
+      <div class="chat-msg user"><div class="msg-bubble">Add Shimmer Verb on the keys, but only after bar 2.</div></div>
+      <div class="chat-msg ai"><div class="msg-bubble">Faust Shimmer Verb inserted on Keys. Automation lane drawn: 0 → 35% wet between bar 2 beat 1 and bar 2 beat 3. Rendering preview…</div></div>
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="Ask Blitz to compose, mix, or automate…">
+      <button class="chat-send">▶</button>
+    </div>
+  </div>
+
+  <div class="ai-features">
+    <div class="ai-feat">
+      <div class="ai-feat-ico">♪</div>
+      <h4>Music theory aware</h4>
+      <p>Chord progressions, voice leading, modal interchange, cadences — the AI understands the language of music, not just notes.</p>
+    </div>
+    <div class="ai-feat">
+      <div class="ai-feat-ico">⤿</div>
+      <h4>Automation by description</h4>
+      <p>"Ramp the cutoff from 200 Hz to 4 kHz across bar 3." Drawn instantly. Sample-accurate. Editable like any other automation.</p>
+    </div>
+    <div class="ai-feat">
+      <div class="ai-feat-ico">⎌</div>
+      <h4>Project-aware reasoning</h4>
+      <p>Reads your current arrangement, knows what plugin chains exist, suggests changes that fit what you've already built.</p>
+    </div>
+    <div class="ai-feat">
+      <div class="ai-feat-ico">⌘</div>
+      <h4>Local or cloud, your call</h4>
+      <p>Run a 7B model on your GPU, or point Blitz at Claude / OpenAI. Same chat, same tools — one config line decides.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Piano roll / Musical typing -->
+<section class="studio-section" id="piano">
+  <div class="section-head">
+    <div class="section-tag"><i></i> Musical typing</div>
+    <h2 class="section-title">A <em>playable keyboard</em>, right in the app.</h2>
+    <p class="section-sub">Press <code style="font-family:var(--font-mono);color:var(--cyan);padding:2px 8px;background:rgba(6,214,160,0.08);border-radius:4px">Ctrl+K</code> — the QWERTY row becomes a Logic-style piano, with pitch bend, mod wheel, and sustain pedal.</p>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto">
+    <!-- Visual piano roll mockup -->
+    <div style="padding:24px;background:linear-gradient(180deg,#0a0418,#14082e);border:1px solid var(--border-strong);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.5);margin-bottom:36px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;font-family:var(--font-mono);font-size:10px;color:var(--text-muted)">
+        <span style="color:var(--cyan)">▌ PIANO ROLL · MIDI · CH 1 · LO-FI KEYS</span>
+        <span>4 bars · 16 steps</span>
+      </div>
+      <div style="display:grid;grid-template-columns:50px 1fr;gap:8px">
+        <!-- Vertical keyboard -->
+        <div style="display:flex;flex-direction:column-reverse;gap:1px">
+          <div style="height:14px;background:linear-gradient(90deg,#f0e8ff,#d0c8e0);border-radius:0 3px 3px 0;font-family:var(--font-mono);font-size:7px;color:#1a0a2a;padding:2px 4px;text-align:right">C4</div>
+          <div style="height:10px;background:linear-gradient(90deg,#2a1a40,#1a0a2a);border-radius:0 2px 2px 0;width:70%"></div>
+          <div style="height:14px;background:linear-gradient(90deg,#f0e8ff,#d0c8e0);border-radius:0 3px 3px 0;font-family:var(--font-mono);font-size:7px;color:#1a0a2a;padding:2px 4px;text-align:right">D4</div>
+          <div style="height:10px;background:linear-gradient(90deg,#2a1a40,#1a0a2a);border-radius:0 2px 2px 0;width:70%"></div>
+          <div style="height:14px;background:linear-gradient(90deg,#f0e8ff,#d0c8e0);border-radius:0 3px 3px 0;font-family:var(--font-mono);font-size:7px;color:#1a0a2a;padding:2px 4px;text-align:right">E4</div>
+          <div style="height:14px;background:linear-gradient(90deg,#f0e8ff,#d0c8e0);border-radius:0 3px 3px 0;font-family:var(--font-mono);font-size:7px;color:#1a0a2a;padding:2px 4px;text-align:right">F4</div>
+          <div style="height:10px;background:linear-gradient(90deg,#2a1a40,#1a0a2a);border-radius:0 2px 2px 0;width:70%"></div>
+          <div style="height:14px;background:linear-gradient(90deg,#f0e8ff,#d0c8e0);border-radius:0 3px 3px 0;font-family:var(--font-mono);font-size:7px;color:#1a0a2a;padding:2px 4px;text-align:right">G4</div>
+          <div style="height:10px;background:linear-gradient(90deg,#2a1a40,#1a0a2a);border-radius:0 2px 2px 0;width:70%"></div>
+          <div style="height:14px;background:linear-gradient(90deg,#f0e8ff,#d0c8e0);border-radius:0 3px 3px 0;font-family:var(--font-mono);font-size:7px;color:#1a0a2a;padding:2px 4px;text-align:right">A4</div>
+          <div style="height:10px;background:linear-gradient(90deg,#2a1a40,#1a0a2a);border-radius:0 2px 2px 0;width:70%"></div>
+          <div style="height:14px;background:linear-gradient(90deg,#f0e8ff,#d0c8e0);border-radius:0 3px 3px 0;font-family:var(--font-mono);font-size:7px;color:#1a0a2a;padding:2px 4px;text-align:right">B4</div>
+          <div style="height:14px;background:linear-gradient(90deg,#e8e0ff,#c0b8d8);border-radius:0 3px 3px 0;font-family:var(--font-mono);font-size:7px;color:#1a0a2a;padding:2px 4px;text-align:right;box-shadow:inset 0 -2px 4px rgba(139,92,246,0.3)">C5</div>
+        </div>
+        <!-- Note grid -->
+        <div style="position:relative;background-image:linear-gradient(rgba(139,92,246,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,0.06) 1px,transparent 1px);background-size:6.25% 14px;background-color:rgba(0,0,0,0.3);border-radius:4px;height:172px;overflow:hidden">
+          <!-- MIDI notes (Em9→Am9→Dm7→A7 progression in D minor) -->
+          <div style="position:absolute;left:2%;top:128px;width:22%;height:12px;background:linear-gradient(90deg,var(--purple-light),var(--purple));border-radius:2px;box-shadow:0 0 8px rgba(139,92,246,0.6);animation:notePulse 2s ease-in-out infinite,inset 0 1px 0 rgba(255,255,255,0.2)"></div>
+          <div style="position:absolute;left:2%;top:84px;width:22%;height:12px;background:linear-gradient(90deg,var(--purple-light),var(--purple));border-radius:2px;box-shadow:0 0 8px rgba(139,92,246,0.6);animation:notePulse 2s ease-in-out infinite"></div>
+          <div style="position:absolute;left:2%;top:42px;width:22%;height:12px;background:linear-gradient(90deg,var(--purple-light),var(--purple));border-radius:2px;box-shadow:0 0 8px rgba(139,92,246,0.6);animation:notePulse 2s ease-in-out infinite"></div>
+          <div style="position:absolute;left:27%;top:114px;width:22%;height:12px;background:linear-gradient(90deg,var(--cyan-bright),var(--cyan));border-radius:2px;box-shadow:0 0 8px rgba(6,214,160,0.6)"></div>
+          <div style="position:absolute;left:27%;top:70px;width:22%;height:12px;background:linear-gradient(90deg,var(--cyan-bright),var(--cyan));border-radius:2px;box-shadow:0 0 8px rgba(6,214,160,0.6)"></div>
+          <div style="position:absolute;left:27%;top:28px;width:22%;height:12px;background:linear-gradient(90deg,var(--cyan-bright),var(--cyan));border-radius:2px;box-shadow:0 0 8px rgba(6,214,160,0.6)"></div>
+          <div style="position:absolute;left:52%;top:140px;width:22%;height:12px;background:linear-gradient(90deg,var(--pink),var(--magenta));border-radius:2px;box-shadow:0 0 8px rgba(247,37,133,0.6)"></div>
+          <div style="position:absolute;left:52%;top:98px;width:22%;height:12px;background:linear-gradient(90deg,var(--pink),var(--magenta));border-radius:2px;box-shadow:0 0 8px rgba(247,37,133,0.6)"></div>
+          <div style="position:absolute;left:52%;top:56px;width:22%;height:12px;background:linear-gradient(90deg,var(--pink),var(--magenta));border-radius:2px;box-shadow:0 0 8px rgba(247,37,133,0.6)"></div>
+          <div style="position:absolute;left:77%;top:122px;width:22%;height:12px;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:2px;box-shadow:0 0 8px rgba(255,214,10,0.6)"></div>
+          <div style="position:absolute;left:77%;top:78px;width:22%;height:12px;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:2px;box-shadow:0 0 8px rgba(255,214,10,0.6)"></div>
+          <div style="position:absolute;left:77%;top:36px;width:22%;height:12px;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:2px;box-shadow:0 0 8px rgba(255,214,10,0.6)"></div>
+          <!-- Playhead -->
+          <div style="position:absolute;left:45%;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--cyan),transparent);box-shadow:0 0 10px var(--cyan);animation:playheadMove 8s linear infinite"></div>
+        </div>
+      </div>
+      <!-- Velocity lane -->
+      <div style="display:grid;grid-template-columns:50px 1fr;gap:8px;margin-top:8px">
+        <div style="font-family:var(--font-mono);font-size:8px;color:var(--text-muted);text-align:right;padding-top:4px">VEL</div>
+        <div style="height:36px;background:rgba(0,0,0,0.3);border-radius:4px;display:grid;grid-template-columns:repeat(12,1fr);gap:2px;padding:3px;align-items:end">
+          <div style="background:linear-gradient(180deg,var(--purple-light),var(--purple));height:80%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:0s"></div>
+          <div style="background:linear-gradient(180deg,var(--purple-light),var(--purple));height:60%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:.1s"></div>
+          <div style="background:linear-gradient(180deg,var(--purple-light),var(--purple));height:90%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:.2s"></div>
+          <div style="background:linear-gradient(180deg,var(--cyan-bright),var(--cyan));height:75%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:.3s"></div>
+          <div style="background:linear-gradient(180deg,var(--cyan-bright),var(--cyan));height:55%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:.4s"></div>
+          <div style="background:linear-gradient(180deg,var(--cyan-bright),var(--cyan));height:85%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:.5s"></div>
+          <div style="background:linear-gradient(180deg,var(--pink),var(--magenta));height:70%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:.6s"></div>
+          <div style="background:linear-gradient(180deg,var(--pink),var(--magenta));height:50%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:.7s"></div>
+          <div style="background:linear-gradient(180deg,var(--pink),var(--magenta));height:80%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:.8s"></div>
+          <div style="background:linear-gradient(180deg,var(--gold),var(--orange));height:65%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:.9s"></div>
+          <div style="background:linear-gradient(180deg,var(--gold),var(--orange));height:75%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:1s"></div>
+          <div style="background:linear-gradient(180deg,var(--gold),var(--orange));height:90%;border-radius:1px;transform-origin:bottom;animation:vrtBar 1.4s ease-in-out infinite;animation-delay:1.1s"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:32px;background:var(--card);border:1px solid var(--border);border-radius:20px;backdrop-filter:blur(14px)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px">
+        <div>
+          <div style="font-family:var(--font-tech);font-size:11px;letter-spacing:0.22em;color:var(--cyan);text-transform:uppercase;margin-bottom:18px">▌ Key bindings</div>
+          <table style="width:100%;font-family:var(--font-mono);font-size:13px;color:var(--text-dim);border-collapse:collapse">
+            <tr><td style="padding:8px 0;color:var(--cyan)">A S D F G H J K L ;</td><td>White keys (C–E)</td></tr>
+            <tr><td style="padding:8px 0;color:var(--cyan)">W E T Y U O P</td><td>Black keys</td></tr>
+            <tr><td style="padding:8px 0;color:var(--cyan)">Z / X</td><td>Octave − / +</td></tr>
+            <tr><td style="padding:8px 0;color:var(--cyan)">C / V</td><td>Velocity − / +</td></tr>
+            <tr><td style="padding:8px 0;color:var(--cyan)">1 / 2</td><td>Pitch bend down / up</td></tr>
+            <tr><td style="padding:8px 0;color:var(--cyan)">3 – 8</td><td>Mod wheel</td></tr>
+            <tr><td style="padding:8px 0;color:var(--cyan)">Tab</td><td>Sustain pedal</td></tr>
+          </table>
+        </div>
+        <div>
+          <div style="font-family:var(--font-tech);font-size:11px;letter-spacing:0.22em;color:var(--cyan);text-transform:uppercase;margin-bottom:18px">▌ Piano roll features</div>
+          <ul style="list-style:none;color:var(--text-dim);font-size:14px;line-height:2.1">
+            <li>◆ Pencil tool for drawing notes</li>
+            <li>◆ Keyboard-driven slide preview</li>
+            <li>◆ Velocity lane below notes</li>
+            <li>◆ Quantize · swing · humanize</li>
+            <li>◆ Per-note pitch automation</li>
+            <li>◆ Drag &amp; drop SoundFont presets</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Specs -->
+<section class="studio-section" id="specs">
+  <div class="section-head">
+    <div class="section-tag"><i></i> Specifications</div>
+    <h2 class="section-title">Built on <em>professional</em> foundations.</h2>
+    <p class="section-sub">Engine, formats, hardware paths — chosen for reliability, not marketing.</p>
+  </div>
+
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px">
+    <div style="padding:28px;background:var(--card);border:1px solid var(--border);border-radius:18px;backdrop-filter:blur(14px)">
+      <div class="spec-cat">Engine</div>
+      <ul style="list-style:none;color:var(--text-dim);font-size:13.5px;line-height:1.95;font-family:var(--font-mono)">
+        <li>· JUCE 7</li>
+        <li>· Tracktion Engine</li>
+        <li>· 32-bit float audio</li>
+        <li>· Sample-accurate timing</li>
+        <li>· Lock-free audio thread</li>
+      </ul>
+    </div>
+    <div style="padding:28px;background:var(--card);border:1px solid var(--border);border-radius:18px;backdrop-filter:blur(14px)">
+      <div class="spec-cat">Formats</div>
+      <ul style="list-style:none;color:var(--text-dim);font-size:13.5px;line-height:1.95;font-family:var(--font-mono)">
+        <li>· VST3 / CLAP plugins</li>
+        <li>· SoundFont 2 (SF2)</li>
+        <li>· MIDI 2.0</li>
+        <li>· WAV / FLAC / OGG</li>
+        <li>· Faust DSP source</li>
+      </ul>
+    </div>
+    <div style="padding:28px;background:var(--card);border:1px solid var(--border);border-radius:18px;backdrop-filter:blur(14px)">
+      <div class="spec-cat">Audio I/O</div>
+      <ul style="list-style:none;color:var(--text-dim);font-size:13.5px;line-height:1.95;font-family:var(--font-mono)">
+        <li>· ASIO (Windows)</li>
+        <li>· CoreAudio (macOS)</li>
+        <li>· ALSA / JACK (Linux)</li>
+        <li>· 44.1k – 192k Hz</li>
+        <li>· 64 / 128 / 256 buffer</li>
+      </ul>
+    </div>
+    <div style="padding:28px;background:var(--card);border:1px solid var(--border);border-radius:18px;backdrop-filter:blur(14px)">
+      <div class="spec-cat">AI runtime</div>
+      <ul style="list-style:none;color:var(--text-dim);font-size:13.5px;line-height:1.95;font-family:var(--font-mono)">
+        <li>· llama.cpp (local)</li>
+        <li>· Anthropic Messages</li>
+        <li>· OpenAI compatible</li>
+        <li>· CUDA / Metal / CPU</li>
+        <li>· 1M token context</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Download -->
+<section class="dl-section" id="download">
+  <div class="dl-card">
+    <div class="dl-bg"></div>
+    <div class="dl-content">
+      <div class="dl-tag">Blitz DAW v1.0 · Studio Edition</div>
+      <h2 class="dl-title">Download Blitz. <em>Start composing.</em></h2>
+      <p class="dl-sub">A native DAW with a composer-AI inside, 261 instruments, a programmable synth, Faust effects, and zero subscription. 38 MB.</p>
+      <div class="dl-row">
+        <a href="#" class="dl-platform">
+          <div class="dl-platform-ico">⊞</div>
+          <div class="dl-platform-name">Windows</div>
+          <div class="dl-platform-meta">.exe · 10 / 11 · 38 MB</div>
+        </a>
+        <a href="#" class="dl-platform">
+          <div class="dl-platform-ico">⌘</div>
+          <div class="dl-platform-name">macOS</div>
+          <div class="dl-platform-meta">.dmg · 12+ · Apple Silicon</div>
+        </a>
+        <a href="#" class="dl-platform">
+          <div class="dl-platform-ico">◯</div>
+          <div class="dl-platform-name">Linux</div>
+          <div class="dl-platform-meta">.tar.gz · x86_64 / arm64</div>
+        </a>
+      </div>
+      <div class="dl-trust">
+        <span>● MIT licensed</span>
+        <span>● No telemetry</span>
+        <span>● No account required</span>
+        <span>● Open source</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="foot">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="logo-row">
+        <img src="logo.png" alt="Blitzball Labs">
+        <span class="brand-text">Blitzball<em>Labs</em></span>
+      </div>
+      <p>Native AI tools for creators and engineers. Built in C++ with care, released under MIT, run on your machine.</p>
+      <div class="badges">
+        <span>C++17</span><span>JUCE</span><span>MIT</span><span>v1.0</span>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h6>Product</h6>
+      <a href="blitz.html">Blitz DAW</a>
+      <a href="closecrab.html">CloseCrab</a>
+      <a href="index.html">Overview</a>
+    </div>
+    <div class="foot-col">
+      <h6>Resources</h6>
+      <a href="#">Documentation</a>
+      <a href="#">GitHub</a>
+      <a href="#">Release notes</a>
+    </div>
+    <div class="foot-col">
+      <h6>Company</h6>
+      <a href="index.html#manifesto">Manifesto</a>
+      <a href="#">Contact</a>
+      <a href="#">License</a>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <div>© 2026 Blitzball Labs · Native AI · made with care</div>
+    <div class="runes">◆ ◇ ◈ ◉ ◊ ◌</div>
+  </div>
+</footer>
+
+<script src="assets/js/blitz.js"></script>
+<script src="assets/js/i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-ns="index">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blitzball Labs — Native AI Tools for Creators &amp; Engineers</title>
+<meta name="description" content="Blitzball Labs builds high-performance, local-first AI software: Blitz — an AI-native DAW, and CloseCrab — a terminal-based AI coding assistant.">
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/index.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+<!-- Background -->
+<div id="scene-container"></div>
+<div class="bg-grid"></div>
+<div class="bg-noise"></div>
+<div class="vignette"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <img src="logo.png" alt="Blitzball Labs">
+    <span class="brand-text">Blitzball<em>Labs</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#pillars">Philosophy</a></li>
+    <li><a href="#tech">Technology</a></li>
+    <li><a href="#use">Use cases</a></li>
+    <li><a href="#timeline">Journey</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="blitz.html" class="nav-cta">Try Blitz →</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-eyebrow">Native · Local-First · Open Source</div>
+  <h1>
+    <span class="l1">Tools that amplify</span>
+    <span class="l2">human creativity.</span>
+  </h1>
+  <p class="hero-sub">We build <strong>high-performance, AI-native</strong> software for musicians and engineers. No Electron, no cloud lock-in. Just <strong>pure C++</strong>, on-device intelligence, and tools that feel like instruments — built by the people who use them.</p>
+  <div class="hero-actions">
+    <a href="blitz.html" class="btn btn-pri big">Explore Blitz DAW →</a>
+    <a href="closecrab.html" class="btn btn-sec big">Meet CloseCrab</a>
+  </div>
+  <div class="hero-trust">
+    <span>MIT licensed</span><span class="dot"></span>
+    <span>C++17 / C++20</span><span class="dot"></span>
+    <span>Windows · Linux · macOS</span><span class="dot"></span>
+    <span>CUDA / Metal supported</span>
+  </div>
+</section>
+
+<!-- Products -->
+<section class="section" id="products">
+  <div class="shead reveal">
+    <div class="stag">Our products</div>
+    <h2>Two instruments. <em>One philosophy.</em></h2>
+    <p>Software that runs on your machine, respects your work, and pushes what's possible with on-device AI. Built for people who ship — not VCs who pitch.</p>
+  </div>
+  <div class="prod-grid">
+    <article class="prod blitz reveal">
+      <span class="prod-tag">Music production</span>
+      <div class="prod-body">
+        <h3>Blitz DAW</h3>
+        <p class="tagline">The AI-native digital audio workstation.</p>
+        <p class="desc">Compose, produce, and mix with a deeply integrated assistant that understands music theory, automation, and your creative intent. Built on JUCE and Tracktion Engine for studio-grade performance.</p>
+        <ul class="prod-feats">
+          <li>261 GM instruments</li>
+          <li>4OSC synth · 26 presets</li>
+          <li>Faust DSP effects chain</li>
+          <li>AI chat composition</li>
+          <li>VST3 &amp; CLAP plugins</li>
+          <li>Logic-style musical typing</li>
+          <li>Piano roll editor</li>
+          <li>Multi-track recording</li>
+        </ul>
+        <a href="blitz.html" class="prod-cta">Explore Blitz →</a>
+      </div>
+    </article>
+    <article class="prod crab reveal">
+      <span class="prod-tag">Developer tools</span>
+      <div class="prod-body">
+        <h3>CloseCrab</h3>
+        <p class="tagline">Local-first AI coding assistant.</p>
+        <p class="desc">A single 3.2 MB C++17 binary. 59 tools, 84 commands, multi-agent collaboration, RAG, Team Mode and voice I/O — running on your GPU via llama.cpp + CUDA, or any API you choose.</p>
+        <ul class="prod-feats">
+          <li>llama.cpp + CUDA</li>
+          <li>59 native tools</li>
+          <li>Team Mode · parallel</li>
+          <li>Voice (TTS + ASR)</li>
+          <li>FAISS RAG</li>
+          <li>MCP protocol</li>
+          <li>11 skills + plugins</li>
+          <li>Zero dependencies</li>
+        </ul>
+        <a href="closecrab.html" class="prod-cta">Discover CloseCrab →</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Pillars -->
+<section class="section dark" id="pillars">
+  <div class="shead reveal">
+    <div class="stag">Our philosophy</div>
+    <h2>Three principles. <em>Zero compromise.</em></h2>
+    <p>From the audio engine to the inference loop — the same DNA runs through everything we ship.</p>
+  </div>
+  <div class="pillar-grid">
+    <div class="pillar reveal">
+      <h4>Native performance</h4>
+      <p>Written in modern C++17/20. No VM, no garbage collector, no Electron. &lt;5 ms latency real-time audio. GPU inference at native speed. Lock-free audio threads. SIMD-optimized DSP.</p>
+    </div>
+    <div class="pillar reveal">
+      <h4>Local-first privacy</h4>
+      <p>Your projects, your prompts, your data — they stay on your hardware. Cloud is an option, never a requirement. Designed to work offline. No telemetry. No accounts. No subscriptions.</p>
+    </div>
+    <div class="pillar reveal">
+      <h4>Professional-grade tools</h4>
+      <p>Built for people who actually ship. VST3/CLAP, MIDI 2.0, multi-track recording, MCP protocol, RAG, multi-agent collaboration. Every feature earned its place in real production workflows.</p>
+    </div>
+    <div class="pillar reveal">
+      <h4>Open standards</h4>
+      <p>MIT-licensed source. Open file formats. MCP, CLAP, VST3, SoundFont 2, GGUF, ONNX — every interface that touches your work is public, documented, and will outlive us.</p>
+    </div>
+    <div class="pillar reveal">
+      <h4>AI as instrument</h4>
+      <p>AI is a tool you control, not a service you rent. Run open-weight models on your own hardware, or connect to any provider — Anthropic, OpenAI, local llama.cpp. You decide.</p>
+    </div>
+    <div class="pillar reveal">
+      <h4>Built to last</h4>
+      <p>A single binary. Long-term-supported languages. No deprecated frameworks. You can compile the source from a 2026 commit on a 2036 machine and it will still produce audio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Tech -->
+<section class="section" id="tech">
+  <div class="shead reveal">
+    <div class="stag">Technology</div>
+    <h2>The stack <em>behind the magic.</em></h2>
+    <p>Modern C++ foundations chosen for performance, portability, and long-term viability. Every dependency is auditable, vendor-able, and survives the next framework hype cycle.</p>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-cat reveal"><h5>Core language</h5><ul><li>· C++17 / C++20</li><li>· CMake · Ninja</li><li>· Cross-compilation</li><li>· Static linking</li></ul></div>
+    <div class="tech-cat reveal"><h5>Audio &amp; DSP</h5><ul><li>· JUCE 7</li><li>· Tracktion Engine</li><li>· Faust DSP</li><li>· VST3 / CLAP / SF2</li></ul></div>
+    <div class="tech-cat reveal"><h5>AI &amp; inference</h5><ul><li>· llama.cpp + CUDA</li><li>· GGUF · ONNX</li><li>· Anthropic Messages</li><li>· OpenAI compatible</li></ul></div>
+    <div class="tech-cat reveal"><h5>Network &amp; IPC</h5><ul><li>· MCP protocol</li><li>· WebSocket · HTTP/2</li><li>· gRPC · JSON-RPC</li><li>· OS pipes / sockets</li></ul></div>
+    <div class="tech-cat reveal"><h5>Storage &amp; data</h5><ul><li>· SQLite (embedded)</li><li>· FAISS vector index</li><li>· YAML config</li><li>· Tree-sitter parse</li></ul></div>
+    <div class="tech-cat reveal"><h5>Voice &amp; input</h5><ul><li>· whisper.cpp ASR</li><li>· System TTS / SAPI</li><li>· MIDI 2.0 input</li><li>· Hardware controllers</li></ul></div>
+    <div class="tech-cat reveal"><h5>Platforms</h5><ul><li>· Windows 10 / 11</li><li>· Linux x86_64 / arm64</li><li>· macOS 12+ · M-series</li><li>· ASIO · CoreAudio · ALSA</li></ul></div>
+    <div class="tech-cat reveal"><h5>Build &amp; release</h5><ul><li>· CMake presets</li><li>· GitHub Actions CI</li><li>· Signed installers</li><li>· Reproducible builds</li></ul></div>
+    <div class="tech-cat reveal"><h5>Quality</h5><ul><li>· GoogleTest / Catch2</li><li>· AddressSanitizer</li><li>· Audio regression suite</li><li>· Reproducible benches</li></ul></div>
+  </div>
+</section>
+
+<!-- Use cases -->
+<section class="section dark" id="use">
+  <div class="shead reveal">
+    <div class="stag">Use cases</div>
+    <h2>Built for <em>real shippers.</em></h2>
+    <p>Whether you're scoring a film, refactoring a million-line codebase, or just sketching on a weekend — the tools meet you where the work happens.</p>
+  </div>
+  <div class="use-grid">
+    <div class="use reveal">
+      <span class="use-tag">Music · composers</span>
+      <h4>Score a film in your studio, not in the cloud</h4>
+      <p>Drag a video reference into Blitz. Ask the AI to write a 3-minute orchestral cue — D minor, 92 BPM, brass swell at 1:14. Render stems. Hand to mix. The AI never uploads a single sample — your unreleased score stays in the DAW.</p>
+      <div class="who">Film composers · game audio · producers</div>
+    </div>
+    <div class="use reveal">
+      <span class="use-tag">Code · engineers</span>
+      <h4>Refactor a million-line codebase offline</h4>
+      <p>Boot CloseCrab, point it at your repo. Three agents index the call graph, trace dead code, and propose a migration plan — all on your local GPU within the 1M context window. Source never leaves the machine.</p>
+      <div class="who">Backend engineers · reverse engineers · indies</div>
+    </div>
+    <div class="use reveal">
+      <span class="use-tag">Music · producers</span>
+      <h4>Sketch a beat in 60 seconds</h4>
+      <p>Hit <code style="color:var(--cyan)">Ctrl+K</code>, key in a chord, tell the AI to side-chain the bass to the kick. Layer Shimmer Verb on the lead, Tape Warble on the keys. The full loop is done before a browser DAW finishes loading.</p>
+      <div class="who">Beatmakers · lo-fi producers · bedroom engineers</div>
+    </div>
+    <div class="use reveal">
+      <span class="use-tag">Code · teams</span>
+      <h4>Three AI agents collaborating on one task</h4>
+      <p>CloseCrab Team Mode spawns multiple agents that share a cache, split the work, and merge results. Architect the system, write tests, fix lint — in parallel, on your hardware, with no rate limits.</p>
+      <div class="who">Tech leads · solo founders · power users</div>
+    </div>
+  </div>
+</section>
+
+<!-- Comparison -->
+<section class="section" id="why">
+  <div class="shead reveal">
+    <div class="stag">Why us</div>
+    <h2>Versus <em>the alternatives.</em></h2>
+    <p>Most AI creator tools today are SaaS wrappers — renting GPU time, locking features behind subscriptions, hoarding your data. We are different.</p>
+  </div>
+  <table class="cmp-tbl reveal">
+    <thead>
+      <tr><th>Feature</th><th>Blitzball Labs</th><th>Typical SaaS DAW</th><th>Cloud AI agent</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Runs offline</td><td class="yes">● Yes</td><td class="no">○ No</td><td class="no">○ No</td></tr>
+      <tr><td>Source code</td><td class="yes">● MIT open source</td><td class="no">○ Proprietary</td><td class="no">○ Proprietary</td></tr>
+      <tr><td>Your data leaves machine</td><td class="yes">● Never (your choice)</td><td class="mid">◐ Telemetry on</td><td class="no">● Always</td></tr>
+      <tr><td>AI on your hardware</td><td class="yes">● llama.cpp + CUDA</td><td class="no">○ Cloud only</td><td class="no">○ Cloud only</td></tr>
+      <tr><td>Bring your own model</td><td class="yes">● Any GGUF / API</td><td class="no">○ Vendor model</td><td class="mid">◐ Limited</td></tr>
+      <tr><td>Rate limits</td><td class="yes">● None (your GPU)</td><td class="mid">◐ Tier-based</td><td class="no">● Yes</td></tr>
+      <tr><td>Audio latency</td><td class="yes">● &lt;5 ms native</td><td class="mid">◐ Browser audio</td><td>—</td></tr>
+      <tr><td>Subscription</td><td class="yes">● Free, MIT</td><td class="no">○ $20–$60/mo</td><td class="no">○ Per-token</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Testimonials -->
+<section class="section dark">
+  <div class="shead reveal">
+    <div class="stag">From the community</div>
+    <h2>What <em>real users</em> say.</h2>
+    <p>Early adopters from the beta cohort — musicians, engineers, and indie developers who switched from cloud-bound alternatives.</p>
+  </div>
+  <div class="test-grid">
+    <div class="test reveal">
+      <p class="t-quote">What blew me away was the latency — press a key, the sound is there. For the first time in years, I didn't feel my computer standing between me and the music in a DAW.</p>
+      <div class="t-role">Film composer · Los Angeles</div>
+    </div>
+    <div class="test reveal">
+      <p class="t-quote">CloseCrab runs a 7B model on my old 3060 and still beats most cloud agents on real refactors. It's a 3 MB binary. That's ridiculous.</p>
+      <div class="t-role">Systems engineer · Berlin</div>
+    </div>
+    <div class="test reveal">
+      <p class="t-quote">I went from zero to finished track in 35 minutes with Blitz. Drums, bass, keys, mix, master. I haven't been that fast since hardware sequencers.</p>
+      <div class="t-role">Producer · Taipei</div>
+    </div>
+  </div>
+</section>
+
+<!-- Manifesto -->
+<section class="manifesto" id="manifesto">
+  <blockquote>"The best creative tools don't ask for your data — they amplify your <em>intent</em>. We build software that runs where you are, listens to what you say, then gets out of the way."</blockquote>
+  <div class="signoff">— The Blitzball Labs manifesto</div>
+</section>
+
+<!-- Stats -->
+<section class="section">
+  <div class="shead reveal">
+    <div class="stag">Performance benchmarks</div>
+    <h2>Numbers that <em>don't lie.</em></h2>
+    <p>Independent measurements on consumer hardware. Source and reproduction steps published with every release.</p>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card reveal"><div class="stat-n">261</div><div class="stat-l">GM instruments</div><div class="stat-d">built into Blitz DAW</div></div>
+    <div class="stat-card reveal"><div class="stat-n">59</div><div class="stat-l">Tools · 84 commands</div><div class="stat-d">in CloseCrab Unified</div></div>
+    <div class="stat-card reveal"><div class="stat-n">3.2<span style="font-size:0.55em">MB</span></div><div class="stat-l">Single binary</div><div class="stat-d">zero runtime deps</div></div>
+    <div class="stat-card reveal"><div class="stat-n">1M</div><div class="stat-l">Token context</div><div class="stat-d">Claude Opus 4.7</div></div>
+    <div class="stat-card reveal"><div class="stat-n">&lt;5<span style="font-size:0.5em">ms</span></div><div class="stat-l">Audio round-trip</div><div class="stat-d">ASIO · 64 buf · i7-12700</div></div>
+    <div class="stat-card reveal"><div class="stat-n">38<span style="font-size:0.5em">tok/s</span></div><div class="stat-l">7B local inference</div><div class="stat-d">CUDA · Q4_K_M · RTX 3060 12GB</div></div>
+    <div class="stat-card reveal"><div class="stat-n">2.4<span style="font-size:0.5em">s</span></div><div class="stat-l">Cold start</div><div class="stat-d">SoundFont indexed · 261 inst</div></div>
+    <div class="stat-card reveal"><div class="stat-n">0</div><div class="stat-l">Runtime deps</div><div class="stat-d">single static binary · no installer</div></div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section class="section dark" id="timeline">
+  <div class="shead reveal">
+    <div class="stag">Journey</div>
+    <h2>Built in the open. <em>Shipped with care.</em></h2>
+    <p>From a weekend experiment to a coherent suite of native AI software.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item reveal"><h4>The foundation</h4><p>JUCE audio engine prototype. First experiments with on-device LLM inference via llama.cpp. A one-person side project — no roadmap, no funding, no slide deck.</p></div>
+    <div class="tl-item reveal"><h4>CloseCrab v1</h4><p>Local C++ inference engine with RAG and streaming MoE. First merge of CLI tooling and C++ runtime. 40 tools shipped in the first month.</p></div>
+    <div class="tl-item reveal"><h4>Blitz DAW</h4><p>AI-native DAW with 261 instruments, Faust DSP, and natural-language composition. VST3/CLAP support online. First Musical-Typing playable build.</p></div>
+    <div class="tl-item reveal"><h4>The unified suite</h4><p>CloseCrab-Unified merges 59 tools, 84 commands, MCP, Team Mode, voice I/O, and skills into a single 3.2 MB binary. Full 1M-token Claude Opus context.</p></div>
+    <div class="tl-item reveal"><h4>What's next</h4><p>Cross-app collaboration: Blitz ↔ CloseCrab via MCP. Local fine-tuning of small music models. macOS-native build. AU plugin support. Web bridge for collaborative sessions.</p></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="shead reveal">
+    <div class="stag">FAQ</div>
+    <h2>Questions. <em>Answered.</em></h2>
+    <p>What people actually ask before downloading.</p>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-q">Are these tools really free?</div>
+    <div class="faq-a">Yes. Both Blitz DAW and CloseCrab are MIT-licensed and free to download. No paid tier, no usage caps, no telemetry. If you want to support us, star the repos or contribute code.</div>
+    <div class="faq-q">Do I need internet?</div>
+    <div class="faq-a">Only to download the installers. After that, both products run fully offline. CloseCrab can optionally connect to Claude / OpenAI APIs, but it's never required — local GGUF models work just as well.</div>
+    <div class="faq-q">What hardware do I need?</div>
+    <div class="faq-a">Blitz runs smoothly on any Windows 10/11 machine with 8 GB RAM. CloseCrab uses a GPU when available (RTX 3060+ recommended for 7B models) but falls back to CPU inference or remote API mode.</div>
+    <div class="faq-q">Can I use my own AI model?</div>
+    <div class="faq-a">Absolutely. CloseCrab loads any GGUF model that llama.cpp supports. Drop a Qwen, Llama, DeepSeek, or fine-tuned model into the models/ folder and change one line of config.yaml.</div>
+    <div class="faq-q">Will my plugins work in Blitz?</div>
+    <div class="faq-a">If they're VST3 or CLAP — yes, automatically. Blitz scans your plugin folders on first launch and hosts everything with sample-accurate automation and full side-chain routing.</div>
+    <div class="faq-q">Is this a company or a personal project?</div>
+    <div class="faq-a">A small team. We ship software, respond on GitHub Issues, and use both products as our daily drivers. No investors, no board, no quarterly OKRs.</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="cta-card reveal">
+    <h2>Ready to feel <em>the difference?</em></h2>
+    <p>Try the tools that engineers and producers reach for when performance and privacy actually matter. Free, open source, runs on your machine.</p>
+    <div class="cta-actions">
+      <a href="blitz.html" class="btn btn-pri big">Download Blitz →</a>
+      <a href="closecrab.html" class="btn btn-sec big">Get CloseCrab</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="foot">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="row">
+        <img src="logo.png" alt="Blitzball Labs">
+        <span class="brand-text">Blitzball<em>Labs</em></span>
+      </div>
+      <p>Native, local-first AI software for creators and engineers. Built in C++ with care, in a world that mostly ships JavaScript and shrugs.</p>
+    </div>
+    <div class="foot-col">
+      <h6>Products</h6>
+      <a href="blitz.html">Blitz DAW</a>
+      <a href="closecrab.html">CloseCrab</a>
+      <a href="#products">Overview</a>
+    </div>
+    <div class="foot-col">
+      <h6>Resources</h6>
+      <a href="#">Documentation</a>
+      <a href="#">GitHub</a>
+      <a href="#">Release notes</a>
+    </div>
+    <div class="foot-col">
+      <h6>Company</h6>
+      <a href="#manifesto">Manifesto</a>
+      <a href="#">Contact</a>
+      <a href="#">License</a>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <span>© 2026 Blitzball Labs · Native AI · made with C++ and care</span>
+    <span>MIT licensed · no telemetry · no accounts · runs offline</span>
+  </div>
+</footer>
+
+<script>
+// Nav scrolled state
+const nav = document.querySelector('.nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 30);
+}, { passive: true });
+
+// Reveal on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  const a = q.nextElementSibling;
+  if (a) a.style.display = 'none';
+  q.addEventListener('click', () => {
+    const open = q.classList.toggle('open');
+    if (a) a.style.display = open ? 'block' : 'none';
+  });
+});
+
+// Three.js 3D scene — floating particles + wireframe icosahedron
+(function(){
+  if (typeof THREE === 'undefined') return;
+  const container = document.getElementById('scene-container');
+  if (!container) return;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 2000);
+  camera.position.z = 400;
+  const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+
+  // Wireframe icosahedron
+  const geo = new THREE.IcosahedronGeometry(120, 1);
+  const mat = new THREE.MeshBasicMaterial({color:0x8b5cf6, wireframe:true, transparent:true, opacity:0.15});
+  const ico = new THREE.Mesh(geo, mat);
+  scene.add(ico);
+
+  // Particles
+  const pGeo = new THREE.BufferGeometry();
+  const count = 600;
+  const pos = new Float32Array(count * 3);
+  for (let i = 0; i < count * 3; i++) pos[i] = (Math.random() - 0.5) * 1200;
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const pMat = new THREE.PointsMaterial({color:0x06d6a0, size:2, transparent:true, opacity:0.6});
+  scene.add(new THREE.Points(pGeo, pMat));
+
+  // Second ring
+  const ring = new THREE.TorusGeometry(200, 1, 16, 80);
+  const rMat = new THREE.MeshBasicMaterial({color:0xf72585, transparent:true, opacity:0.12});
+  const torus = new THREE.Mesh(ring, rMat);
+  torus.rotation.x = Math.PI / 3;
+  scene.add(torus);
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.003;
+    ico.rotation.x = t * 0.4;
+    ico.rotation.y = t * 0.6;
+    torus.rotation.z = t * 0.2;
+    renderer.render(scene, camera);
+  }
+  animate();
+  window.addEventListener('resize', () => {
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+})();
+
+</script>
+<script src="assets/js/i18n.js"></script>
+</body>
+</html>

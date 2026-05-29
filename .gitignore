@@ -1,0 +1,26 @@
+# Internal QA / dev artifacts
+QA/
+data/
+.crab/
+nul
+fix_i18n.js
+build_i18n.js
+run_test.bat
+*.log
+*.tmp
+*.bak
+需求.txt
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# i18n backup script
+assets/js/i18n_backup.js
+assets/i18n/_val.py
+
+# Node (in case anyone runs build later)
+node_modules/
+package-lock.json

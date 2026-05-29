@@ -1,0 +1,29 @@
+{
+  "title": "CloseCrab — Local-First AI-Coding-Assistent | Blitzball Labs",
+  "nodes": [
+    { "sel": ".nav-links li a", "text": ["Überblick", "Terminal", "Werkzeuge", "Agenten", "Anbieter", "Spezifikationen"] },
+    { "sel": ".brand-product", "text": "AI · CLI" },
+    { "sel": ".nav-cta span:last-child", "text": "CloseCrab holen" },
+    { "sel": ".hero-eyebrow", "text": "<span class=\"ev-dot\"></span> v1.0 · LOCAL-FIRST · C++17 · 3.2 MB" },
+    { "sel": ".hero h1 .l1", "text": "Das Terminal, in dem" },
+    { "sel": ".hero h1 .l2", "text": "Code zurückdenkt." },
+    { "sel": ".hero-sub", "text": "Eine einzige <strong>3.2 MB Binärdatei</strong>, die große Sprachmodelle auf <strong>deiner GPU</strong> ausführt oder sich mit jeder Cloud-API verbindet. <strong>59 native Werkzeuge</strong>, <strong>84 Befehle</strong>, Multi-Agent-Zusammenarbeit, RAG, Team Mode und Sprach-I/O — alles in einem C++17-Prozess." },
+    { "sel": ".hero-actions .btn", "text": ["<span>⬇</span> v1.0 herunterladen", "<span>▶</span> In Aktion sehen"] },
+    { "sel": ".hero-trust span:not(.dot)", "text": ["● Windows", "● Linux", "● macOS", "● MIT-Lizenz", "● Keine Telemetrie"] },
+    { "sel": ".kicker", "text": ["▌ LIVE-TERMINAL", "▌ KERNFUNKTIONEN", "▌ 59 NATIVE WERKZEUGE", "▌ MULTI-AGENT", "▌ JEDES MODELL · ÜBERALL", "▌ TECHNISCHE SPEZIFIKATIONEN"] },
+    { "sel": ".section-head h2", "text": ["Sieh dem Agenten beim <em>Denken</em>, Planen und Code-Liefern zu.", "Eine Binärdatei. <em>Alle Fähigkeiten</em>, die du erwartest — und mehr.", "Eine ganze Galaxie an Fähigkeiten, <em>die einen Prozess umkreisen.</em>", "Ein Gehirn. <em>Viele Hände.</em>", "Lokale GPU, Claude, OpenAI, Ollama, LM Studio … <em>Wechsel mit einer Zeile Config.</em>", "Engineering, <em>bis zum Byte.</em>"] },
+    { "sel": ".section-head p", "text": ["Bei jedem Tastendruck ruft CloseCrab parallel Werkzeuge auf, denkt nach und schreibt Dateien. Unten ist ein echtes Sitzungsfragment.", "Jedes Werkzeug ist in C++ in die Binärdatei kompiliert — keine Python-Brücke, kein npm, keine Runtime.", "Coordinator teilt komplexe Aufgaben auf Sub-Agenten zur parallelen Ausführung auf. Jeder Agent hat sein eigenes Kontextfenster und Werkzeugset."] },
+    { "sel": ".feat h3", "text": ["Local-First LLM", "Multi-Agent Coordinator", "59 Native Werkzeuge", "1M Token Kontext", "RAG · FAISS", "Team Mode", "Sprach-I/O", "Berechtigungs-Sandbox", "MCP-Protokoll"] },
+    { "sel": ".feat p", "text": ["llama.cpp + CUDA 12 führt GGUF-Modelle direkt auf deiner GPU aus. Qwen, Llama, DeepSeek, Mistral — Wechsel mit einer Zeile Config.", "Der Hauptagent entsendet Sub-Agenten für parallele Arbeit. Jeder hat unabhängigen Kontext; Ergebnisse werden aggregiert und das Denken fortgesetzt.", "File, Shell, Grep, Edit, Web, Git, REPL, Notebook, MCP, Memory, RAG, Hooks… alles nativ in C++ implementiert.", "Volles Opus 4.7 Fenster. Automatische Komprimierung, Gedächtnissystem und RAG-Suche in drei Schichten — verliert nie den Kontext.", "Lokale Vektordatenbank. Tree-sitter parst Code → Embedding → FAISS-Index. Automatische Suche nach relevantem Code bei Fragen.", "Multi-Client parallele Inferenz, geteilte Wissensbasis, Rangliste, Erfolgs-System. Eine GPU bedient das ganze Team.", "Whisper.cpp ASR + integriertes TTS. Sprich mit der KI, die KI antwortet dir. Latenzfreie lokale Inferenz.", "Jeder Werkzeugaufruf durchläuft das Berechtigungssystem: default / auto / bypass. Audit-Logs, Hooks-Abfangen, Operations-Replay.", "Native Unterstützung des Anthropic Model Context Protocol. Jeder MCP-Server plug-and-play."] },
+    { "sel": ".tool-cat h4", "text": ["📄 DATEI & BEARBEITUNG", "⚙️ SHELL & PROZESS", "🌐 WEB & API", "🧠 AGENT & REASONING", "📚 RAG & SPEICHER", "🎙️ SPRACHE & I/O"] },
+    { "sel": ".spec-row .spec-k", "text": ["Binärgröße", "Quelldateien", "Service-Module", "Native Werkzeuge", "Slash-Befehle", "Skill-Katalog", "Kontextfenster", "GPU-Backend", "Vektor-DB", "Protokolle", "Plattformen", "Lizenz"] },
+    { "sel": ".dl-eyebrow", "text": "v1.0 · 2025-12-XX · 3.2 MB" },
+    { "sel": ".dl-card h2", "text": "Liefer dein Terminal aus. <em>Heute.</em>" },
+    { "sel": ".dl-card p", "text": "Herunterladen und sofort nutzen. Enthält Installer, Konfigurationsassistent und Modell-Download-Skript. Beim Start Local / API-Modus wählen." },
+    { "sel": ".dl-actions .btn", "text": ["<span>⬇</span> Windows x64 · .exe", "<span>⬇</span> Linux x64 · .tar.gz", "<span>⬇</span> macOS ARM64", "<span>★</span> GitHub-Quellcode"] },
+    { "sel": ".foot-tag", "text": "Native AI-Werkzeuge für Kreative und Ingenieure." },
+    { "sel": ".fb-tag", "text": "Native AI-Werkzeuge für Kreative und Ingenieure." },
+    { "sel": ".foot-col h5", "text": ["PRODUKT", "RESSOURCEN", "COMMUNITY"] },
+    { "sel": ".foot-bot span", "text": ["© 2025 Blitzball Labs · MIT License", "Gebaut mit C++17 · llama.cpp · ❤"] }
+  ]
+}
