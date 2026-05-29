@@ -33,6 +33,24 @@ Open <http://localhost:8080>.
 i18n JSON files live in `assets/i18n/`. The switcher mounts to the nav automatically and supports:
 EN · 中文 · 日本語 · 한국어 · Español · Français · Deutsch · Русский · Português · Italiano · العربية · हिन्दी
 
+## Analytics (optional)
+
+If you want visitor metrics, the recommended path is **Cloudflare Web Analytics** (free, no cookies, accessible from China):
+
+1. Sign up at <https://dash.cloudflare.com/?to=/:account/web-analytics>
+2. Add your site, copy the JS token
+3. Paste this before `</body>` in each `.html` page:
+
+```html
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "YOUR_TOKEN_HERE"}'></script>
+```
+
+Other free options:
+- Umami Cloud — 10k events/month free, self-hostable
+- Plausible — open source, self-hosting free
+- GoatCounter — free for personal use, no cookies
+
 ## License
 
 MIT
