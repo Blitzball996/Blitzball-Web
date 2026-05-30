@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-ns="blog">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Blitzball Labs</title>
+<meta name="description" content="Latest news and updates from Blitzball Labs.">
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/index.css">
+<style>
+  .blog-wrap{ max-width:860px; margin:0 auto; padding:140px 24px 80px; }
+  .blog-head{ margin-bottom:40px; }
+  .blog-head .stag{ display:inline-block; }
+  .blog-head h1{ font-family:"Sora",sans-serif; font-size:clamp(32px,5vw,52px); margin:.2em 0; }
+  .blog-head p{ color:var(--muted,#9aa4b2); max-width:600px; }
+  .post{ border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:28px; margin-bottom:22px;
+         background:rgba(255,255,255,.02); transition:border-color .2s; }
+  .post:hover{ border-color:rgba(255,255,255,.2); }
+  .post .date{ font-family:"JetBrains Mono",monospace; font-size:12px; color:#6b7689; }
+  .post h2{ font-family:"Sora",sans-serif; font-size:24px; margin:8px 0 12px; }
+  .post .body{ color:#c4ccd8; line-height:1.75; white-space:pre-wrap; }
+  .post img.cover{ width:100%; border-radius:12px; margin-bottom:16px; }
+  .blog-empty{ color:#6b7689; text-align:center; padding:60px 0; }
+  .blog-loading{ color:#6b7689; text-align:center; padding:60px 0; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <img src="logo.png" alt="Blitzball Labs">
+    <span class="brand-text">Blitzball<em>Labs</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#products">Products</a></li>
+    <li><a href="index.html#tech">Technology</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="blitz.html" class="nav-cta">Try Blitz →</a>
+  </div>
+</nav>
+
+<div class="blog-wrap">
+  <div class="blog-head">
+    <span class="stag">Blog</span>
+    <h1 class="blog-title">Latest News</h1>
+    <p class="blog-sub">Updates, releases, and behind-the-scenes from Blitzball Labs.</p>
+  </div>
+  <div id="posts"><div class="blog-loading">Loading…</div></div>
+</div>
+
+<footer class="foot">
+  <div class="foot-bot">
+    <span>© 2026 Blitzball Labs · Native AI · made with C++ and care</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  // Backend base: same host, port 8090 (matches analytics endpoint).
+  var API = (location.protocol==='file:'?'http://localhost:8090':location.origin.replace(/:\d+$/,'')+':8090') + '/api/posts';
+  var TXT = {
+    en:{ title:"Latest News", sub:"Updates, releases, and behind-the-scenes from Blitzball Labs.", empty:"No posts yet — check back soon.", load:"Loading…", err:"Could not load posts (is the backend running on :8090?)." },
+    zh:{ title:"最新动态", sub:"来自 Blitzball Labs 的更新、发布与幕后。", empty:"还没有文章，敬请期待。", load:"加载中…", err:"无法加载文章（后端 8090 端口在运行吗？）。" }
+  };
+  function lang(){ var l = localStorage.getItem('bb_lang') || (document.documentElement.lang||'en'); return l==='zh'?'zh':'en'; }
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function fmtDate(t){ try{ return new Date(t).toLocaleDateString(lang()==='zh'?'zh-CN':'en-US',{year:'numeric',month:'long',day:'numeric'}); }catch(e){ return ''; } }
+  var cache = null;
+
+  function render(){
+    var L = lang(), t = TXT[L];
+    var el = document.getElementById('posts');
+    document.querySelector('.blog-title').textContent = t.title;
+    document.querySelector('.blog-sub').textContent = t.sub;
+    if(cache === 'ERR'){ el.innerHTML = '<div class="blog-empty">'+t.err+'</div>'; return; }
+    if(cache === null){ el.innerHTML = '<div class="blog-loading">'+t.load+'</div>'; return; }
+    if(!cache.length){ el.innerHTML = '<div class="blog-empty">'+t.empty+'</div>'; return; }
+    el.innerHTML = cache.map(function(p){
+      var title = L==='zh' ? (p.title_zh||p.title_en) : (p.title_en||p.title_zh);
+      var bodyRaw = L==='zh' ? (p.body_zh||p.body_en) : (p.body_en||p.body_zh);
+      var cover = p.cover_url ? '<img class="cover" src="'+esc(p.cover_url)+'" alt="">' : '';
+      return '<article class="post">'+cover+
+        '<div class="date">'+fmtDate(p.created_at)+'</div>'+
+        '<h2>'+esc(title)+'</h2>'+
+        '<div class="body">'+esc(bodyRaw)+'</div></article>';
+    }).join('');
+  }
+
+  fetch(API,{mode:'cors'}).then(function(r){return r.json();})
+    .then(function(d){ cache = Array.isArray(d)?d:[]; render(); })
+    .catch(function(){ cache='ERR'; render(); });
+
+  render();
+  // Re-render posts when i18n.js switches language (it sets <html lang>).
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
+<script src="assets/js/i18n.js"></script>
+<!-- Blitzball Labs analytics (self-hosted). For production replace localhost:8090 with the deployed backend URL. -->
+<script defer src="http://localhost:8090/analytics.js"
+        data-endpoint="http://localhost:8090/api/collect"></script>
+</body>
+</html>
