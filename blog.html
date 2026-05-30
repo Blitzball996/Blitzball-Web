@@ -61,7 +61,8 @@
 (function(){
   "use strict";
   // Backend base: same host, port 8090 (matches analytics endpoint).
-  var API = (location.protocol==='file:'?'http://localhost:8090':location.origin.replace(/:\d+$/,'')+':8090') + '/api/posts';
+  var dev = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || location.protocol==='file:';
+  var API = (dev ? 'http://localhost:8090' : '') + '/api/posts';
   var TXT = {
     en:{ title:"Latest News", sub:"Updates, releases, and behind-the-scenes from Blitzball Labs.", empty:"No posts yet — check back soon.", load:"Loading…", err:"Could not load posts (is the backend running on :8090?)." },
     zh:{ title:"最新动态", sub:"来自 Blitzball Labs 的更新、发布与幕后。", empty:"还没有文章，敬请期待。", load:"加载中…", err:"无法加载文章（后端 8090 端口在运行吗？）。" }
@@ -100,8 +101,7 @@
 })();
 </script>
 <script src="assets/js/i18n.js"></script>
-<!-- Blitzball Labs analytics (self-hosted). For production replace localhost:8090 with the deployed backend URL. -->
-<script defer src="http://localhost:8090/analytics.js"
-        data-endpoint="http://localhost:8090/api/collect"></script>
+<!-- Blitzball Labs analytics (auto: localhost in dev, same-origin in production) -->
+<script>(function(){var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';var b=dev?'http://localhost:8090':'';var s=document.createElement('script');s.defer=true;s.src=b+'/analytics.js';s.setAttribute('data-endpoint',b+'/api/collect');(document.head||document.documentElement).appendChild(s);})();</script>
 </body>
 </html>

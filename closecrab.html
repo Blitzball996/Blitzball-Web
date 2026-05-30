@@ -298,8 +298,7 @@
 
 <script src="assets/js/closecrab.js"></script>
 <script src="assets/js/i18n.js"></script>
-<!-- Blitzball Labs analytics (self-hosted). For production replace localhost:8090 with the deployed backend URL. -->
-<script defer src="http://localhost:8090/analytics.js"
-        data-endpoint="http://localhost:8090/api/collect"></script>
+<!-- Blitzball Labs analytics (auto: localhost in dev, same-origin in production) -->
+<script>(function(){var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';var b=dev?'http://localhost:8090':'';var s=document.createElement('script');s.defer=true;s.src=b+'/analytics.js';s.setAttribute('data-endpoint',b+'/api/collect');(document.head||document.documentElement).appendChild(s);})();</script>
 </body>
 </html>
