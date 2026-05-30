@@ -24,3 +24,8 @@ assets/i18n/_val.py
 # Node (in case anyone runs build later)
 node_modules/
 package-lock.json
+
+# local backups (do not commit)
+.bak_analytics/
+.bak_corrupted/
+*.bak
