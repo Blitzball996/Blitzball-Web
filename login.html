@@ -7,6 +7,7 @@
 <link rel="icon" href="logo.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/index.css">
+<script src="https://static.geetest.com/v4/gt4.js"></script>
 <style>
   .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 20px 40px;position:relative;z-index:5}
   .auth-card{width:100%;max-width:420px;background:var(--card,rgba(18,8,42,.72));border:1px solid var(--border-strong,rgba(139,92,246,.36));
@@ -72,12 +73,12 @@
       name:"昵称（可选）",email:"邮箱",pass:"密码",toq_login:"还没有账号？",toq_reg:"已有账号？",to_reg:"注册",to_login:"登录",forgot:"忘记密码？",
       need:"请填写邮箱和密码",weakpw:"密码至少 8 位",reg_ok:"注册成功！请查收邮箱完成验证后再登录。",
       bad_cred:"邮箱或密码错误",not_verified:"邮箱还没验证，请查收验证邮件",taken:"该邮箱已注册",bad_email:"邮箱格式不对",
-      sent:"如果该邮箱已注册，重置链接已发送。",err:"出错了，稍后再试"},
+      sent:"如果该邮箱已注册，重置链接已发送。",err:"出错了，稍后再试",cap_fail:"人机验证未通过，请重试"},
     en:{login:"Log in",register:"Sign up",sub_login:"Log in to see your license keys",sub_reg:"Create an account to manage purchases & keys",
       name:"Name (optional)",email:"Email",pass:"Password",toq_login:"No account yet?",toq_reg:"Have an account?",to_reg:"Sign up",to_login:"Log in",forgot:"Forgot password?",
       need:"Enter email and password",weakpw:"Password must be 8+ chars",reg_ok:"Registered! Check your email to verify, then log in.",
       bad_cred:"Wrong email or password",not_verified:"Email not verified yet — check your inbox",taken:"Email already registered",bad_email:"Invalid email",
-      sent:"If that email exists, a reset link has been sent.",err:"Something went wrong, try later"}
+      sent:"If that email exists, a reset link has been sent.",err:"Something went wrong, try later",cap_fail:"Captcha failed, please retry"}
   };
   function t(k){return T[lang][k]||k;}
   function $(id){return document.getElementById(id);}
@@ -99,25 +100,44 @@
   $('toggle').onclick=function(){mode=mode==='login'?'register':'login';$('msg').className='msg';render();};
   $('forgot').onclick=function(){location.href='reset.html';};
 
-  $('submit').onclick=async function(){
+  // ---- GeeTest captcha (only if backend has it configured) ----
+  var capObj=null, capEnabled=false;
+  fetch(API+'/api/auth/captcha-config').then(function(r){return r.json();}).then(function(c){
+    if(c&&c.enabled&&c.captcha_id&&window.initGeetest4){
+      capEnabled=true;
+      window.initGeetest4({captchaId:c.captcha_id,product:'bind'},function(obj){
+        capObj=obj;
+        obj.onSuccess(function(){ var v=obj.getValidate()||{}; doSubmit(v); obj.reset(); });
+      });
+    }
+  }).catch(function(){});
+
+  function doSubmit(cap){
     var email=$('f-email').value.trim(), pass=$('f-pass').value, name=$('f-name').value.trim();
+    $('submit').disabled=true;
+    var path=mode==='login'?'/api/auth/login':'/api/auth/register';
+    var body={email:email,password:pass,name:name};
+    if(cap){ body.lot_number=cap.lot_number; body.captcha_output=cap.captcha_output; body.pass_token=cap.pass_token; body.gen_time=cap.gen_time; }
+    fetch(API+path,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+      .then(function(res){return res.json().catch(function(){return{};}).then(function(d){return{res:res,d:d};});})
+      .then(function(o){
+        if(o.res.ok){
+          if(mode==='login'){ location.href='account.html'; }
+          else { msg(t('reg_ok'),true); mode='login'; render(); }
+        } else {
+          var map={BAD_CREDENTIALS:'bad_cred',EMAIL_NOT_VERIFIED:'not_verified',EMAIL_TAKEN:'taken',BAD_EMAIL:'bad_email',WEAK_PASSWORD:'weakpw',CAPTCHA_FAILED:'cap_fail'};
+          msg(t(map[o.d.error]||'err'));
+        }
+      }).catch(function(){ msg(t('err')); })
+      .then(function(){ $('submit').disabled=false; });
+  }
+
+  $('submit').onclick=function(){
+    var email=$('f-email').value.trim(), pass=$('f-pass').value;
     if(!email||!pass){msg(t('need'));return;}
     if(mode==='register'&&pass.length<8){msg(t('weakpw'));return;}
-    $('submit').disabled=true;
-    try{
-      var path=mode==='login'?'/api/auth/login':'/api/auth/register';
-      var res=await fetch(API+path,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({email:email,password:pass,name:name})});
-      var d=await res.json().catch(function(){return{};});
-      if(res.ok){
-        if(mode==='login'){ location.href='account.html'; }
-        else { msg(t('reg_ok'),true); mode='login'; render(); }
-      } else {
-        var map={BAD_CREDENTIALS:'bad_cred',EMAIL_NOT_VERIFIED:'not_verified',EMAIL_TAKEN:'taken',BAD_EMAIL:'bad_email',WEAK_PASSWORD:'weakpw'};
-        msg(t(map[d.error]||'err'));
-      }
-    }catch(e){ msg(t('err')); }
-    $('submit').disabled=false;
+    if(capEnabled&&capObj){ capObj.showCaptcha(); }  // solving triggers onSuccess→doSubmit
+    else { doSubmit(null); }
   };
   render();
 })();
