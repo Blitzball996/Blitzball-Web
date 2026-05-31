@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-ns="pricing">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — Blitzball Labs</title>
+<meta name="description" content="Blitzball Labs pricing — Blitz DAW and CloseCrab. Global cards, Alipay, WeChat Pay, PayPal.">
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/index.css">
+<style>
+  .pr-wrap{max-width:1180px;margin:0 auto;padding:150px clamp(20px,5vw,48px) 80px}
+  .pr-head{text-align:center;margin-bottom:18px}
+  .pr-head h1{font-family:'Sora',sans-serif;font-weight:900;font-size:clamp(2.6rem,6vw,4.6rem);letter-spacing:-.04em;line-height:1.02}
+  .pr-head h1 .g{background:linear-gradient(110deg,var(--purple-light),var(--cyan-bright) 55%,var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .pr-head p{color:var(--text-dim);max-width:600px;margin:16px auto 0;font-size:1.05rem}
+  .bill{display:flex;gap:8px;justify-content:center;margin:30px 0 44px}
+  .bill button{font-family:var(--font-mono);font-size:12px;padding:9px 20px;border-radius:100px;border:1px solid var(--border-strong);background:rgba(139,92,246,.06);color:var(--text-dim);cursor:pointer}
+  .bill button.on{background:#1c2740;color:#fff;border-color:var(--purple)}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .tier{background:var(--card);border:1px solid var(--border-strong);border-radius:20px;padding:34px 28px;display:flex;flex-direction:column;position:relative;backdrop-filter:blur(14px)}
+  .tier.feat{border-color:var(--purple);box-shadow:0 0 0 1px var(--purple),0 20px 60px rgba(139,92,246,.25)}
+  .tier .badge-top{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:5px 14px;border-radius:100px;font-weight:700}
+  .tier h3{font-family:'Sora',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:6px}
+  .tier .sub{color:var(--text-muted);font-size:13px;min-height:38px}
+  .tier .price{font-family:'Sora',sans-serif;font-weight:900;font-size:3rem;letter-spacing:-.03em;margin:14px 0 2px;line-height:1}
+  .tier .price small{font-size:1rem;color:var(--text-muted);font-weight:600}
+  .tier .per{color:var(--text-muted);font-size:12px;font-family:var(--font-mono);margin-bottom:22px}
+  .tier ul{list-style:none;padding:0;margin:0 0 26px;display:flex;flex-direction:column;gap:11px;flex:1}
+  .tier li{font-size:13.5px;color:var(--text-dim);display:flex;gap:10px;align-items:flex-start}
+  .tier li::before{content:"✓";color:var(--cyan-bright);font-weight:800;flex:0 0 auto}
+  .tier li.off{color:var(--text-faint)}.tier li.off::before{content:"–";color:var(--text-faint)}
+  .tier .btn{width:100%;justify-content:center}
+  .pay-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:54px 0 10px}
+  .pay{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:rgba(14,8,42,.5);display:flex;align-items:center;gap:8px}
+  .pay b{color:var(--text)}
+  .pay-note{text-align:center;color:var(--text-muted);font-size:12.5px;max-width:640px;margin:14px auto 0;line-height:1.7}
+  .pay-note code{color:var(--cyan)}
+  @media(max-width:860px){.tiers{grid-template-columns:1fr;max-width:440px;margin:0 auto}}
+</style>
+</head>
+<body>
+<div class="bg-aurora"><i class="au au1"></i><i class="au au2"></i><i class="au au3"></i></div>
+<div class="bg-grid"></div><div class="bg-noise"></div><div class="vignette"></div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand"><img src="logo.png" alt="Blitzball Labs"><span class="brand-text">Blitzball<em>Labs</em></span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#products">Products</a></li>
+    <li><a href="pricing.html" class="active">Pricing</a></li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+  <div class="nav-actions"><a href="#tiers" class="nav-cta">Get started →</a></div>
+</nav>
+
+<div class="pr-wrap">
+  <div class="pr-head">
+    <h1 data-t="title">Simple pricing. <span class="g" data-t="title2">Own your tools.</span></h1>
+    <p data-t="sub">The core apps are free and open source, forever. Upgrade to Pro for advanced packs, commercial licensing and priority support. Global cards, Alipay, WeChat Pay and PayPal.</p>
+  </div>
+
+  <div class="bill">
+    <button class="on" id="b-once" data-t="once">One-time</button>
+    <button id="b-sub" data-t="sub_b">Subscription</button>
+  </div>
+
+  <div class="tiers" id="tiers">
+    <div class="tier">
+      <h3 data-t="t1">Open Source</h3>
+      <div class="sub" data-t="t1s">Core apps, MIT licensed. Forever free.</div>
+      <div class="price" data-t="t1p">¥0</div>
+      <div class="per" data-t="free">free forever</div>
+      <ul>
+        <li data-t="t1f1">Blitz DAW + CloseCrab core</li>
+        <li data-t="t1f2">Run fully offline, on your hardware</li>
+        <li data-t="t1f3">Community support (GitHub)</li>
+        <li class="off" data-t="t1f4">Priority support</li>
+        <li class="off" data-t="t1f5">Commercial license</li>
+      </ul>
+      <a href="index.html#products" class="btn btn-sec" data-t="t1b">Download free</a>
+    </div>
+
+    <div class="tier feat">
+      <div class="badge-top" data-t="popular">Most popular</div>
+      <h3 data-t="t2">Pro</h3>
+      <div class="sub" data-t="t2s">For professionals shipping real work.</div>
+      <div class="price"><small>¥</small><span class="amt" data-once="199" data-sub="29">199</span></div>
+      <div class="per"><span data-t="per-once">one-time · lifetime updates v1.x</span></div>
+      <ul>
+        <li data-t="t2f1">Everything in Open Source</li>
+        <li data-t="t2f2">Pro instrument & FX packs</li>
+        <li data-t="t2f3">Priority email support</li>
+        <li data-t="t2f4">Commercial-use license</li>
+        <li data-t="t2f5">Early access to new features</li>
+      </ul>
+      <a href="#" class="btn btn-pri" data-pay="pro" data-t="buy">Buy Pro</a>
+    </div>
+
+    <div class="tier">
+      <h3 data-t="t3">Studio / Team</h3>
+      <div class="sub" data-t="t3s">For teams and studios, multiple seats.</div>
+      <div class="price"><small>¥</small><span class="amt" data-once="999" data-sub="99">999</span></div>
+      <div class="per"><span data-t="per-once">one-time · 5 seats</span></div>
+      <ul>
+        <li data-t="t3f1">Everything in Pro</li>
+        <li data-t="t3f2">5 seats (add more anytime)</li>
+        <li data-t="t3f3">Team Mode & shared presets</li>
+        <li data-t="t3f4">Dedicated support channel</li>
+        <li data-t="t3f5">Invoice & PO billing</li>
+      </ul>
+      <a href="#" class="btn btn-sec" data-pay="team" data-t="buy2">Buy Team</a>
+    </div>
+  </div>
+
+  <div class="pay-row">
+    <span class="pay">💳 <b>Visa</b> · Mastercard · Amex</span>
+    <span class="pay">🟦 <b>支付宝</b> Alipay</span>
+    <span class="pay">🟩 <b>微信支付</b> WeChat Pay</span>
+    <span class="pay">🅿️ <b>PayPal</b></span>
+  </div>
+  <p class="pay-note" data-t="note">Secure checkout is handled by our payment provider — we never see or store your card number. 安全支付由收款服务商托管，我们不会接触你的卡号。</p>
+</div>
+
+<footer class="foot"><div class="foot-bot"><span>© 2026 Blitzball Labs · Native AI · made with C++ and care</span></div></footer>
+
+<script>
+/* =================================================================
+   PAYMENT LINKS — paste your hosted-checkout URLs here after you
+   register a merchant account (recommended: Airwallex for a China
+   company needing global cards + Alipay + WeChat; or Stripe with an
+   overseas entity). Leave as '#' until configured.
+   Example: pro_once: 'https://checkout.airwallex.com/xxxxx'
+   ================================================================= */
+window.PAY_LINKS = {
+  pro_once:  '#',
+  pro_sub:   '#',
+  team_once: '#',
+  team_sub:  '#'
+};
+
+var TXT = {
+  en:{ title:"Simple pricing.", title2:"Own your tools.", sub:"The core apps are free and open source, forever. Upgrade to Pro for advanced packs, commercial licensing and priority support. Global cards, Alipay, WeChat Pay and PayPal.",
+    once:"One-time", sub_b:"Subscription", free:"free forever", popular:"Most popular",
+    t1:"Open Source", t1s:"Core apps, MIT licensed. Forever free.", t1p:"¥0",
+    t1f1:"Blitz DAW + CloseCrab core", t1f2:"Run fully offline, on your hardware", t1f3:"Community support (GitHub)", t1f4:"Priority support", t1f5:"Commercial license", t1b:"Download free",
+    t2:"Pro", t2s:"For professionals shipping real work.", buy:"Buy Pro",
+    t2f1:"Everything in Open Source", t2f2:"Pro instrument & FX packs", t2f3:"Priority email support", t2f4:"Commercial-use license", t2f5:"Early access to new features",
+    t3:"Studio / Team", t3s:"For teams and studios, multiple seats.", buy2:"Buy Team",
+    t3f1:"Everything in Pro", t3f2:"5 seats (add more anytime)", t3f3:"Team Mode & shared presets", t3f4:"Dedicated support channel", t3f5:"Invoice & PO billing",
+    ponce:"one-time · lifetime updates v1.x", psub:"per month · cancel anytime", ponce3:"one-time · 5 seats", psub3:"per month · 5 seats",
+    note:"Secure checkout is handled by our payment provider — we never see or store your card number." },
+  zh:{ title:"简单定价。", title2:"工具归你所有。", sub:"核心应用永久免费开源。升级 Pro 解锁高级资源包、商用授权与优先支持。支持全球信用卡、支付宝、微信支付、PayPal。",
+    once:"一次买断", sub_b:"订阅", free:"永久免费", popular:"最受欢迎",
+    t1:"开源版", t1s:"核心应用，MIT 许可，永久免费。", t1p:"¥0",
+    t1f1:"Blitz DAW + CloseCrab 核心", t1f2:"完全离线、在你自己硬件上运行", t1f3:"社区支持（GitHub）", t1f4:"优先支持", t1f5:"商用授权", t1b:"免费下载",
+    t2:"专业版", t2s:"为真正交付作品的专业人士。", buy:"购买 Pro",
+    t2f1:"包含开源版全部", t2f2:"专业乐器与效果包", t2f3:"优先邮件支持", t2f4:"商用授权", t2f5:"新功能抢先体验",
+    t3:"工作室 / 团队", t3s:"为团队和工作室，多席位。", buy2:"购买 Team",
+    t3f1:"包含专业版全部", t3f2:"5 个席位（可随时增加）", t3f3:"团队模式与共享预设", t3f4:"专属支持渠道", t3f5:"发票与对公结算",
+    ponce:"一次买断 · 终身 v1.x 更新", psub:"每月 · 可随时取消", ponce3:"一次买断 · 5 席位", psub3:"每月 · 5 席位",
+    note:"安全支付由收款服务商托管——我们不会接触或存储你的卡号。" }
+};
+
+function lang(){ var l=localStorage.getItem('bb_lang')||document.documentElement.lang||'en'; return l==='zh'?'zh':'en'; }
+var billing='once';
+
+function render(){
+  var L=lang(), t=TXT[L];
+  document.querySelectorAll('[data-t]').forEach(function(el){ var k=el.getAttribute('data-t'); if(t[k]!=null) el.textContent=t[k]; });
+  // prices + period by billing toggle
+  document.querySelectorAll('.amt').forEach(function(el){ el.textContent=el.getAttribute('data-'+billing); });
+  var feat=document.querySelectorAll('.tier');
+  var perTexts = billing==='once' ? [t.ponce,t.ponce3] : [t.psub,t.psub3];
+  var pers=document.querySelectorAll('.tier .per span'); // 2nd & 3rd tiers
+  if(pers[1]) pers[1].textContent=perTexts[0];
+  if(pers[2]) pers[2].textContent=perTexts[1];
+  document.getElementById('b-once').classList.toggle('on',billing==='once');
+  document.getElementById('b-sub').classList.toggle('on',billing==='sub');
+}
+document.getElementById('b-once').onclick=function(){billing='once';render();};
+document.getElementById('b-sub').onclick=function(){billing='sub';render();};
+
+document.querySelectorAll('[data-pay]').forEach(function(b){
+  b.addEventListener('click',function(e){
+    e.preventDefault();
+    var key=b.getAttribute('data-pay')+'_'+billing;
+    var url=(window.PAY_LINKS||{})[key];
+    if(url && url!=='#'){ location.href=url; }
+    else { alert(lang()==='zh'?'支付链接还没配置。\n注册 Airwallex/Stripe 商户后，把收银台链接填进 pricing.html 顶部的 PAY_LINKS 即可。':'Payment link not configured yet.\nAfter registering a merchant (Airwallex/Stripe), paste the checkout URL into PAY_LINKS at the top of pricing.html.'); }
+  });
+});
+
+render();
+new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+</script>
+<script src="assets/js/i18n.js"></script>
+<!-- Blitzball Labs analytics (auto: localhost in dev, same-origin in production) -->
+<script>(function(){var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';var b=dev?'http://localhost:8090':'';var s=document.createElement('script');s.defer=true;s.src=b+'/analytics.js';s.setAttribute('data-endpoint',b+'/api/collect');(document.head||document.documentElement).appendChild(s);})();</script>
+</body>
+</html>

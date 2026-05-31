@@ -6,7 +6,7 @@
 <title>Blitzball Labs — Native AI Tools for Creators &amp; Engineers</title>
 <meta name="description" content="Blitzball Labs builds high-performance, local-first AI software: Blitz — an AI-native DAW, and CloseCrab — a terminal-based AI coding assistant.">
 <link rel="icon" href="logo.png" type="image/png">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/index.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -14,12 +14,11 @@
 
 <!-- Background -->
 <div id="scene-container"></div>
+<div class="bg-aurora"><i class="au au1"></i><i class="au au2"></i><i class="au au3"></i></div>
+<canvas id="matrix-rain" aria-hidden="true"></canvas>
 <div class="bg-grid"></div>
 <div class="bg-noise"></div>
 <div class="vignette"></div>
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-<div class="orb orb-3"></div>
 
 <!-- Nav -->
 <nav class="nav">
@@ -33,6 +32,7 @@
     <li><a href="#tech">Technology</a></li>
     <li><a href="#use">Use cases</a></li>
     <li><a href="#timeline">Journey</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
     <li><a href="blog.html">Blog</a></li>
   </ul>
   <div class="nav-actions">
@@ -58,7 +58,15 @@
     <span>Windows · Linux · macOS</span><span class="dot"></span>
     <span>CUDA / Metal supported</span>
   </div>
+  <div class="scroll-hint" aria-hidden="true"><span>Scroll</span><i class="sh-bar"></i></div>
 </section>
+
+<!-- Feature marquee -->
+<div class="marquee" aria-hidden="true">
+  <div class="mq-track" id="mqTrack">
+    <span>261 GM INSTRUMENTS</span><b>·</b><span>59 NATIVE TOOLS</span><b>·</b><span>VST3 &amp; CLAP</span><b>·</b><span>FAISS RAG</span><b>·</b><span>MULTI-AGENT</span><b>·</b><span>VOICE I/O</span><b>·</b><span>MIT LICENSED</span><b>·</b><span>ZERO DEPENDENCIES</span><b>·</b><span>1M TOKEN CONTEXT</span><b>·</b>
+  </div>
+</div>
 
 <!-- Products -->
 <section class="section" id="products">
@@ -211,14 +219,14 @@
       <tr><th>Feature</th><th>Blitzball Labs</th><th>Typical SaaS DAW</th><th>Cloud AI agent</th></tr>
     </thead>
     <tbody>
-      <tr><td>Runs offline</td><td class="yes">● Yes</td><td class="no">○ No</td><td class="no">○ No</td></tr>
-      <tr><td>Source code</td><td class="yes">● MIT open source</td><td class="no">○ Proprietary</td><td class="no">○ Proprietary</td></tr>
-      <tr><td>Your data leaves machine</td><td class="yes">● Never (your choice)</td><td class="mid">◐ Telemetry on</td><td class="no">● Always</td></tr>
-      <tr><td>AI on your hardware</td><td class="yes">● llama.cpp + CUDA</td><td class="no">○ Cloud only</td><td class="no">○ Cloud only</td></tr>
-      <tr><td>Bring your own model</td><td class="yes">● Any GGUF / API</td><td class="no">○ Vendor model</td><td class="mid">◐ Limited</td></tr>
-      <tr><td>Rate limits</td><td class="yes">● None (your GPU)</td><td class="mid">◐ Tier-based</td><td class="no">● Yes</td></tr>
-      <tr><td>Audio latency</td><td class="yes">● &lt;5 ms native</td><td class="mid">◐ Browser audio</td><td>—</td></tr>
-      <tr><td>Subscription</td><td class="yes">● Free, MIT</td><td class="no">○ $20–$60/mo</td><td class="no">○ Per-token</td></tr>
+      <tr><td>Runs offline</td><td class="yes"><span class="badge b-yes">Yes</span></td><td class="no"><span class="badge b-no">No</span></td><td class="no"><span class="badge b-no">No</span></td></tr>
+      <tr><td>Source code</td><td class="yes"><span class="badge b-yes">MIT open source</span></td><td class="no"><span class="badge b-no">Proprietary</span></td><td class="no"><span class="badge b-no">Proprietary</span></td></tr>
+      <tr><td>Your data leaves machine</td><td class="yes"><span class="badge b-yes">Never · your choice</span></td><td class="mid"><span class="badge b-mid">Telemetry on</span></td><td class="no"><span class="badge b-bad">Always</span></td></tr>
+      <tr><td>AI on your hardware</td><td class="yes"><span class="badge b-yes">llama.cpp + CUDA</span></td><td class="no"><span class="badge b-no">Cloud only</span></td><td class="no"><span class="badge b-no">Cloud only</span></td></tr>
+      <tr><td>Bring your own model</td><td class="yes"><span class="badge b-yes">Any GGUF / API</span></td><td class="no"><span class="badge b-no">Vendor model</span></td><td class="mid"><span class="badge b-mid">Limited</span></td></tr>
+      <tr><td>Rate limits</td><td class="yes"><span class="badge b-yes">None · your GPU</span></td><td class="mid"><span class="badge b-mid">Tier-based</span></td><td class="no"><span class="badge b-bad">Yes</span></td></tr>
+      <tr><td>Audio latency</td><td class="yes"><span class="badge b-yes">&lt;5 ms native</span></td><td class="mid"><span class="badge b-mid">Browser audio</span></td><td>—</td></tr>
+      <tr><td>Subscription</td><td class="yes"><span class="badge b-yes">Free, MIT</span></td><td class="no"><span class="badge b-no">$20–$60/mo</span></td><td class="no"><span class="badge b-no">Per-token</span></td></tr>
     </tbody>
   </table>
 </section>
@@ -379,6 +387,69 @@ document.querySelectorAll('.faq-q').forEach(q => {
     if (a) a.style.display = open ? 'block' : 'none';
   });
 });
+
+// Hero v2: seamless marquee + mouse-parallax chips
+(function(){
+  const tk = document.getElementById('mqTrack');
+  if (tk) tk.innerHTML += tk.innerHTML; // duplicate for seamless loop
+  const chips = Array.prototype.slice.call(document.querySelectorAll('.hfchip'));
+  if (chips.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.addEventListener('mousemove', (e) => {
+      const x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
+      chips.forEach(c => {
+        const d = +c.getAttribute('data-depth') || 20;
+        c.style.transform = 'translate(' + (-x*d) + 'px,' + (-y*d) + 'px)';
+      });
+    }, { passive: true });
+  }
+})();
+
+// Matrix digital rain — confined to hero, cyan+purple, perf-capped
+(function(){
+  const cv = document.getElementById('matrix-rain');
+  if (!cv || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const ctx = cv.getContext('2d');
+  const heroEl = document.querySelector('.hero');
+  const glyphs = 'ｱｲｳｴｵｶｷｸ01<>{}[]/\\=+*#$ABCDEF0123456789'.split('');
+  let cols, drops, fontSize = 16, W, H, raf, last = 0;
+
+  function size(){
+    W = cv.width = innerWidth;
+    H = cv.height = Math.max(heroEl ? heroEl.offsetHeight : innerHeight, innerHeight);
+    cols = Math.floor(W / fontSize);
+    drops = new Array(cols).fill(0).map(() => Math.random() * -H / fontSize);
+  }
+  size();
+  addEventListener('resize', size, { passive: true });
+
+  function draw(t){
+    raf = requestAnimationFrame(draw);
+    if (t - last < 55) return;      // ~18fps, light on CPU
+    last = t;
+    ctx.fillStyle = 'rgba(5,1,15,0.10)';
+    ctx.fillRect(0, 0, W, H);
+    ctx.font = fontSize + 'px "JetBrains Mono", monospace';
+    for (let i = 0; i < cols; i++){
+      const ch = glyphs[(Math.random() * glyphs.length) | 0];
+      const x = i * fontSize, y = drops[i] * fontSize;
+      // leading glyph bright cyan, trail purple
+      ctx.fillStyle = Math.random() > 0.92 ? '#10f0b8' : (i % 3 === 0 ? 'rgba(167,139,250,0.55)' : 'rgba(6,214,160,0.5)');
+      ctx.fillText(ch, x, y);
+      if (y > H && Math.random() > 0.975) drops[i] = 0;
+      drops[i] += 1;
+    }
+  }
+  raf = requestAnimationFrame(draw);
+  // pause when hero scrolled out of view (save CPU)
+  if ('IntersectionObserver' in window && heroEl){
+    new IntersectionObserver((es) => {
+      es.forEach(e => {
+        if (e.isIntersecting){ if(!raf) raf = requestAnimationFrame(draw); }
+        else { cancelAnimationFrame(raf); raf = 0; }
+      });
+    }, { threshold: 0 }).observe(heroEl);
+  }
+})();
 
 // Three.js 3D scene — floating particles + wireframe icosahedron
 (function(){
