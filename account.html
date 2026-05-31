@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的账号 / My Account — Blitzball Labs</title>
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/index.css">
+<style>
+  .acc-wrap{max-width:880px;margin:0 auto;padding:120px 20px 60px;position:relative;z-index:5}
+  .acc-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+  .acc-head h1{font-family:'Sora',sans-serif;font-weight:900;font-size:30px;margin:0}
+  .acc-sub{color:var(--text-dim,#b8aed8);margin-bottom:30px}
+  .lic{background:var(--card,rgba(18,8,42,.7));border:1px solid var(--border-strong,rgba(139,92,246,.36));border-radius:16px;padding:22px 24px;margin-bottom:16px}
+  .lic .top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .lic .prod{font-family:'Sora';font-weight:800;font-size:18px}
+  .lic .key{font-family:'JetBrains Mono',monospace;font-size:16px;background:#0d0820;padding:8px 14px;border-radius:8px;margin:12px 0;letter-spacing:1px;cursor:pointer;display:inline-block}
+  .pill{font-family:var(--font-mono,monospace);font-size:11px;padding:4px 12px;border-radius:100px}
+  .pill.on{background:rgba(6,214,160,.14);color:#10f0b8;border:1px solid rgba(6,214,160,.3)}
+  .pill.off{background:rgba(122,111,156,.14);color:#9aa;border:1px solid rgba(122,111,156,.3)}
+  .pill.rev{background:rgba(247,37,133,.12);color:#ff7ab5;border:1px solid rgba(247,37,133,.3)}
+  .lic .meta{color:var(--text-muted,#7a6f9c);font-size:12.5px;margin-top:6px}
+  .lic .meta a{color:var(--purple-light,#a78bfa)}
+  .btn-out{background:var(--card);border:1px solid var(--border-strong);color:var(--text);border-radius:100px;padding:9px 18px;cursor:pointer;font-size:13px}
+  .empty{text-align:center;color:var(--text-muted);padding:50px 0}
+  .empty a{color:var(--purple-light)}
+  .brand-link{position:fixed;top:18px;left:24px;z-index:10;font-family:'Sora';font-weight:800;color:var(--text);text-decoration:none}
+  .brand-link em{font-style:normal;color:var(--purple-light,#a78bfa)}
+  .lang-tog{position:fixed;top:18px;right:24px;z-index:10;font-family:var(--font-mono,monospace);font-size:12px;background:var(--card,rgba(18,8,42,.7));border:1px solid var(--border-strong);color:var(--text);border-radius:100px;padding:7px 14px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="bg-aurora"><i class="au au1"></i><i class="au au2"></i><i class="au au3"></i></div>
+<div class="bg-grid"></div><div class="bg-noise"></div>
+<a href="index.html" class="brand-link">Blitzball<em>Labs</em></a>
+<button class="lang-tog" id="langTog">EN</button>
+
+<div class="acc-wrap">
+  <div class="acc-head">
+    <h1 id="hi">我的账号</h1>
+    <button class="btn-out" id="logout">登出</button>
+  </div>
+  <div class="acc-sub" id="sub">你购买的序列号</div>
+  <div id="list"><div class="empty" id="loading">加载中…</div></div>
+</div>
+
+<script>
+(function(){
+  var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';
+  var API=(dev?'http://localhost:8090':'');
+  var lang=localStorage.getItem('bb_lang')||'zh'; if(lang!=='zh')lang='en';
+  var T={
+    zh:{hi:"我的账号",sub:"你购买的序列号",logout:"登出",loading:"加载中…",
+      empty:"还没有购买记录。",buy:"去购买 →",active:"已激活",unused:"未激活",revoked:"已封禁",
+      order:"订单",date:"购买于",receipt:"查看收据",copied:"已复制！",oneDevice:"一码一机"},
+    en:{hi:"My Account",sub:"Your purchased license keys",logout:"Log out",loading:"Loading…",
+      empty:"No purchases yet.",buy:"Go to pricing →",active:"Activated",unused:"Not activated",revoked:"Revoked",
+      order:"Order",date:"Purchased",receipt:"View receipt",copied:"Copied!",oneDevice:"one key · one device"}
+  };
+  function t(k){return T[lang][k]||k;}
+  function $(id){return document.getElementById(id);}
+  function esc(s){return(s==null?'':String(s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function fmt(d){try{return new Date(d).toLocaleDateString(lang==='zh'?'zh-CN':'en-US');}catch(e){return'';}}
+
+  $('langTog').onclick=function(){lang=lang==='zh'?'en':'zh';localStorage.setItem('bb_lang',lang);apply();load();};
+  function apply(){$('hi').textContent=t('hi');$('sub').textContent=t('sub');$('logout').textContent=t('logout');$('langTog').textContent=lang==='zh'?'EN':'中';document.documentElement.lang=lang;}
+
+  $('logout').onclick=async function(){
+    await fetch(API+'/api/auth/logout',{method:'POST',credentials:'include'});
+    location.href='login.html';
+  };
+
+  function prodName(p){ if(p.indexOf('BD')===0)return'Blitz DAW'; if(p.indexOf('CC')===0)return'CloseCrab'; return p; }
+
+  async function load(){
+    var res=await fetch(API+'/api/account/licenses',{credentials:'include'});
+    if(res.status===401){ location.href='login.html'; return; }
+    var d=await res.json().catch(function(){return{};});
+    var list=$('list');
+    var ls=(d.licenses||[]);
+    if(!ls.length){ list.innerHTML='<div class="empty">'+t('empty')+'<br><br><a href="pricing.html">'+t('buy')+'</a></div>'; return; }
+    list.innerHTML=ls.map(function(x){
+      var pill=x.status==='revoked'?'<span class="pill rev">'+t('revoked')+'</span>'
+        :(x.activated?'<span class="pill on">'+t('active')+'</span>':'<span class="pill off">'+t('unused')+'</span>');
+      var rec=x.order_id?' · <a href="'+API+'/api/account/receipt/'+encodeURIComponent(x.order_id)+'" target="_blank">'+t('receipt')+'</a>':'';
+      return '<div class="lic"><div class="top"><span class="prod">'+esc(prodName(x.product))+' · '+esc(x.edition)+'</span>'+pill+'</div>'+
+        '<div class="key" data-copy="'+esc(x.key)+'" title="'+t('copied')+'">'+esc(x.key)+'</div>'+
+        '<div class="meta">'+t('oneDevice')+(x.order_id?' · '+t('order')+' '+esc(x.order_id):'')+' · '+t('date')+' '+fmt(x.created_at)+rec+'</div></div>';
+    }).join('');
+    list.querySelectorAll('[data-copy]').forEach(function(b){b.onclick=function(){navigator.clipboard&&navigator.clipboard.writeText(b.getAttribute('data-copy'));b.style.color='#10f0b8';};});
+  }
+  apply(); load();
+})();
+</script>
+</body>
+</html>

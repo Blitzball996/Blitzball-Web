@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>重置密码 / Reset Password — Blitzball Labs</title>
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/index.css">
+<style>
+  .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 20px 40px;position:relative;z-index:5}
+  .auth-card{width:100%;max-width:420px;background:var(--card,rgba(18,8,42,.72));border:1px solid var(--border-strong,rgba(139,92,246,.36));border-radius:20px;padding:38px 32px;backdrop-filter:blur(16px)}
+  .auth-card h1{font-family:'Sora',sans-serif;font-weight:900;font-size:24px;margin:0 0 4px}
+  .auth-card .sub{color:var(--text-dim,#b8aed8);font-size:14px;margin-bottom:20px}
+  .auth-card label{display:block;font-size:12px;color:var(--text-muted,#7a6f9c);margin:14px 0 5px;font-family:var(--font-mono,monospace)}
+  .auth-card input{width:100%;background:#0d0820;border:1px solid var(--border,rgba(139,92,246,.16));border-radius:10px;padding:12px 14px;color:var(--text,#f3f0ff);font:inherit}
+  .auth-card input:focus{outline:none;border-color:var(--purple,#8b5cf6)}
+  .auth-btn{width:100%;margin-top:22px;background:linear-gradient(135deg,var(--purple,#8b5cf6),var(--pink,#f72585));color:#fff;border:none;border-radius:100px;padding:14px;font-size:15px;font-weight:700;cursor:pointer}
+  .auth-foot{margin-top:18px;font-size:13px;text-align:center}
+  .auth-foot a{color:var(--purple-light,#a78bfa)}
+  .msg{margin-top:14px;padding:10px 14px;border-radius:10px;font-size:13px;display:none}
+  .msg.err{display:block;background:rgba(247,37,133,.12);border:1px solid rgba(247,37,133,.3);color:#ff7ab5}
+  .msg.ok{display:block;background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.3);color:#10f0b8}
+  .brand-link{position:fixed;top:18px;left:24px;z-index:10;font-family:'Sora';font-weight:800;color:var(--text);text-decoration:none}
+  .brand-link em{font-style:normal;color:var(--purple-light,#a78bfa)}
+  .lang-tog{position:fixed;top:18px;right:24px;z-index:10;font-family:var(--font-mono,monospace);font-size:12px;background:var(--card,rgba(18,8,42,.7));border:1px solid var(--border-strong);color:var(--text);border-radius:100px;padding:7px 14px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="bg-aurora"><i class="au au1"></i><i class="au au2"></i><i class="au au3"></i></div>
+<div class="bg-grid"></div><div class="bg-noise"></div>
+<a href="index.html" class="brand-link">Blitzball<em>Labs</em></a>
+<button class="lang-tog" id="langTog">EN</button>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h1 id="title">重置密码</h1>
+    <div class="sub" id="subtitle"></div>
+    <div id="email-field">
+      <label id="l-email">邮箱</label>
+      <input id="f-email" type="email" autocomplete="email">
+    </div>
+    <div id="pass-field" style="display:none">
+      <label id="l-pass">新密码（至少 8 位）</label>
+      <input id="f-pass" type="password" autocomplete="new-password">
+    </div>
+    <button class="auth-btn" id="submit">发送重置链接</button>
+    <div class="msg" id="msg"></div>
+    <div class="auth-foot"><a href="login.html" id="back">← 返回登录</a></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';
+  var API=(dev?'http://localhost:8090':'');
+  var lang=localStorage.getItem('bb_lang')||'zh'; if(lang!=='zh')lang='en';
+  var rtoken=new URLSearchParams(location.search).get('token');
+  var stage=rtoken?'set':'request';
+  var T={
+    zh:{title_req:"重置密码",sub_req:"输入邮箱，我们会发送重置链接（1小时内有效）。",title_set:"设置新密码",sub_set:"为你的账号设置一个新密码。",
+      email:"邮箱",pass:"新密码（至少 8 位）",send:"发送重置链接",save:"保存新密码",back:"← 返回登录",
+      need_email:"请输入邮箱",weak:"密码至少 8 位",sent:"如果该邮箱已注册，重置链接已发送，请查收。",
+      done:"密码已重置！请用新密码登录。",bad_token:"链接无效或已过期，请重新申请。",err:"出错了，稍后再试"},
+    en:{title_req:"Reset password",sub_req:"Enter your email; we'll send a reset link (valid 1 hour).",title_set:"Set new password",sub_set:"Choose a new password for your account.",
+      email:"Email",pass:"New password (8+ chars)",send:"Send reset link",save:"Save new password",back:"← Back to login",
+      need_email:"Enter your email",weak:"Password must be 8+ chars",sent:"If that email exists, a reset link has been sent.",
+      done:"Password reset! Log in with your new password.",bad_token:"Link invalid or expired — request a new one.",err:"Something went wrong"}
+  };
+  function t(k){return T[lang][k]||k;}
+  function $(id){return document.getElementById(id);}
+  function msg(x,ok){var m=$('msg');m.textContent=x;m.className='msg '+(ok?'ok':'err');}
+  function render(){
+    $('title').textContent=stage==='set'?t('title_set'):t('title_req');
+    $('subtitle').textContent=stage==='set'?t('sub_set'):t('sub_req');
+    $('l-email').textContent=t('email');$('l-pass').textContent=t('pass');
+    $('back').textContent=t('back');
+    $('email-field').style.display=stage==='set'?'none':'block';
+    $('pass-field').style.display=stage==='set'?'block':'none';
+    $('submit').textContent=stage==='set'?t('save'):t('send');
+    $('langTog').textContent=lang==='zh'?'EN':'中';document.documentElement.lang=lang;
+  }
+  $('langTog').onclick=function(){lang=lang==='zh'?'en':'zh';localStorage.setItem('bb_lang',lang);render();};
+
+  $('submit').onclick=async function(){
+    $('submit').disabled=true;
+    try{
+      if(stage==='set'){
+        var pass=$('f-pass').value;
+        if(pass.length<8){msg(t('weak'));$('submit').disabled=false;return;}
+        var res=await fetch(API+'/api/auth/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:rtoken,password:pass})});
+        if(res.ok){msg(t('done'),true);setTimeout(function(){location.href='login.html';},1800);}
+        else{msg(t('bad_token'));}
+      } else {
+        var email=$('f-email').value.trim();
+        if(!email){msg(t('need_email'));$('submit').disabled=false;return;}
+        await fetch(API+'/api/auth/forgot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});
+        msg(t('sent'),true);
+      }
+    }catch(e){msg(t('err'));}
+    $('submit').disabled=false;
+  };
+  render();
+})();
+</script>
+</body>
+</html>
