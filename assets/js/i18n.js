@@ -194,7 +194,10 @@
   var AVAILABLE = {
     index: ['en','zh','ja','ko','es','fr','de','ru','pt','it'],
     closecrab: ['en','zh','ja','ko','es','fr','de','ru','pt','it','ar','hi'],
-    blitz: ['en','zh','ja','ko','es','fr','de','ru','pt','it']
+    blitz: ['en','zh','ja','ko','es','fr','de','ru','pt','it'],
+    terms: ['en','zh'],
+    privacy: ['en','zh'],
+    refund: ['en','zh']
   };
   function getAvailable() {
     var list = AVAILABLE[NS];
