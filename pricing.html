@@ -118,18 +118,18 @@
     <span class="pay">🟩 <b>微信支付</b> WeChat Pay</span>
     <span class="pay">🅿️ <b>PayPal</b></span>
   </div>
-  <p class="pay-note" data-t="note">Secure checkout is handled by our payment provider — we never see or store your card number. 安全支付由收款服务商托管，我们不会接触你的卡号。</p>
+  <p class="pay-note" data-t="note">Secure checkout is handled by Paddle, our authorised reseller and Merchant of Record — we never see or store your card number. 安全支付由我们的授权经销商兼记录商户 Paddle 托管，我们不会接触你的卡号。</p>
 </div>
 
 <footer class="foot"><div class="foot-bot"><span>© 2026 Blitzball Labs (北京市闪电球娱乐有限公司) · Native AI · made with C++ and care</span><span><a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="refund.html">Refund</a> · <a href="mailto:support@blitzball.lol">Contact</a></span></div></footer>
 
 <script>
 /* =================================================================
-   PAYMENT LINKS — paste your hosted-checkout URLs here after you
-   register a merchant account (recommended: Airwallex for a China
-   company needing global cards + Alipay + WeChat; or Stripe with an
-   overseas entity). Leave as '#' until configured.
-   Example: pro_once: 'https://checkout.airwallex.com/xxxxx'
+   PAYMENT LINKS — paste your Paddle hosted-checkout / pay-link URLs
+   here after you create the products in your Paddle dashboard.
+   Paddle is the reseller / Merchant of Record (handles global cards,
+   Alipay, WeChat, PayPal + tax). Leave as '#' until configured.
+   Example: pro_once: 'https://pay.paddle.io/hsc_xxxxx'
    ================================================================= */
 window.PAY_LINKS = {
   pro_once:  '#',
@@ -148,7 +148,7 @@ var TXT = {
     t3:"Studio / Team", t3s:"For teams and studios, multiple seats.", buy2:"Buy Team",
     t3f1:"Everything in Pro", t3f2:"5 seats (add more anytime)", t3f3:"Team Mode & shared presets", t3f4:"Dedicated support channel", t3f5:"Invoice & PO billing",
     ponce:"one-time · lifetime updates v1.x", psub:"per month · cancel anytime", ponce3:"one-time · 5 seats", psub3:"per month · 5 seats",
-    note:"Secure checkout is handled by our payment provider — we never see or store your card number." },
+    note:"Secure checkout is handled by Paddle, our authorised reseller and Merchant of Record — we never see or store your card number." },
   zh:{ title:"简单定价。", title2:"工具归你所有。", sub:"核心应用永久免费开源。升级 Pro 解锁高级资源包、商用授权与优先支持。支持全球信用卡、支付宝、微信支付、PayPal。",
     once:"一次买断", sub_b:"订阅", free:"永久免费", popular:"最受欢迎",
     t1:"开源版", t1s:"核心应用，MIT 许可，永久免费。", t1p:"¥0",
@@ -158,7 +158,7 @@ var TXT = {
     t3:"工作室 / 团队", t3s:"为团队和工作室，多席位。", buy2:"购买 Team",
     t3f1:"包含专业版全部", t3f2:"5 个席位（可随时增加）", t3f3:"团队模式与共享预设", t3f4:"专属支持渠道", t3f5:"发票与对公结算",
     ponce:"一次买断 · 终身 v1.x 更新", psub:"每月 · 可随时取消", ponce3:"一次买断 · 5 席位", psub3:"每月 · 5 席位",
-    note:"安全支付由收款服务商托管——我们不会接触或存储你的卡号。" }
+    note:"安全支付由我们的授权经销商兼记录商户 Paddle 托管——我们不会接触或存储你的卡号。" }
 };
 
 function lang(){ var l=localStorage.getItem('bb_lang')||document.documentElement.lang||'en'; return l==='zh'?'zh':'en'; }
@@ -186,7 +186,7 @@ document.querySelectorAll('[data-pay]').forEach(function(b){
     var key=b.getAttribute('data-pay')+'_'+billing;
     var url=(window.PAY_LINKS||{})[key];
     if(url && url!=='#'){ location.href=url; }
-    else { alert(lang()==='zh'?'支付链接还没配置。\n注册 Airwallex/Stripe 商户后，把收银台链接填进 pricing.html 顶部的 PAY_LINKS 即可。':'Payment link not configured yet.\nAfter registering a merchant (Airwallex/Stripe), paste the checkout URL into PAY_LINKS at the top of pricing.html.'); }
+    else { alert(lang()==='zh'?'支付链接还没配置。\n在 Paddle 后台创建商品后，把 pay-link 收银台链接填进 pricing.html 顶部的 PAY_LINKS 即可。':'Payment link not configured yet.\nAfter creating the products in your Paddle dashboard, paste the pay-link checkout URL into PAY_LINKS at the top of pricing.html.'); }
   });
 });
 
