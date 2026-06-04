@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" data-i18n-ns="account">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的账号 / My Account — Blitzball Labs</title>
+<title id="page-title">我的账号 / My Account — Blitzball Labs</title>
 <link rel="icon" href="logo.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/index.css">
@@ -28,6 +28,21 @@
   .brand-link{position:fixed;top:18px;left:24px;z-index:10;font-family:'Sora';font-weight:800;color:var(--text);text-decoration:none}
   .brand-link em{font-style:normal;color:var(--purple-light,#a78bfa)}
   .lang-tog{position:fixed;top:18px;right:24px;z-index:10;font-family:var(--font-mono,monospace);font-size:12px;background:var(--card,rgba(18,8,42,.7));border:1px solid var(--border-strong);color:var(--text);border-radius:100px;padding:7px 14px;cursor:pointer}
+  /* Remote-control card */
+  .remote{margin-top:14px;padding-top:16px;border-top:1px dashed var(--border-strong,rgba(139,92,246,.36))}
+  .remote-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .remote-title{font-family:'Sora';font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+  .remote-desc{color:var(--text-muted,#7a6f9c);font-size:12.5px;margin-top:6px;line-height:1.6}
+  .remote-desc code{font-family:'JetBrains Mono',monospace;background:#0d0820;padding:2px 7px;border-radius:6px;color:#a78bfa}
+  /* iOS-style switch */
+  .sw{position:relative;width:46px;height:26px;flex:none}
+  .sw input{opacity:0;width:0;height:0}
+  .sw .track{position:absolute;inset:0;background:#3a2f55;border-radius:100px;transition:.2s;cursor:pointer}
+  .sw .track::before{content:'';position:absolute;height:20px;width:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+  .sw input:checked + .track{background:#06d6a0}
+  .sw input:checked + .track::before{transform:translateX(20px)}
+  .sw input:disabled + .track{opacity:.45;cursor:not-allowed}
+  .remote-na{color:var(--text-muted);font-size:12px;font-family:var(--font-mono,monospace)}
 </style>
 </head>
 <body>
@@ -58,10 +73,22 @@
   var T={
     zh:{hi:"我的账号",sub:"你购买的序列号",logout:"登出",loading:"加载中…",
       empty:"还没有购买记录。",buy:"去购买 →",active:"已激活",unused:"未激活",revoked:"已封禁",
-      order:"订单",date:"购买于",receipt:"查看收据",copied:"已复制！",oneDevice:"一码一机"},
+      order:"订单",date:"购买于",receipt:"查看收据",copied:"已复制！",oneDevice:"一码一机",
+      remoteTitle:"手机远程遥控",
+      remoteOn:"已开启",remoteOff:"已关闭",
+      remoteDesc:"开启后，可在你已激活的电脑上运行 CloseCrab-Web，用手机通过 Tailscale / ZeroTier / Cloudflare 隧道遥控。关闭即吊销该设备的所有手机遥控访问。",
+      remoteNeedActivate:"需先在电脑上激活此序列号才能开启遥控。",
+      remoteHelp:"电脑端运行 <code>closecrab-web</code> 即可，启动时会自动校验本机授权。",
+      remoteFail:"操作失败，请重试。"},
     en:{hi:"My Account",sub:"Your purchased license keys",logout:"Log out",loading:"Loading…",
       empty:"No purchases yet.",buy:"Go to pricing →",active:"Activated",unused:"Not activated",revoked:"Revoked",
-      order:"Order",date:"Purchased",receipt:"View receipt",copied:"Copied!",oneDevice:"one key · one device"}
+      order:"Order",date:"Purchased",receipt:"View receipt",copied:"Copied!",oneDevice:"one key · one device",
+      remoteTitle:"Phone remote control",
+      remoteOn:"On",remoteOff:"Off",
+      remoteDesc:"When on, run CloseCrab-Web on your activated PC to drive it from your phone over Tailscale / ZeroTier / Cloudflare Tunnel. Turning it off revokes all phone-remote access bound to this device.",
+      remoteNeedActivate:"Activate this key on a PC first to enable remote control.",
+      remoteHelp:"On the PC just run <code>closecrab-web</code> — it verifies this machine's license on startup.",
+      remoteFail:"Action failed, please retry."}
   };
   function t(k){return T[lang][k]||k;}
   function $(id){return document.getElementById(id);}
@@ -91,9 +118,49 @@
       var rec=x.order_id?' · <a href="'+API+'/api/account/receipt/'+encodeURIComponent(x.order_id)+'" target="_blank">'+t('receipt')+'</a>':'';
       return '<div class="lic"><div class="top"><span class="prod">'+esc(prodName(x.product))+' · '+esc(x.edition)+'</span>'+pill+'</div>'+
         '<div class="key" data-copy="'+esc(x.key)+'" title="'+t('copied')+'">'+esc(x.key)+'</div>'+
-        '<div class="meta">'+t('oneDevice')+(x.order_id?' · '+t('order')+' '+esc(x.order_id):'')+' · '+t('date')+' '+fmt(x.created_at)+rec+'</div></div>';
+        '<div class="meta">'+t('oneDevice')+(x.order_id?' · '+t('order')+' '+esc(x.order_id):'')+' · '+t('date')+' '+fmt(x.created_at)+rec+'</div>'+
+        remoteCard(x)+'</div>';
     }).join('');
     list.querySelectorAll('[data-copy]').forEach(function(b){b.onclick=function(){navigator.clipboard&&navigator.clipboard.writeText(b.getAttribute('data-copy'));b.style.color='#10f0b8';};});
+    bindRemoteToggles();
+  }
+
+  // Remote-control card — CloseCrab keys only (CC*). DAW keys skip it.
+  function remoteCard(x){
+    if(String(x.product).indexOf('CC')!==0) return '';
+    var enabled = x.remote_enabled !== false;
+    var canToggle = x.activated && x.status!=='revoked';
+    var ctrl = canToggle
+      ? '<label class="sw"><input type="checkbox" class="remote-cb" data-key="'+esc(x.key)+'"'+(enabled?' checked':'')+'><span class="track"></span></label>'
+      : '<span class="remote-na">'+t('remoteNeedActivate')+'</span>';
+    return '<div class="remote">'+
+      '<div class="remote-row"><span class="remote-title">📱 '+t('remoteTitle')+
+        ' <span class="pill '+(enabled&&canToggle?'on':'off')+'" data-remote-state="'+esc(x.key)+'">'+
+        (enabled&&canToggle?t('remoteOn'):t('remoteOff'))+'</span></span>'+ctrl+'</div>'+
+      '<div class="remote-desc">'+t('remoteDesc')+(canToggle?'<br>'+t('remoteHelp'):'')+'</div></div>';
+  }
+
+  function bindRemoteToggles(){
+    document.querySelectorAll('.remote-cb').forEach(function(cb){
+      cb.onchange=async function(){
+        var key=cb.getAttribute('data-key');
+        var want=cb.checked;
+        cb.disabled=true;
+        try{
+          var res=await fetch(API+'/api/account/licenses/'+encodeURIComponent(key)+'/remote-toggle',
+            {method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
+             body:JSON.stringify({enabled:want})});
+          var d=await res.json().catch(function(){return{};});
+          if(!res.ok||!d.ok){ throw new Error(d.error||'fail'); }
+          var lbl=document.querySelector('[data-remote-state="'+CSS.escape(key)+'"]');
+          if(lbl){ lbl.textContent=want?t('remoteOn'):t('remoteOff'); lbl.className='pill '+(want?'on':'off'); }
+        }catch(e){
+          cb.checked=!want; // revert
+          alert(t('remoteFail'));
+        }
+        cb.disabled=false;
+      };
+    });
   }
   apply(); load();
 })();

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-ns="closecrab-mobile">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloseCrab Mobile — Drive your AI coder from your phone | Blitzball Labs</title>
+<meta name="description" content="CloseCrab Mobile Remote: drive your local AI coding assistant from your phone over Tailscale, ZeroTier or Cloudflare Tunnel. Touch terminal, live thinking bar, team leaderboard, and mini-games while it boots.">
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/closecrab.css">
+<style>
+/* ── closecrab-mobile · page-scoped styles (rm- prefix avoids i18n collisions) ── */
+.rm-wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.rm-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:140px 0 70px;position:relative;z-index:5}
+.rm-hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);border:1px solid var(--border-strong);border-radius:100px;padding:7px 16px;margin-bottom:24px}
+.rm-hero-eyebrow .ev-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:var(--neon-cyan)}
+.rm-hero h1{font-family:var(--font-display);font-weight:900;font-size:clamp(34px,5vw,58px);line-height:1.04;letter-spacing:-.02em;margin:0 0 22px}
+.rm-hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--cyan),var(--green));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.rm-hero-sub{font-size:18px;line-height:1.6;color:var(--text-dim);max-width:560px;margin-bottom:30px}
+.rm-hero-sub strong{color:var(--text)}
+.rm-actions{display:flex;gap:14px;flex-wrap:wrap}
+.rm-trust{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;font-family:var(--font-mono);font-size:12.5px;color:var(--text-muted)}
+.rm-trust span{display:inline-flex;align-items:center;gap:6px}
+
+/* phone frame mockup */
+.rm-phone-stage{display:flex;justify-content:center;position:relative}
+.rm-phone-stage::before{content:'';position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,213,.18),transparent 70%);filter:blur(30px);z-index:-1}
+.rm-phone{width:300px;height:610px;background:#05080f;border:11px solid #11161f;border-radius:46px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(0,255,213,.18),inset 0 0 0 2px #1c2230;position:relative;overflow:hidden}
+.rm-phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:130px;height:26px;background:#11161f;border-radius:0 0 16px 16px;z-index:6}
+.rm-screen{position:absolute;inset:0;border-radius:35px;overflow:hidden;background:linear-gradient(180deg,#060a14,#020610);display:flex;flex-direction:column;font-family:var(--font-mono)}
+.rm-statusbar{height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 20px 0 24px;font-size:10px;color:var(--text-dim);padding-top:6px}
+.rm-appbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--border);background:rgba(8,18,38,.6)}
+.rm-appbar .rm-title{font-family:var(--font-display);font-weight:700;font-size:14px;color:var(--text)}
+.rm-appbar .rm-badge{font-size:9px;padding:3px 9px;border-radius:100px;background:rgba(57,255,122,.14);color:var(--green);border:1px solid rgba(57,255,122,.3)}
+.rm-tabs{display:flex;gap:4px;padding:8px 10px}
+.rm-tabs span{flex:1;text-align:center;font-size:10px;padding:6px 0;border-radius:7px;color:var(--text-muted);background:var(--surface)}
+.rm-tabs span.on{background:var(--cyan-deep);color:#021;font-weight:700}
+.rm-term{flex:1;padding:10px 12px;font-size:9.5px;line-height:1.55;overflow:hidden;color:var(--text-dim)}
+.rm-term .pr{color:var(--cyan)}
+.rm-term .ai{color:var(--text)}
+.rm-term .tl{color:var(--green)}
+.rm-term .dim{color:var(--text-faint)}
+.rm-think{display:flex;align-items:center;gap:8px;padding:8px 12px;margin:0 10px 8px;background:rgba(0,255,213,.06);border:1px solid var(--border);border-radius:10px}
+.rm-think .wave{display:flex;gap:3px;align-items:flex-end;height:14px}
+.rm-think .wave i{width:3px;background:var(--cyan);border-radius:2px;animation:rmwave 1s ease-in-out infinite}
+.rm-think .wave i:nth-child(1){height:6px;animation-delay:0s}
+.rm-think .wave i:nth-child(2){height:12px;animation-delay:.12s}
+.rm-think .wave i:nth-child(3){height:9px;animation-delay:.24s}
+.rm-think .wave i:nth-child(4){height:14px;animation-delay:.36s}
+.rm-think .wave i:nth-child(5){height:7px;animation-delay:.48s}
+@keyframes rmwave{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+.rm-think .lbl{font-size:10px;color:var(--cyan)}
+.rm-quick{display:flex;gap:5px;padding:7px 10px;flex-wrap:wrap;border-top:1px solid var(--border)}
+.rm-quick b{font-size:9px;padding:5px 9px;border-radius:6px;background:var(--surface-2);color:var(--text-dim);font-weight:500}
+.rm-inputbar{display:flex;gap:6px;padding:8px 10px 12px}
+.rm-inputbar .box{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:7px 10px;font-size:10px;color:var(--text-muted)}
+.rm-inputbar .send{width:30px;height:30px;border-radius:9px;background:var(--cyan-deep);color:#021;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* feature grid (rm- scoped) */
+.rm-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:30px 0 10px}
+.rm-feat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px 22px;transition:all .3s}
+.rm-feat:hover{border-color:var(--border-strong);transform:translateY(-3px)}
+.rm-feat .ic{font-size:26px;margin-bottom:12px;display:block}
+.rm-feat h3{font-family:var(--font-display);font-weight:700;font-size:17px;margin:0 0 8px}
+.rm-feat p{font-size:14px;line-height:1.6;color:var(--text-dim);margin:0}
+
+/* access methods */
+.rm-access{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:20px 0}
+.rm-method{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:26px 24px;position:relative}
+.rm-method .num{font-family:var(--font-tech);font-size:13px;color:var(--cyan);letter-spacing:.1em}
+.rm-method h4{font-family:var(--font-display);font-weight:700;font-size:18px;margin:10px 0 6px}
+.rm-method .rec{font-size:10px;color:var(--green);border:1px solid rgba(57,255,122,.3);border-radius:100px;padding:2px 9px;margin-left:8px;vertical-align:middle}
+.rm-method p{font-size:13.5px;line-height:1.6;color:var(--text-dim);margin:0 0 12px}
+.rm-method code{display:block;font-family:var(--font-mono);font-size:11.5px;background:#040a16;border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--cyan-bright);white-space:pre-wrap;word-break:break-all}
+/* security note */
+.rm-sec{background:linear-gradient(135deg,rgba(255,46,136,.07),rgba(139,92,246,.05));border:1px solid rgba(255,46,136,.22);border-radius:18px;padding:30px 34px;margin:20px 0}
+.rm-sec h3{font-family:var(--font-display);font-weight:700;font-size:20px;margin:0 0 10px;display:flex;align-items:center;gap:10px}
+.rm-sec ul{margin:0;padding-left:20px;color:var(--text-dim);font-size:14.5px;line-height:1.8}
+.rm-sec ul b{color:var(--text)}
+.rm-steps{counter-reset:s;display:grid;gap:14px;padding:10px 0}
+.rm-step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 22px}
+.rm-step .n{flex:none;width:34px;height:34px;border-radius:10px;background:var(--cyan-deep);color:#021;font-family:var(--font-tech);font-weight:800;display:flex;align-items:center;justify-content:center}
+.rm-step .tx{font-size:14.5px;line-height:1.55;color:var(--text-dim)}
+.rm-step .tx b{color:var(--text);font-family:var(--font-display)}
+.rm-step code{font-family:var(--font-mono);font-size:12.5px;color:var(--cyan-bright);background:#040a16;padding:2px 7px;border-radius:5px}
+@media(max-width:860px){
+  .rm-hero{grid-template-columns:1fr;gap:40px;padding:120px 0 50px;text-align:center}
+  .rm-hero-sub{margin-left:auto;margin-right:auto}
+  .rm-actions,.rm-trust{justify-content:center}
+  .rm-feats,.rm-access{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Background layers (reuse closecrab.css) -->
+<div class="bg-grid"></div>
+<div class="bg-noise"></div>
+<div class="vignette"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <img src="logo.png" alt="Blitzball Labs">
+    <span class="brand-text">Blitzball<em>Labs</em></span>
+    <span class="brand-divider"></span>
+    <span class="brand-product">Mobile Remote</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="closecrab.html">CloseCrab</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#access">Access</a></li>
+    <li><a href="#security">Security</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="closecrab.html#download" class="nav-cta"><span class="cta-icon">▼</span><span>Get CloseCrab</span></a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="rm-wrap">
+  <div class="rm-hero">
+    <div>
+      <div class="rm-hero-eyebrow"><span class="ev-dot"></span> <span class="rm-eyebrow-txt">CloseCrab · Mobile Remote</span></div>
+      <h1 class="rm-h1">Your AI coder, <em>in your pocket.</em></h1>
+      <p class="rm-hero-sub">Step away from the desk without stopping the work. <strong>CloseCrab Mobile</strong> drives your already-running CloseCrab from any phone — full touch terminal, live thinking bar, and a team leaderboard — over <strong>Tailscale, ZeroTier or Cloudflare Tunnel</strong>. Your code never leaves your machine.</p>
+      <div class="rm-actions">
+        <a href="closecrab.html#download" class="btn btn-pri big rm-cta-get"><span>⬇</span> Get CloseCrab</a>
+        <a href="#how" class="btn btn-sec big rm-cta-how"><span>▶</span> See how it works</a>
+      </div>
+      <div class="rm-trust">
+        <span class="rm-trust-1">● Runs on your PC</span>
+        <span class="rm-trust-2">● Token-gated</span>
+        <span class="rm-trust-3">● License-bound</span>
+        <span class="rm-trust-4">● No code leaves home</span>
+      </div>
+    </div>
+
+    <!-- Phone mockup -->
+    <div class="rm-phone-stage">
+      <div class="rm-phone"><div class="rm-screen">
+        <div class="rm-statusbar"><span>9:41</span><span>5G ▮▮▮ 100%</span></div>
+        <div class="rm-appbar"><span class="rm-title">CloseCrab</span><span class="rm-badge rm-mk-connected">● Connected</span></div>
+        <div class="rm-tabs"><span class="rm-mk-dash">Dashboard</span><span class="on rm-mk-session">Session</span><span class="rm-mk-team">Team</span></div>
+        <div class="rm-term">
+          <div><span class="pr">›</span> <span class="rm-mk-cmd">refactor the auth module, add rate limiting</span></div>
+          <div class="dim rm-mk-plan">— planning · 3 sub-agents</div>
+          <div class="tl rm-mk-l1">[a1] Grep "rate.?limit" src/auth/ → 0</div>
+          <div class="tl rm-mk-l2">[a2] Read middleware.cpp · 412 lines</div>
+          <div class="ai rm-mk-l3">proposing TokenBucket(10rps) at entry.</div>
+          <div class="tl rm-mk-l4">→ Edit middleware.cpp +47 -3</div>
+          <div class="tl rm-mk-l5">✓ build 0 warn · 47 tests pass</div>
+        </div>
+        <div class="rm-think"><span class="wave"><i></i><i></i><i></i><i></i><i></i></span><span class="lbl rm-mk-think">Thinking…</span></div>
+        <div class="rm-quick"><b>^C</b><b>Tab</b><b>Esc</b><b>/help</b><b class="rm-mk-yes">Yes</b></div>
+        <div class="rm-inputbar"><span class="box rm-mk-input">Type here…</span><span class="send">↑</span></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="rm-wrap" id="features">
+  <div class="rm-feats">
+    <div class="rm-feat reveal"><span class="ic">📟</span><h3 class="rm-f1-h">Touch terminal</h3><p class="rm-f1-p">A real PTY, finger-friendly. Swipe to scroll, a quick-key bar for ^C / Tab / Esc, and a mobile input box — the full CloseCrab session, not a cut-down view.</p></div>
+    <div class="rm-feat reveal"><span class="ic">🌊</span><h3 class="rm-f2-h">Live thinking bar</h3><p class="rm-f2-p">Instead of stacks of "Waiting for response…", one calm wave animation shows when CloseCrab is reasoning or running a tool — readable at a glance on a phone.</p></div>
+    <div class="rm-feat reveal"><span class="ic">🏆</span><h3 class="rm-f3-h">Team leaderboard</h3><p class="rm-f3-p">Team Mode scores, local to your machine and on a cross-host global board. See who's online across the squad in real time.</p></div>
+    <div class="rm-feat reveal"><span class="ic">🎮</span><h3 class="rm-f4-h">9 boot mini-games</h3><p class="rm-f4-p">While CloseCrab spins up, a random mini-game loads — Snake, Tetris, Pinball, Tank, and more. The wait becomes a break.</p></div>
+    <div class="rm-feat reveal"><span class="ic">🔄</span><h3 class="rm-f5-h">Survives backgrounding</h3><p class="rm-f5-p">Auto-reconnect handles iOS Safari putting the tab to sleep. Switch apps, come back, your session is right there.</p></div>
+    <div class="rm-feat reveal"><span class="ic">🛰️</span><h3 class="rm-f6-h">Remote control</h3><p class="rm-f6-p">Start, stop, or kill the backend process from your phone. Check status, launch a fresh session, all without touching the PC.</p></div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="rm-wrap" id="how">
+  <div class="section-head reveal">
+    <div class="kicker rm-how-kicker">▌ How it works</div>
+    <h2 class="rm-how-h">Three minutes from <em>desk to pocket.</em></h2>
+    <p class="rm-how-p">CloseCrab Mobile is a tiny local service that bridges your phone to the CloseCrab already running on your PC.</p>
+  </div>
+  <div class="rm-steps">
+    <div class="rm-step reveal"><span class="n">1</span><span class="tx rm-s1"><b>Activate CloseCrab on your PC.</b> The desktop app stores your license — Mobile Remote reuses it, so there's no second login on your phone.</span></div>
+    <div class="rm-step reveal"><span class="n">2</span><span class="tx rm-s2"><b>Run <code>closecrab-web</code>.</b> It verifies this machine's license, then prints a token-protected URL and a Cloudflare tunnel link.</span></div>
+    <div class="rm-step reveal"><span class="n">3</span><span class="tx rm-s3"><b>Open the link on your phone.</b> Tap "New Session" and you're driving CloseCrab — over your private mesh network or the tunnel.</span></div>
+  </div>
+</section>
+
+<!-- Access methods -->
+<section class="rm-wrap" id="access">
+  <div class="section-head reveal">
+    <div class="kicker rm-acc-kicker">▌ Remote access</div>
+    <h2 class="rm-acc-h">Three ways to <em>reach home.</em></h2>
+    <p class="rm-acc-p">Pick whichever fits your network. All keep traffic private — nothing routes through our servers.</p>
+  </div>
+  <div class="rm-access">
+    <div class="rm-method reveal">
+      <span class="num">01</span><span class="rec rm-acc-rec">Recommended</span>
+      <h4 class="rm-m1-h">Tailscale</h4>
+      <p class="rm-m1-p">Install on both PC and phone, sign in with the same account. Your devices get a private mesh IP — no port forwarding.</p>
+      <code class="rm-m1-c">http://&lt;pc-tailscale-ip&gt;:3000</code>
+    </div>
+    <div class="rm-method reveal">
+      <span class="num">02</span>
+      <h4 class="rm-m2-h">ZeroTier</h4>
+      <p class="rm-m2-p">Friendlier inside China. Join both devices to the same network, then reach the PC on its ZeroTier address.</p>
+      <code class="rm-m2-c">http://&lt;pc-zerotier-ip&gt;:3000</code>
+    </div>
+    <div class="rm-method reveal">
+      <span class="num">03</span>
+      <h4 class="rm-m3-h">Cloudflare Tunnel</h4>
+      <p class="rm-m3-p">Built in. CloseCrab opens a cloudflared tunnel on launch and prints a public URL — open it on any device, no VPN.</p>
+      <code class="rm-m3-c">https://&lt;random&gt;.trycloudflare.com</code>
+    </div>
+  </div>
+</section>
+
+<!-- Security -->
+<section class="rm-wrap" id="security">
+  <div class="rm-sec reveal">
+    <h3 class="rm-sec-h">🔒 Built to fail closed</h3>
+    <ul>
+      <li class="rm-sec-1"><b>License-bound.</b> Mobile Remote only starts on a machine with an active CloseCrab license and remote enabled — verified on every launch.</li>
+      <li class="rm-sec-2"><b>Token-gated.</b> Every session needs a token. No token, no shell — there is no anonymous mode by default.</li>
+      <li class="rm-sec-3"><b>Owner kill-switch.</b> Turn remote access off for any device from your account page; the next launch is refused.</li>
+      <li class="rm-sec-4"><b>Local-first.</b> The bridge runs on your PC. Code, keys, and model never touch a third-party server.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="rm-wrap">
+  <div class="dl-card reveal" style="margin:30px 0 70px">
+    <div class="dl-eyebrow rm-cta-eyebrow">CloseCrab Mobile Remote</div>
+    <h2 class="rm-cta-h">Already have CloseCrab? <em>You already have this.</em></h2>
+    <p class="rm-cta-p">Mobile Remote ships with CloseCrab-Unified. Activate, run <code>closecrab-web</code>, and scan the link. No extra purchase.</p>
+    <div class="dl-actions">
+      <a href="closecrab.html#download" class="btn btn-pri big rm-cta-dl">⬇ Get CloseCrab</a>
+      <a href="account.html" class="btn btn-sec big rm-cta-acc">Manage remote access</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <img src="logo.png" alt="Blitzball Labs">
+      <div>
+        <div class="fb-name">Blitzball Labs</div>
+        <div class="fb-tag rm-fb-tag">Native AI · local-first · open source</div>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5 class="rm-fc1-h">Products</h5>
+      <a href="closecrab.html">CloseCrab</a>
+      <a href="closecrab-mobile.html">Mobile Remote</a>
+      <a href="blitz.html">Blitz DAW</a>
+    </div>
+    <div class="foot-col">
+      <h5 class="rm-fc2-h">Resources</h5>
+      <a href="index.html">Overview</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="blog.html">Blog</a>
+    </div>
+    <div class="foot-col">
+      <h5 class="rm-fc3-h">Company</h5>
+      <a href="account.html">Account</a>
+      <a href="mailto:support@blitzball.lol">Contact</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <span class="rm-foot-1">© 2026 Blitzball Labs (北京市闪电球娱乐有限公司)</span>
+    <span class="rm-foot-2">MIT licensed · no telemetry · your machine, your rules</span>
+  </div>
+</footer>
+
+<script src="assets/js/closecrab.js"></script>
+<script src="assets/js/i18n.js"></script>
+<!-- Blitzball Labs analytics (auto: localhost in dev, same-origin in production) -->
+<script>(function(){var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';var b=dev?'http://localhost:8090':'';var s=document.createElement('script');s.defer=true;s.src=b+'/analytics.js';s.setAttribute('data-endpoint',b+'/api/collect');(document.head||document.documentElement).appendChild(s);})();</script>
+</body>
+</html>

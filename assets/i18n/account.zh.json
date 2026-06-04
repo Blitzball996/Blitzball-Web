@@ -1,0 +1,23 @@
+{
+  "hi": "我的账号",
+  "sub": "你购买的序列号",
+  "logout": "登出",
+  "loading": "加载中…",
+  "empty": "还没有购买记录。",
+  "buy": "去购买 →",
+  "active": "已激活",
+  "unused": "未激活",
+  "revoked": "已封禁",
+  "order": "订单",
+  "date": "购买于",
+  "receipt": "查看收据",
+  "copied": "已复制！",
+  "oneDevice": "一码一机",
+  "remoteTitle": "手机远程遥控",
+  "remoteOn": "已开启",
+  "remoteOff": "已关闭",
+  "remoteDesc": "开启后，可在你已激活的电脑上运行 CloseCrab-Web，用手机通过 Tailscale / ZeroTier / Cloudflare 隧道遥控。关闭即吊销该设备的所有手机遥控访问。",
+  "remoteNeedActivate": "需先在电脑上激活此序列号才能开启遥控。",
+  "remoteHelp": "电脑端运行 <code>closecrab-web</code> 即可，启动时会自动校验本机授权。",
+  "remoteFail": "操作失败，请重试。"
+}

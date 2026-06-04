@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Verified — Blitzball Labs</title>
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/index.css">
+<style>
+  .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 20px 40px;position:relative;z-index:5}
+  .auth-card{width:100%;max-width:440px;background:var(--card,rgba(18,8,42,.72));border:1px solid var(--border-strong,rgba(139,92,246,.36));
+    border-radius:20px;padding:42px 36px;backdrop-filter:blur(16px);text-align:center}
+  .auth-card h1{font-family:'Sora',sans-serif;font-weight:900;font-size:28px;margin:0 0 12px}
+  .auth-card .icon{font-size:56px;margin-bottom:16px;display:block}
+  .auth-card .sub{color:var(--text-dim,#b8aed8);font-size:15px;line-height:1.6;margin-bottom:28px}
+  .auth-btn{display:inline-block;margin-top:8px;background:linear-gradient(135deg,var(--purple,#8b5cf6),var(--pink,#f72585));
+    color:#fff;border:none;border-radius:100px;padding:14px 32px;font-size:15px;font-weight:700;text-decoration:none}
+  .msg.err{display:block;background:rgba(247,37,133,.12);border:1px solid rgba(247,37,133,.3);color:#ff7ab5;
+    padding:12px 16px;border-radius:10px;font-size:13.5px;margin-bottom:22px}
+  .brand-link{position:fixed;top:18px;left:24px;z-index:10;font-family:'Sora';font-weight:800;color:var(--text);text-decoration:none}
+  .brand-link em{font-style:normal;color:var(--purple-light,#a78bfa)}
+  .lang-tog{position:fixed;top:18px;right:24px;z-index:10;font-family:var(--font-mono,monospace);font-size:12px;
+  background:var(--card,rgba(18,8,42,.7));border:1px solid var(--border-strong);color:var(--text);border-radius:100px;padding:7px 14px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="bg-aurora"><i class="au au1"></i><i class="au au2"></i><i class="au au3"></i></div>
+<div class="bg-grid"></div><div class="bg-noise"></div>
+<a href="index.html" class="brand-link">Blitzball<em>Labs</em></a>
+<button class="lang-tog" id="langTog">EN</button>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <span class="icon" id="icon">✅</span>
+    <h1 id="title">Email Verified</h1>
+    <div class="sub" id="subtitle">Your email has been successfully verified. You can now log in to access your account.</div>
+    <div class="msg err" id="error" style="display:none"></div>
+    <a href="login.html" class="auth-btn" id="cta">Log in →</a>
+    <div style="text-align:center;margin-top:24px;font-size:11.5px;color:var(--text-muted);font-family:var(--font-mono,monospace);line-height:1.7">
+      <a href="terms.html" style="color:var(--text-muted)">Terms</a> ·
+      <a href="privacy.html" style="color:var(--text-muted)">Privacy</a> ·
+      <a href="refund.html" style="color:var(--text-muted)">Refund</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';
+  var API=(dev?'http://localhost:8090':'');
+  var lang=localStorage.getItem('bb_lang')||'zh'; if(lang!=='zh')lang='en';
+  var token=new URLSearchParams(location.search).get('token');
+  var T={
+    zh:{icon:"✅",title:"邮箱已验证",sub:"你的邮箱已成功验证，现在可以登录访问你的账号。",cta:"登录 →",
+      err_no_token:"缺少验证令牌。请检查邮件中的链接。",err_bad_token:"验证链接无效或已过期。请重新注册或联系支持。",
+      err_already:"该邮箱已验证，请直接登录。"},
+    en:{icon:"✅",title:"Email Verified",sub:"Your email has been successfully verified. You can now log in to access your account.",cta:"Log in →",
+      err_no_token:"Missing verification token. Please check the link in your email.",err_bad_token:"Verification link is invalid or expired. Please re-register or contact support.",
+      err_already:"This email is already verified — just log in."}
+  };
+  function t(k){return T[lang][k]||k;}
+  function $(id){return document.getElementById(id);}
+  function showError(msg){$('icon').textContent='❌';$('title').textContent='Verification Failed';$('error').textContent=msg;$('error').style.display='block';$('subtitle').style.display='none';}
+  function render(){
+    $('icon').textContent=t('icon');$('title').textContent=t('title');$('subtitle').textContent=t('sub');$('cta').textContent=t('cta');
+    $('langTog').textContent=lang==='zh'?'EN':'中';document.documentElement.lang=lang;
+  }
+  $('langTog').onclick=function(){lang=lang==='zh'?'en':'zh';localStorage.setItem('bb_lang',lang);render();};
+
+  // auto-verify on load if token present
+  if(!token){showError(t('err_no_token'));render();return;}
+  fetch(API+'/api/auth/verify?token='+encodeURIComponent(token),{credentials:'include'})
+    .then(function(r){if(!r.ok)throw new Error(r.status);return r.text();})
+    .then(function(){render();})
+    .catch(function(e){showError(t('err_bad_token'));render();});
+})();
+</script>
+</body>
+</html>

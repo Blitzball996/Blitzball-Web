@@ -8,6 +8,32 @@
 <link rel="icon" href="logo.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@600;700;800;900&family=Share+Tech+Mono&family=Major+Mono+Display&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/closecrab.css">
+<style>
+/* Mobile-remote section (rmt- scoped; new classes keep i18n positional selectors intact) */
+.rmt-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;max-width:1100px;margin:0 auto;padding:0 24px}
+.rmt-list{list-style:none;margin:0 0 28px;padding:0;display:grid;gap:16px}
+.rmt-list li{display:flex;align-items:flex-start;gap:14px;font-size:16px;line-height:1.5;color:var(--text-dim)}
+.rmt-list li span{font-size:22px;flex:none;line-height:1}
+.rmt-cta{margin-top:6px}
+.rmt-phone-wrap{display:flex;justify-content:center}
+.rmt-phone{width:250px;height:430px;background:#05080f;border:9px solid #11161f;border-radius:38px;box-shadow:0 26px 70px rgba(0,0,0,.6),0 0 0 1px rgba(0,255,213,.18);position:relative;overflow:hidden}
+.rmt-phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:104px;height:20px;background:#11161f;border-radius:0 0 13px 13px;z-index:6}
+.rmt-scr{position:absolute;inset:0;border-radius:29px;background:linear-gradient(180deg,#060a14,#020610);display:flex;flex-direction:column;font-family:var(--font-mono)}
+.rmt-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;border-bottom:1px solid var(--border)}
+.rmt-t{font-family:var(--font-display);font-weight:700;font-size:14px;color:var(--text)}
+.rmt-dot{font-size:9px;color:var(--green);border:1px solid rgba(57,255,122,.3);border-radius:100px;padding:2px 8px}
+.rmt-body{flex:1;padding:12px 14px;font-size:10px;line-height:1.7;color:var(--text-dim)}
+.rmt-pr{color:var(--cyan)}.rmt-cmd{color:var(--text)}.rmt-tl{color:var(--green)}.rmt-dim{color:var(--text-faint)}
+.rmt-think{display:flex;align-items:center;gap:8px;margin:0 12px 8px;padding:8px 12px;background:rgba(0,255,213,.06);border:1px solid var(--border);border-radius:10px}
+.rmt-wave{display:flex;gap:3px;align-items:flex-end;height:13px}
+.rmt-wave i{width:3px;background:var(--cyan);border-radius:2px;animation:rmtw 1s ease-in-out infinite}
+.rmt-wave i:nth-child(1){height:6px}.rmt-wave i:nth-child(2){height:12px;animation-delay:.12s}.rmt-wave i:nth-child(3){height:8px;animation-delay:.24s}.rmt-wave i:nth-child(4){height:13px;animation-delay:.36s}
+@keyframes rmtw{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+.rmt-think-l{font-size:10px;color:var(--cyan)}
+.rmt-keys{display:flex;gap:5px;padding:8px 12px 16px}
+.rmt-keys b{font-size:9px;padding:5px 9px;border-radius:6px;background:var(--surface-2);color:var(--text-dim);font-weight:500}
+@media(max-width:860px){.rmt-grid{grid-template-columns:1fr;gap:36px}.rmt-phone-wrap{order:-1}}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
@@ -38,6 +64,7 @@
     <li><a href="#agents">Agents</a></li>
     <li><a href="#providers">Models</a></li>
     <li><a href="#specs">Specs</a></li>
+    <li><a href="#mobile">Mobile</a></li>
     <li><a href="pricing.html">Pricing</a></li>
   </ul>
   <div class="nav-actions">
@@ -242,6 +269,41 @@
     <div class="spec-row"><div class="spec-k">Storage</div><div class="spec-v">SQLite · YAML config · zero database server</div></div>
     <div class="spec-row"><div class="spec-k">Platforms</div><div class="spec-v">Windows 10/11 · Linux · macOS</div></div>
     <div class="spec-row"><div class="spec-k">License</div><div class="spec-v">MIT · open source · no telemetry</div></div>
+  </div>
+</section>
+
+<!-- Mobile Remote -->
+<section class="section" id="mobile">
+  <div class="section-head reveal">
+    <div class="kicker">▌ Mobile remote</div>
+    <h2>Leave the desk. <em>Keep the session.</em></h2>
+    <p>Drive a running CloseCrab from your phone — full touch terminal, live thinking bar, team leaderboard — over Tailscale, ZeroTier or a Cloudflare tunnel. Code stays on your machine.</p>
+  </div>
+  <div class="rmt-grid">
+    <div class="rmt-copy reveal">
+      <ul class="rmt-list">
+        <li class="rmt-li1"><span>📟</span> Real PTY terminal, finger-friendly — swipe, quick-keys, mobile input</li>
+        <li class="rmt-li2"><span>🌊</span> One calm thinking bar instead of stacked "waiting…" lines</li>
+        <li class="rmt-li3"><span>🏆</span> Team Mode leaderboard — local board + cross-host global board</li>
+        <li class="rmt-li4"><span>🎮</span> 9 mini-games load while CloseCrab boots</li>
+        <li class="rmt-li5"><span>🔒</span> License-bound + token-gated — fails closed, never anonymous</li>
+      </ul>
+      <a href="closecrab-mobile.html" class="btn btn-pri rmt-cta">Explore Mobile Remote →</a>
+    </div>
+    <div class="rmt-phone-wrap reveal">
+      <div class="rmt-phone"><div class="rmt-scr">
+        <div class="rmt-bar"><span class="rmt-t">CloseCrab</span><span class="rmt-dot">● live</span></div>
+        <div class="rmt-body">
+          <div><span class="rmt-pr">›</span> <span class="rmt-cmd">add rate limiting to auth</span></div>
+          <div class="rmt-dim rmt-plan">— 3 sub-agents planning</div>
+          <div class="rmt-tl rmt-r1">[a1] Grep rate.?limit → 0</div>
+          <div class="rmt-tl rmt-r2">→ Edit middleware.cpp +47 -3</div>
+          <div class="rmt-tl rmt-r3">✓ build · 47 tests pass</div>
+        </div>
+        <div class="rmt-think"><span class="rmt-wave"><i></i><i></i><i></i><i></i></span> <span class="rmt-think-l">Thinking…</span></div>
+        <div class="rmt-keys"><b>^C</b><b>Tab</b><b>Esc</b><b class="rmt-yes">Yes</b></div>
+      </div></div>
+    </div>
   </div>
 </section>
 

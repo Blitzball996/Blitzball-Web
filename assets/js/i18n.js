@@ -194,7 +194,9 @@
   var AVAILABLE = {
     index: ['en','zh','ja','ko','es','fr','de','ru','pt','it'],
     closecrab: ['en','zh','ja','ko','es','fr','de','ru','pt','it','ar','hi'],
+    'closecrab-mobile': ['en','zh','ja','ko','es','fr','de','ru','pt','it','ar','hi'],
     blitz: ['en','zh','ja','ko','es','fr','de','ru','pt','it'],
+    account: ['en','zh','de','es','fr','it','ja','ko','pt','ru','ar','hi'],
     terms: ['en','zh'],
     privacy: ['en','zh'],
     refund: ['en','zh']

@@ -1,0 +1,23 @@
+window.__i18n_receive({
+  "hi": "My Account",
+  "sub": "Your purchased license keys",
+  "logout": "Log out",
+  "loading": "Loading…",
+  "empty": "No purchases yet.",
+  "buy": "Go to pricing →",
+  "active": "Activated",
+  "unused": "Not activated",
+  "revoked": "Revoked",
+  "order": "Order",
+  "date": "Purchased",
+  "receipt": "View receipt",
+  "copied": "Copied!",
+  "oneDevice": "one key · one device",
+  "remoteTitle": "Phone remote control",
+  "remoteOn": "On",
+  "remoteOff": "Off",
+  "remoteDesc": "When on, run CloseCrab-Web on your activated PC to drive it from your phone over Tailscale / ZeroTier / Cloudflare Tunnel. Turning it off revokes all phone-remote access bound to this device.",
+  "remoteNeedActivate": "Activate this key on a PC first to enable remote control.",
+  "remoteHelp": "On the PC just run <code>closecrab-web</code> — it verifies this machine's license on startup.",
+  "remoteFail": "Action failed, please retry."
+});

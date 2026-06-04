@@ -21,6 +21,12 @@ Thumbs.db
 assets/js/i18n_backup.js
 assets/i18n/_val.py
 
+# i18n generator / verification tooling (dev-only)
+gen_account_i18n.py
+gen_account_rest.py
+gen_closecrab_mobile_i18n.py
+verify_i18n_integrity.py
+
 # Node (in case anyone runs build later)
 node_modules/
 package-lock.json
