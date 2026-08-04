@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-ns="download">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download — Blitzball Labs</title>
+<meta name="description" content="Download Blitz DAW or CloseCrab with your license key.">
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/index.css">
+<link rel="stylesheet" href="assets/css/pricing.css">
+<link rel="stylesheet" href="assets/css/download.css">
+</head>
+<body data-theme="hub">
+
+<div class="px-bg">
+  <div class="px-orb px-orb1"></div><div class="px-orb px-orb2"></div><div class="px-orb px-orb3"></div>
+  <div class="px-beam"></div>
+</div>
+<div class="bg-grid"></div><div class="bg-noise"></div><div class="vignette"></div>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand"><img src="logo.png" alt="Blitzball Labs"><span class="brand-text">Blitzball<em>Labs</em></span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#products">Products</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="download.html" class="active">Download</a></li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+  <div class="nav-actions"><a href="login.html" class="nav-login">Account</a><a href="pricing.html" class="nav-cta">Buy a license →</a></div>
+</nav>
+
+<section class="dlg-wrap">
+  <div class="dlg-head">
+    <div class="px-eyebrow"><i></i><span data-t="eyebrow">Licensed download</span></div>
+    <h1><span data-t="h1a">Your key.</span> <span class="px-grad" data-t="h1b">Your build.</span></h1>
+    <p data-t="lede">Enter the license key we emailed you after checkout. We'll unlock the installers for every platform — the download starts automatically.</p>
+  </div>
+
+  <!-- paid-return banner: shown when the buyer comes back from Creem -->
+  <div class="dlg-paid" id="dlgPaid" hidden>
+    <span class="dlg-paid-ico">✓</span>
+    <div>
+      <b data-t="paid_t">Payment received — thank you!</b>
+      <span data-t="paid_s">Your license key is on its way by email (usually within a minute). Paste it below to start the download.</span>
+    </div>
+  </div>
+
+  <form class="dlg-card" id="dlgForm" autocomplete="on">
+    <label class="dlg-lab" for="dlgKey" data-t="lab_key">License key</label>
+    <input class="dlg-key" id="dlgKey" name="license" inputmode="latin" spellcheck="false"
+           placeholder="BDPR-XXXX-XXXX-XXXX-XXXX" maxlength="29" autocomplete="off" required>
+
+    <label class="dlg-lab" for="dlgEmail" data-t="lab_mail">Email used at checkout <i data-t="optional">(recommended)</i></label>
+    <input class="dlg-mail" id="dlgEmail" name="email" type="email"
+           placeholder="you@example.com" autocomplete="email">
+
+    <button class="dlg-go" type="submit" id="dlgGo">
+      <span class="dlg-go-t" data-t="unlock">Unlock my download</span>
+      <span class="dlg-spin" hidden></span>
+    </button>
+    <div class="dlg-err" id="dlgErr" hidden></div>
+    <p class="dlg-small" data-t="small">Lost your key? <a href="login.html">Sign in to your account</a> — every key you've bought is listed there.</p>
+  </form>
+
+  <!-- unlocked state -->
+  <div class="dlg-ok" id="dlgOk" hidden>
+    <div class="dlg-ok-head">
+      <div class="dlg-ok-ico" id="dlgOkIco">✓</div>
+      <h2><span id="dlgOkProd">Blitz DAW</span> <em data-t="unlocked">unlocked</em></h2>
+      <p data-t="ok_s">Your download is starting. Pick another platform below if you need a different build.</p>
+    </div>
+    <div class="dlg-files" id="dlgFiles"></div>
+    <div class="dlg-exp" id="dlgExp"></div>
+    <div class="dlg-next">
+      <b data-t="next_t">Next step</b>
+      <span data-t="next_s">Install, launch the app, and paste the same license key into the activation box. One key activates one device.</span>
+    </div>
+  </div>
+</section>
+
+<footer class="foot"><div class="foot-bot"><span>© 2026 Blitzball Labs (北京市闪电球娱乐有限公司) · Native AI · made with C++ and care</span><span><a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="refund.html">Refund</a> · <a href="mailto:929115409@qq.com">Contact</a></span></div></footer>
+
+<script src="assets/js/pay-config.js"></script>
+<script src="assets/js/download.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script>(function(){var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';var b=dev?'http://localhost:8090':'';var s=document.createElement('script');s.defer=true;s.src=b+'/analytics.js';s.setAttribute('data-endpoint',b+'/api/collect');(document.head||document.documentElement).appendChild(s);})();</script>
+</body>
+</html>
