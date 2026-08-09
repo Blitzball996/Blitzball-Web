@@ -35,3 +35,7 @@ package-lock.json
 .bak_analytics/
 .bak_corrupted/
 *.bak
+
+# Large video source (125MB) - hosted on YouTube/Bilibili instead.
+# closecrab-demo.mp4 (1.8MB) IS committed - it plays inline on closecrab.html.
+assets/video/blitz-trailer.mp4

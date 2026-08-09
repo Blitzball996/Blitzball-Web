@@ -8,6 +8,7 @@
 <link rel="icon" href="logo.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/blitz.css">
+<link rel="stylesheet" href="assets/css/video.css">
 <style>
 /* === Mockup animations === */
 @keyframes meterBounce{0%,100%{height:30%}25%{height:60%}50%{height:85%}75%{height:45%}}
@@ -102,6 +103,7 @@
     <span class="brand-product">DAW · STUDIO</span>
   </a>
   <ul class="nav-links">
+    <li><a href="#watch">Watch</a></li>
     <li><a href="#studio">Studio</a></li>
     <li><a href="#instruments">Instruments</a></li>
     <li><a href="#ai">AI</a></li>
@@ -212,6 +214,45 @@
     <div class="stat-cell stat-orange"><div class="stat-icon">⎔</div><div class="stat-val">VST3</div><div class="stat-label">+ CLAP plugins</div><div class="stat-desc">auto-scan on launch</div></div>
     <div class="stat-cell stat-magenta"><div class="stat-icon">◐</div><div class="stat-val">AI</div><div class="stat-label">Chat assistant</div><div class="stat-desc">music-aware</div></div>
     <div class="stat-cell stat-green"><div class="stat-icon">◍</div><div class="stat-val">MIT</div><div class="stat-label">Open source</div><div class="stat-desc">no telemetry</div></div>
+  </div>
+</section>
+
+<!-- Trailer -->
+<section class="vshow" id="watch">
+  <div class="vshow-head reveal">
+    <div class="vshow-eyebrow">Watch · 100% AI-composed</div>
+    <h2>Every note you hear was <em>written by the AI</em>.</h2>
+    <p>Composition, arrangement, mixing, EQ, effect chains, note velocities and expression curves — all generated inside Blitz. No human editing pass, no session players, no outside mastering. This is raw output.</p>
+  </div>
+
+  <div class="vframe reveal"
+       data-yt=""
+       data-bili=""
+       data-src="assets/video/blitz-trailer.mp4"
+       data-title="Blitz DAW — AI-composed demo">
+    <button class="vframe-poster" type="button" aria-label="Play the Blitz DAW demo video">
+      <span class="vframe-play" aria-hidden="true"></span>
+      <span class="vframe-label">Play demo</span>
+    </button>
+  </div>
+
+  <div class="vnote reveal">
+    <div class="vnote-item">
+      <strong>Composition</strong>
+      <span>Chord progressions, melody and counterpoint generated from a text prompt.</span>
+    </div>
+    <div class="vnote-item">
+      <strong>Arrangement</strong>
+      <span>Instrument choice and part writing across the full 261-instrument library.</span>
+    </div>
+    <div class="vnote-item">
+      <strong>Mix &amp; EQ</strong>
+      <span>Per-track gain staging, EQ curves and effect chains placed by the model.</span>
+    </div>
+    <div class="vnote-item">
+      <strong>Expression</strong>
+      <span>Note velocity, timing feel and expression automation — not flat quantized MIDI.</span>
+    </div>
   </div>
 </section>
 
@@ -588,6 +629,7 @@
       <h6>Product</h6>
       <a href="blitz.html">Blitz DAW</a>
       <a href="closecrab.html">CloseCrab</a>
+      <a href="gateway.html">blitz.mom API</a>
       <a href="index.html">Overview</a>
     </div>
     <div class="foot-col">
@@ -612,6 +654,7 @@
 </footer>
 
 <script src="assets/js/blitz.js"></script>
+<script src="assets/js/video.js" defer></script>
 <script src="assets/js/i18n.js"></script>
 <!-- Blitzball Labs analytics (auto: localhost in dev, same-origin in production) -->
 <script>(function(){var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';var b=dev?'http://localhost:8090':'';var s=document.createElement('script');s.defer=true;s.src=b+'/analytics.js';s.setAttribute('data-endpoint',b+'/api/collect');(document.head||document.documentElement).appendChild(s);})();</script>
