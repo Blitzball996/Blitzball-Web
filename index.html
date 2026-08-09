@@ -34,6 +34,7 @@
     <li><a href="#timeline">Journey</a></li>
     <li><a href="pricing.html">Pricing</a></li>
     <li><a href="download.html">Download</a></li>
+    <li><a href="gateway.html">API</a></li>
     <li><a href="blog.html">Blog</a></li>
   </ul>
   <div class="nav-actions">
@@ -55,7 +56,7 @@
     <a href="closecrab.html" class="btn btn-sec big">Meet CloseCrab</a>
   </div>
   <div class="hero-trust">
-    <span>$150 one-time · no subscription</span><span class="dot"></span>
+    <span>from $29.99 one-time · no subscription</span><span class="dot"></span>
     <span>C++17 / C++20</span><span class="dot"></span>
     <span>Windows · Linux · macOS</span><span class="dot"></span>
     <span>CUDA / Metal supported</span>
@@ -229,7 +230,7 @@
       <tr><td>Bring your own model</td><td class="yes"><span class="badge b-yes">Any GGUF / API</span></td><td class="no"><span class="badge b-no">Vendor model</span></td><td class="mid"><span class="badge b-mid">Limited</span></td></tr>
       <tr><td>Rate limits</td><td class="yes"><span class="badge b-yes">None · your GPU</span></td><td class="mid"><span class="badge b-mid">Tier-based</span></td><td class="no"><span class="badge b-bad">Yes</span></td></tr>
       <tr><td>Audio latency</td><td class="yes"><span class="badge b-yes">&lt;5 ms native</span></td><td class="mid"><span class="badge b-mid">Browser audio</span></td><td>—</td></tr>
-      <tr><td>Subscription</td><td class="yes"><span class="badge b-yes">None · $150 once</span></td><td class="no"><span class="badge b-no">$20–$60/mo</span></td><td class="no"><span class="badge b-no">Per-token</span></td></tr>
+      <tr><td>Subscription</td><td class="yes"><span class="badge b-yes">None · pay once</span></td><td class="no"><span class="badge b-no">$20–$60/mo</span></td><td class="no"><span class="badge b-no">Per-token</span></td></tr>
     </tbody>
   </table>
 </section>
@@ -307,7 +308,7 @@
   </div>
   <div class="faq-grid">
     <div class="faq-q">How much do they cost?</div>
-    <div class="faq-a">$150 once, per product. That is a lifetime license for the v1.x line — no subscription, no usage caps, no telemetry. Buy Blitz DAW, CloseCrab, or both; each comes with its own license key. Studio packs with 5 seats are also available.</div>
+    <div class="faq-a">Pay once, per product — Blitz DAW is $150 and CloseCrab is $29.99. That is a lifetime license for the v1.x line — no subscription, no usage caps, no telemetry. Buy either or both; each comes with its own license key. Studio packs with 5 seats are also available.</div>
     <div class="faq-q">Do I need internet?</div>
     <div class="faq-a">Only to download the installers. After that, both products run fully offline. CloseCrab can optionally connect to Claude / OpenAI APIs, but it's never required — local GGUF models work just as well.</div>
     <div class="faq-q">What hardware do I need?</div>
@@ -347,6 +348,7 @@
       <h6>Products</h6>
       <a href="blitz.html">Blitz DAW</a>
       <a href="closecrab.html">CloseCrab</a>
+      <a href="gateway.html">blitz.mom API</a>
       <a href="#products">Overview</a>
     </div>
     <div class="foot-col">
@@ -431,8 +433,12 @@ document.querySelectorAll('.faq-q').forEach(q => {
     raf = requestAnimationFrame(draw);
     if (t - last < 55) return;      // ~18fps, light on CPU
     last = t;
-    ctx.fillStyle = 'rgba(5,1,15,0.10)';
+    // Fade the previous frame by erasing alpha. Painting a dark rectangle
+    // built up an opaque film over the hero headline.
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
     ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'source-over';
     ctx.font = fontSize + 'px "JetBrains Mono", monospace';
     for (let i = 0; i < cols; i++){
       const ch = glyphs[(Math.random() * glyphs.length) | 0];
