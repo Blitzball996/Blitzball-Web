@@ -18,7 +18,7 @@
       team: ''
     },
     closecrab: {
-      pro: '',
+      pro: 'https://www.creem.io/payment/prod_52UST52fNxBYDbP1fqrBCJ',
       team: ''
     }
   };
@@ -56,8 +56,9 @@
       icon: '⌗',
       prefix: 'CCPR',
       tiers: {
-        pro: { usd: 150, kind: 'once' },
-        team: { usd: 599, kind: 'once', seats: 5 }
+        /* CloseCrab Pro is priced at 29.99 on Creem — keep these two in sync */
+        pro: { usd: 29.99, kind: 'once' },
+        team: { usd: 119.99, kind: 'once', seats: 5 }
       }
     }
   };

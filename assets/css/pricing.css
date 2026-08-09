@@ -116,14 +116,7 @@ body{background:var(--px-bg);transition:background .7s ease}
 @keyframes pxBar{0%,100%{height:14%}50%{height:76%}}
 
 /* card 2 flourish: terminal lines */
-.px-term{position:absolute;left:38px;right:38px;bottom:24px;z-index:2;
-  font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#39ff7a;opacity:.55;
-  transition:opacity .4s;line-height:1.9}
-.px-card:hover .px-term{opacity:1}
-.px-term i{display:block;font-style:normal}
-.px-term i:nth-child(2){color:#00ffd5}
-.px-term i:nth-child(3){animation:pxBlink 1.05s steps(1) infinite;color:#00ffd5}
-@keyframes pxBlink{50%{opacity:0}}
+
 
 .px-hint{text-align:center;margin-top:52px;color:var(--text-muted);font-size:13.5px;
   font-family:var(--font-mono)}
@@ -133,7 +126,7 @@ body{background:var(--px-bg);transition:background .7s ease}
 @media(max-width:900px){
   .px-cards{grid-template-columns:1fr}
   .px-card-body{padding:34px 26px 30px}
-  .px-wave,.px-term{left:26px;right:26px;padding-left:0;padding-right:0}
+  .px-wave{left:26px;right:26px;padding-left:0;padding-right:0}
 }
 
 /* ============ step 2: per-product tiers ============ */
@@ -185,6 +178,9 @@ body{background:var(--px-bg);transition:background .7s ease}
 .px-price{display:flex;align-items:baseline;gap:7px;font-family:var(--px-font);font-weight:900;
   font-size:3.1rem;letter-spacing:-.03em;margin:18px 0 4px;line-height:1;position:relative;z-index:2}
 .px-price small{font-size:1.2rem;color:var(--text-muted);font-weight:700}
+/* cents on fractional prices (29.99) — smaller and raised, same colour */
+.px-price .px-cents{font-size:.42em;font-weight:800;top:-.05em;letter-spacing:0;margin-left:1px}
+.px-card-price .px-cents{font-size:.45em;font-weight:800;top:-.06em;letter-spacing:0}
 .px-per{color:var(--text-muted);font-size:11.5px;font-family:var(--font-mono);
   letter-spacing:.08em;text-transform:uppercase;margin-bottom:26px;position:relative;z-index:2}
 .px-tier ul{list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;
@@ -220,5 +216,5 @@ body{background:var(--px-bg);transition:background .7s ease}
   .px-back-row{justify-content:center}
 }
 @media(prefers-reduced-motion:reduce){
-  .px-orb,.px-beam,.px-wave i,.px-term i,.px-prod-ico,.px-grad{animation:none}
+  .px-orb,.px-beam,.px-wave i,.px-prod-ico,.px-grad{animation:none}
 }

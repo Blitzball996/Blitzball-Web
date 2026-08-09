@@ -8,6 +8,7 @@
 <link rel="icon" href="logo.png" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@600;700;800;900&family=Share+Tech+Mono&family=Major+Mono+Display&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/closecrab.css">
+<link rel="stylesheet" href="assets/css/video.css">
 <style>
 /* Mobile-remote section (rmt- scoped; new classes keep i18n positional selectors intact) */
 .rmt-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;max-width:1100px;margin:0 auto;padding:0 24px}
@@ -308,14 +309,33 @@
   </div>
 </section>
 
+<!-- Demo video -->
+<section class="vshow" id="watch">
+  <div class="vshow-head reveal">
+    <div class="vshow-eyebrow">Watch · running on macOS</div>
+    <h2>See it work on a <em>real codebase</em>.</h2>
+    <p>CloseCrab on macOS: reading files, running the build, and landing an edit from the terminal you already live in.</p>
+  </div>
+
+  <div class="vframe reveal"
+       data-inline="true"
+       data-src="assets/video/closecrab-demo.mp4"
+       data-title="CloseCrab on macOS">
+    <button class="vframe-poster" type="button" aria-label="Play the CloseCrab demo video">
+      <span class="vframe-play" aria-hidden="true"></span>
+      <span class="vframe-label">Play demo</span>
+    </button>
+  </div>
+</section>
+
 <!-- Download -->
 <section class="section dl" id="download">
   <div class="dl-card reveal">
     <div class="dl-eyebrow">Get CloseCrab v1.0</div>
     <h2>Buy once. <em>Own it forever.</em></h2>
-    <p>A 3.2 MB binary. No installer needed. Drop into PATH, edit one config line, run. $150 one-time — no subscription, ever.</p>
+    <p>A 3.2 MB binary. No installer needed. Drop into PATH, edit one config line, run. $29.99 one-time — no subscription, ever.</p>
     <div class="dl-actions">
-      <a href="pricing.html?p=closecrab" class="btn btn-pri big">Buy CloseCrab — $150</a>
+      <a href="pricing.html?p=closecrab" class="btn btn-pri big">Buy CloseCrab — $29.99</a>
       <a href="download.html?p=closecrab" class="btn btn-sec big">⬇ Already bought? Enter key</a>
     </div>
     <div class="dl-cmd"><span style="color:var(--text-muted)"># after purchase, activate with the key emailed to you</span><br>closecrab activate CCPR-XXXX-XXXX-XXXX-XXXX</div>
@@ -335,6 +355,7 @@
     <div class="foot-col">
       <h5>Products</h5>
       <a href="closecrab.html">CloseCrab</a>
+      <a href="gateway.html">blitz.mom API</a>
       <a href="blitz.html">Blitz DAW</a>
       <a href="index.html">Overview</a>
     </div>
@@ -362,6 +383,7 @@
 <div class="foot-tag" style="display:none">Built native · runs local</div>
 
 <script src="assets/js/closecrab.js"></script>
+<script src="assets/js/video.js" defer></script>
 <script src="assets/js/i18n.js"></script>
 <!-- Blitzball Labs analytics (auto: localhost in dev, same-origin in production) -->
 <script>(function(){var dev=/^(localhost|127\.0\.0\.1)$/.test(location.hostname)||location.protocol==='file:';var b=dev?'http://localhost:8090':'';var s=document.createElement('script');s.defer=true;s.src=b+'/analytics.js';s.setAttribute('data-endpoint',b+'/api/collect');(document.head||document.documentElement).appendChild(s);})();</script>

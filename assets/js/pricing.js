@@ -101,6 +101,16 @@
     }).join('');
   }
 
+  /* 150 → "150", 29.99 → "29<sup>.99</sup>" so cents stay legible without
+     shouting as loudly as the dollars. */
+  function priceHTML(usd) {
+    var n = Number(usd);
+    if (!isFinite(n)) return String(usd);
+    if (n % 1 === 0) return String(n);
+    var parts = n.toFixed(2).split('.');
+    return parts[0] + '<sup class="px-cents">.' + parts[1] + '</sup>';
+  }
+
   function tierCard(prod, tierKey, featured) {
     var d = t();
     var tier = prod.tiers[tierKey];
@@ -118,7 +128,7 @@
         (featured ? '<div class="px-badge">' + d.popular + '</div>' : '') +
         '<h3>' + label + '</h3>' +
         '<div class="px-sub">' + sub + '</div>' +
-        '<div class="px-price"><small>$</small>' + tier.usd + '</div>' +
+        '<div class="px-price"><small>$</small>' + priceHTML(tier.usd) + '</div>' +
         '<div class="px-per">' + per + '</div>' +
         '<ul>' + feats + '</ul>' +
         '<button class="px-buy' + (featured ? '' : ' sec') + '"' +
