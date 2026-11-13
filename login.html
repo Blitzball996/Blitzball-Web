@@ -130,6 +130,10 @@
           if(mode==='login'){ location.href='account.html'; }
           else { msg(t('reg_ok'),true); mode='login'; render(); }
         } else {
+          if(o.d.error==='EMAIL_UNAVAILABLE'||o.d.error==='VERIFICATION_EMAIL_FAILED'){
+            msg(lang==='zh'?'验证邮件未能发送，请稍后用相同邮箱和密码重新注册以重试发送；若仍失败，请联系支持。':'Verification email could not be sent. Retry registration with the same email and password later, or contact support.');
+            return;
+          }
           var map={BAD_CREDENTIALS:'bad_cred',EMAIL_NOT_VERIFIED:'not_verified',EMAIL_TAKEN:'taken',BAD_EMAIL:'bad_email',WEAK_PASSWORD:'weakpw',CAPTCHA_FAILED:'cap_fail'};
           msg(t(map[o.d.error]||'err'));
         }
